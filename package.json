@@ -1,8 +1,15 @@
 {
   "name": "pwlk-atelier-design",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Camille Pawlak's Claude Code design skill — layout, interaction, and copy modes for building and reviewing interfaces with intent.",
-  "keywords": ["claude", "claude-code", "skill", "design", "ui", "ux"],
+  "keywords": [
+    "claude",
+    "claude-code",
+    "skill",
+    "design",
+    "ui",
+    "ux"
+  ],
   "author": "Camille Pawlak",
   "license": "Apache-2.0",
   "repository": {
