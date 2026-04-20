@@ -129,7 +129,17 @@ Use only sections that have findings. Omit empty sections entirely.
 
 End every review with:
 
-> Reply per item — e.g. "A1 yes, A3 no, B2 explain"
+> Your call on which to take. If it's easier to go through them together, say the word.
+
+### Walkthrough mode
+
+If the user wants to decide interactively — going through items individually, wanting help deciding, or asking to take it one at a time — use `AskUserQuestion` per item. Detect intent, not keywords.
+
+Options per item: **Apply** / **Decline** / **Discuss** / **Stop**
+
+- `Discuss` = user pushes back or proposes a variant; respond, then re-ask the same item.
+- Before starting a new section, if its items are closely related, offer `Apply all in [section]` as a single question first — don't force row-by-row when a batch is obvious.
+- On `Stop`, summarize what was applied, declined, and what's still open. Example: `Done: A1 and A2. Declined A3. Stopped with B1–B4 still open.`
 
 ### Inline code
 
