@@ -7,7 +7,7 @@ argument-hint: "[cami-design-layout|cami-design-interaction|cami-design-copy]"
 license: Apache 2.0. Inspired by anthropics/frontend-design, pbakaus/impeccable, emilkowalski/skill, and jakubkrehel/make-interfaces-feel-better. See NOTICE.md for attribution.
 ---
 
-# Atelier — Design Skill
+# Cami — Design Skill
 
 A personal, curated collection of design engineering knowledge. The parent skill holds shared principles and references; sub-skills (cami-design-layout, cami-design-interaction, cami-design-copy) handle specific concerns.
 
