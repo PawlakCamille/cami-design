@@ -63,6 +63,15 @@ Repository: https://github.com/zenobi-us/dotfiles
 Skill path: `ai/files/packages/creator/skills/devtools/webdesign/basic-design-principles/SKILL.md`
 License: see upstream
 
+## Web platform references
+
+Modern CSS primitives added via progressive-enhancement guidance drawn from MDN and Chrome/Safari/WebKit release notes:
+- `scrollbar-gutter: stable` — prevent content shift when scrollbars appear (`references/spacing-layout.md`)
+- `interpolate-size: allow-keywords` + `calc-size()` — animate `height`/`width` to/from `auto` (`references/motion.md`)
+- `::selection` + relative color syntax (`oklch(from …)`) — branded selection tint (`references/color.md`)
+
+Sources: developer.mozilla.org, developer.chrome.com, webkit.org.
+
 ## License
 
 This skill is released under Apache 2.0. When absorbing from upstream skills with compatible licenses, attribution is maintained here and in the specific reference file where the material lives.

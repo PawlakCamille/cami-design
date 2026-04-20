@@ -55,6 +55,19 @@ Test with actual tooling (Stark, Contrast app, browser devtools). Don't eyeball.
   - 10% — accent: CTAs, highlights, focus states
 - Common mistake: using the accent everywhere because "it's the brand color." Overuse kills its power.
 
+## Selection Color
+
+Override the default browser selection highlight with a tint of the accent. Small polish detail, reinforces brand without effort.
+
+```css
+::selection {
+  background: oklch(from var(--color-accent) l c h / 0.25);
+  color: inherit; /* let alpha handle contrast */
+}
+```
+
+Test dark mode explicitly — accent on a dark background often needs a different alpha to stay legible.
+
 ## Neutral Palette
 
 - **Pure gray is dead.** A neutral with zero chroma feels lifeless next to a brand color. Add a tiny chroma (`0.005–0.015` in OKLCH) tinted toward **this project's brand color** — not generically warm or cool. The tint is subtle enough not to read as "colored" consciously, but creates subconscious cohesion.
@@ -82,4 +95,4 @@ Heavy use of `rgba` / `hsla` / opacity is usually a sign of an incomplete palett
 
 ## Attribution
 
-Synthesized from: pbakaus/impeccable `color-and-contrast.md`, anthropics/frontend-design.
+Synthesized from: pbakaus/impeccable `color-and-contrast.md`, anthropics/frontend-design, MDN web docs (`::selection`, relative color syntax).

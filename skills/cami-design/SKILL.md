@@ -1,7 +1,7 @@
 ---
 name: cami-design
 description: Full design review — runs context protocol then routes to layout, interaction, and/or copy based on what is needed.
-version: 0.1.10
+version: 0.1.11
 user-invocable: true
 argument-hint: "[cami-design-layout|cami-design-interaction|cami-design-copy]"
 license: Apache 2.0. Inspired by anthropics/frontend-design, pbakaus/impeccable, emilkowalski/skill, and jakubkrehel/make-interfaces-feel-better. See NOTICE.md for attribution.

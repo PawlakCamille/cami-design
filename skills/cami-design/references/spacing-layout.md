@@ -117,6 +117,21 @@ img {
 <img className="outline outline-1 -outline-offset-1 outline-black/10 dark:outline-white/10" />
 ```
 
+## Scrollbar Gutter
+
+Reserve space for the scrollbar on scrollable containers so content doesn't shift horizontally when the scrollbar appears.
+
+- Apply to modal bodies, side panels, dialogs with dynamic content — any scrollable container where expand/collapse could trigger overflow
+- Safe no-op on platforms with overlay scrollbars (most macOS, iOS default), so the cost is zero
+- Baseline since 2023
+
+```css
+.modal-body {
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+```
+
 ## Long-form Layouts
 
 ### Sticky Section Headers
@@ -155,4 +170,4 @@ Align to a baseline grid. Body text leading defines the unit; spacing between bl
 
 ## Attribution
 
-Synthesized from: pbakaus/impeccable `spatial-design.md`, jakubkrehel/make-interfaces-feel-better `surfaces.md`, emilkowalski/skill, zenobi-us/dotfiles `basic-design-principles` (elevation consistency rule).
+Synthesized from: pbakaus/impeccable `spatial-design.md`, jakubkrehel/make-interfaces-feel-better `surfaces.md`, emilkowalski/skill, zenobi-us/dotfiles `basic-design-principles` (elevation consistency rule), MDN web docs (`scrollbar-gutter`).
