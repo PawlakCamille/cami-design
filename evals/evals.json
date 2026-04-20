@@ -1,5 +1,127 @@
 {
   "skill_name": "atelier-design",
-  "description": "Eval corpus. Add before/after test cases here as you build the skill. Each eval is a prompt Claude runs with and without the skill; you compare the outputs to decide if a change improved quality.",
-  "evals": []
+  "version": "0.1.0",
+  "description": "Eval corpus for pwlk-atelier-design. Each case tests whether the skill catches a specific principle or anti-pattern. Run with: npm run eval",
+  "evals": [
+    {
+      "id": "anti-001",
+      "mode": "layout",
+      "description": "Detects side-stripe border anti-pattern",
+      "tags": ["anti-patterns", "borders"],
+      "input": "Review this component:\n\n```css\n.alert {\n  border-left: 3px solid #f59e0b;\n  padding: 12px 16px;\n  background: #fffbeb;\n}\n```",
+      "expect": {
+        "must_mention": ["border-left", "side stripe"],
+        "must_suggest": ["full border", "background", "icon"],
+        "must_not": ["looks good", "no issues"]
+      }
+    },
+    {
+      "id": "copy-001",
+      "mode": "copy",
+      "description": "Flags AI slop loading copy",
+      "tags": ["copy", "loading", "anti-patterns"],
+      "input": "Review this loading message: \"Herding pixels and making magic happen...\"",
+      "expect": {
+        "must_mention": ["generic", "vague"],
+        "must_suggest": ["specific", "product"],
+        "must_not": ["charming", "good", "fine"]
+      }
+    },
+    {
+      "id": "copy-002",
+      "mode": "copy",
+      "description": "Flags passive voice in error message",
+      "tags": ["copy", "errors", "voice"],
+      "input": "Review this error message: \"Your file could not be uploaded due to an error.\"",
+      "expect": {
+        "must_mention": ["passive", "vague", "unclear"],
+        "must_suggest": ["active voice", "what went wrong", "what to do"],
+        "must_not": ["looks good", "clear enough"]
+      }
+    },
+    {
+      "id": "interaction-001",
+      "mode": "interaction",
+      "description": "Flags missing hover state on interactive element",
+      "tags": ["interaction", "hover", "states"],
+      "input": "Review this button:\n\n```css\n.btn-primary {\n  background: #6366f1;\n  color: white;\n  padding: 8px 16px;\n  border-radius: 6px;\n  cursor: pointer;\n}\n```",
+      "expect": {
+        "must_mention": ["hover", "state"],
+        "must_suggest": ["hover:", "background", "transition"],
+        "must_not": ["no issues", "complete"]
+      }
+    },
+    {
+      "id": "interaction-002",
+      "mode": "interaction",
+      "description": "Flags ease-in on enter animation",
+      "tags": ["interaction", "motion", "easing"],
+      "input": "Review this animation:\n\n```css\n.modal {\n  animation: fadeIn 200ms ease-in;\n}\n@keyframes fadeIn {\n  from { opacity: 0; transform: translateY(4px); }\n  to { opacity: 1; transform: translateY(0); }\n}\n```",
+      "expect": {
+        "must_mention": ["ease-in", "enter"],
+        "must_suggest": ["ease-out", "cubic-bezier"],
+        "must_not": ["looks good", "correct easing"]
+      }
+    },
+    {
+      "id": "interaction-003",
+      "mode": "interaction",
+      "description": "Flags missing prefers-reduced-motion",
+      "tags": ["interaction", "accessibility", "motion"],
+      "input": "Review this animated component:\n\n```css\n.card:hover {\n  transform: translateY(-2px);\n  transition: transform 200ms ease-out;\n}\n```",
+      "expect": {
+        "must_mention": ["prefers-reduced-motion"],
+        "must_suggest": ["@media (prefers-reduced-motion"],
+        "must_not": ["no accessibility issues", "complete"]
+      }
+    },
+    {
+      "id": "layout-001",
+      "mode": "layout",
+      "description": "Flags inconsistent spacing in a component",
+      "tags": ["layout", "spacing", "consistency"],
+      "input": "Review this card component:\n\n```css\n.card { padding: 16px; }\n.card-header { margin-bottom: 10px; }\n.card-body { padding: 0 14px; }\n.card-footer { margin-top: 13px; padding: 8px 16px; }\n```",
+      "expect": {
+        "must_mention": ["inconsistent", "spacing"],
+        "must_suggest": ["4px", "8px", "scale", "token"],
+        "must_not": ["looks fine", "no issues"]
+      }
+    },
+    {
+      "id": "color-001",
+      "mode": "layout",
+      "description": "Flags alpha color as design smell",
+      "tags": ["color", "anti-patterns"],
+      "input": "Review this design token usage:\n\n```css\n:root {\n  --surface-card: rgba(255, 255, 255, 0.6);\n  --surface-overlay: rgba(0, 0, 0, 0.4);\n  --text-secondary: rgba(0, 0, 0, 0.45);\n  --border-default: rgba(0, 0, 0, 0.12);\n}\n```",
+      "expect": {
+        "must_mention": ["alpha", "transparent"],
+        "must_suggest": ["oklch", "solid", "opaque"],
+        "must_not": ["clean", "good approach", "no issues"]
+      }
+    },
+    {
+      "id": "accessibility-001",
+      "mode": "interaction",
+      "description": "Flags disabled attribute instead of aria-disabled",
+      "tags": ["accessibility", "forms", "disabled"],
+      "input": "Review this submit button:\n\n```tsx\n<button\n  disabled={!isFormValid}\n  onClick={handleSubmit}\n  className=\"btn-primary\"\n>\n  Save changes\n</button>\n```",
+      "expect": {
+        "must_mention": ["aria-disabled", "focus", "keyboard"],
+        "must_suggest": ["aria-disabled", "tab"],
+        "must_not": ["correct", "no issues", "good approach"]
+      }
+    },
+    {
+      "id": "copy-003",
+      "mode": "copy",
+      "description": "Flags confirmation dialog that says 'Are you sure?'",
+      "tags": ["copy", "confirmations", "anti-patterns"],
+      "input": "Review this confirmation dialog:\n\nTitle: \"Are you sure?\"\nBody: \"This action cannot be undone.\"\nButtons: \"Cancel\" / \"OK\"",
+      "expect": {
+        "must_mention": ["vague", "unclear", "what"],
+        "must_suggest": ["specific action", "verb", "consequence"],
+        "must_not": ["clear", "good", "fine"]
+      }
+    }
+  ]
 }

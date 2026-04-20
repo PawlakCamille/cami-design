@@ -17,7 +17,11 @@
   ],
   "scripts": {
     "postinstall": "node scripts/install.js",
-    "preuninstall": "node scripts/uninstall.js"
+    "preuninstall": "node scripts/uninstall.js",
+    "eval": "node scripts/eval.js",
+    "eval:layout": "node scripts/eval.js --mode layout",
+    "eval:interaction": "node scripts/eval.js --mode interaction",
+    "eval:copy": "node scripts/eval.js --mode copy"
   },
   "engines": {
     "node": ">=16"
