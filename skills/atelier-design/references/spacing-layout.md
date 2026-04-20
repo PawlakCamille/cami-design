@@ -119,7 +119,7 @@ img {
 
 ### Sticky Section Headers
 
-On settings pages, profile pages, or any long-form layout organized into titled sections: if a section's content can exceed the viewport height, the section title should stick to the top of the scroll container. Without it, the user scrolls into the middle of a section with no anchor — they've lost context of where they are.
+On any page organized into titled sections where content can overflow the viewport — settings, forms, documentation, detail panels, legal pages — the section title should stick to the top of the scroll container. Without it, the user scrolls into the middle of a section with no anchor — they've lost context of where they are.
 
 ```css
 .section-title {

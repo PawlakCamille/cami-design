@@ -97,16 +97,43 @@ These apply across every mode. Keep them in mind whether you are composing a lay
 
 ## Review Output Format
 
-When reviewing UI code, always present findings as a markdown table with `Before | After | Why` columns. One row per change. Group tables by principle with a heading above each. Never list findings as separate `Before:` / `After:` lines outside a table.
+Present findings grouped into lettered sections. Each section clusters related issues under a descriptive title. One row per change, numbered within its section.
 
-### Example
+### Structure
 
-#### Concentric border radius
-| Before | After | Why |
-| --- | --- | --- |
-| `rounded-xl` on card + `rounded-xl` on inner button (`p-2`) | `rounded-2xl` on card, `rounded-lg` on inner button | Outer radius = inner radius + padding. Mismatched radii on nested elements is the most common thing that makes interfaces feel off. |
+```
+## A — [title describing what was found]
+| # | Before | After | Why |
+|---|--------|-------|-----|
+| A1 | ... | ... | ... |
+| A2 | ... | ... | ... |
 
-If a principle was reviewed and nothing needed to change, omit the table. Empty tables add noise.
+## B — [title describing what was found]
+| # | Before | After | Why |
+|---|--------|-------|-----|
+| B1 | ... | ... | ... |
+```
+
+### Section titles
+
+The letter is fixed (A, B, C…) for addressing. The title is generated from what you actually found — never a generic category label.
+
+- ✓ `## A — Concentric radius drift`
+- ✓ `## B — Missing hover and focus states`
+- ✓ `## C — Vague confirmation copy`
+- ✗ `## A — Layout & rhythm` — too generic, tells the user nothing
+
+Use only sections that have findings. Omit empty sections entirely.
+
+### Closing line
+
+End every review with:
+
+> Reply per item — e.g. "A1 yes, A3 no, B2 explain"
+
+### Inline code
+
+If an item requires a code snippet, include it inside the After cell. Never break out of the table format to show code separately.
 
 ---
 

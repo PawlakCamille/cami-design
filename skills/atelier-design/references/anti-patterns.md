@@ -93,6 +93,23 @@ Don't choose light or dark because it "looks premium" or "feels safe." Derive it
 
 Defaulting to dark for aesthetics and light for safety are both lazy. Choose, then commit.
 
+## `h-screen` on Full-height Layouts
+
+`h-screen` compiles to `height: 100vh` — on mobile, `100vh` includes the browser chrome (address bar, bottom nav) which clips your layout. Use `min-h-[100dvh]` instead. `dvh` (dynamic viewport height) adapts to the actual visible area.
+
+```css
+/* ✗ */
+.page { height: 100vh; }
+
+/* ✓ */
+.page { min-height: 100dvh; }
+```
+
+```tsx
+{/* Tailwind */}
+<div className="min-h-[100dvh]">
+```
+
 ## The Test
 
 If someone said "AI made this," would you believe them immediately? If yes, change it.
