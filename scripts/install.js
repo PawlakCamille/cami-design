@@ -3,7 +3,7 @@ const fs = require("fs");
 const path = require("path");
 const os = require("os");
 
-const SKILLS = ["atelier-design", "atelier-layout", "atelier-interaction", "atelier-copy"];
+const SKILLS = ["atelier-design", "atelier-design-layout", "atelier-design-interaction", "atelier-design-copy"];
 const skillsDir = path.join(__dirname, "..", "skills");
 const targetDir = path.join(os.homedir(), ".claude", "skills");
 
@@ -35,7 +35,7 @@ for (const skill of SKILLS) {
 if (installed.length) {
   console.log(`\n✦ pwlk-atelier-design installed`);
   console.log(`  Skills linked: ${installed.join(", ")}`);
-  console.log(`  Ready to use: /atelier-design, /atelier-layout, /atelier-interaction, /atelier-copy\n`);
+  console.log(`  Ready to use: /atelier-design, /atelier-design-layout, /atelier-design-interaction, /atelier-design-copy\n`);
 } else {
   console.log(`\n✦ pwlk-atelier-design already up to date\n`);
 }

@@ -1,5 +1,5 @@
 ---
-name: atelier-copy
+name: atelier-design-copy
 description: Microcopy, labels, error messages, empty states, tone, and clarity. Use when the user mentions copy, microcopy, wording, labels, error messages, tone, voice, confusing text, or wants clearer UX writing.
 version: 0.1.0
 user-invocable: true

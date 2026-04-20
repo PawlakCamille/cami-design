@@ -1,5 +1,5 @@
 ---
-name: atelier-layout
+name: atelier-design-layout
 description: Layout, alignment, sizing, spacing, and visual harmony. Use when the user mentions layout, alignment, spacing, sizing, visual hierarchy, rhythm, grid, proportions, crowded UI, things looking off, or wants more cohesive composition.
 version: 0.1.0
 user-invocable: true

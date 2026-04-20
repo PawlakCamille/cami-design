@@ -1,15 +1,15 @@
 ---
 name: atelier-design
-description: Camille Pawlak's curated design skill. Shared principles, anti-patterns, and context protocol for building and reviewing interfaces with intent. Use when building UI components, reviewing frontend code, or invoking any of the specialized modes (atelier-layout, atelier-interaction, atelier-copy). Triggers on UI design work, polish, "feels off", micro-details, visual hierarchy, alignment, spacing, motion, microcopy.
+description: Camille Pawlak's curated design skill. Shared principles, anti-patterns, and context protocol for building and reviewing interfaces with intent. Use when building UI components, reviewing frontend code, or invoking any of the specialized modes (atelier-design-layout, atelier-design-interaction, atelier-design-copy). Triggers on UI design work, polish, "feels off", micro-details, visual hierarchy, alignment, spacing, motion, microcopy.
 version: 0.1.0
 user-invocable: true
-argument-hint: "[atelier-layout|atelier-interaction|atelier-copy]"
+argument-hint: "[atelier-design-layout|atelier-design-interaction|atelier-design-copy]"
 license: Apache 2.0. Inspired by anthropics/frontend-design, pbakaus/impeccable, emilkowalski/skill, and jakubkrehel/make-interfaces-feel-better. See NOTICE.md for attribution.
 ---
 
 # Atelier — Design Skill
 
-A personal, curated collection of design engineering knowledge. The parent skill holds shared principles and references; sub-skills (atelier-layout, atelier-interaction, atelier-copy) handle specific concerns.
+A personal, curated collection of design engineering knowledge. The parent skill holds shared principles and references; sub-skills (atelier-design-layout, atelier-design-interaction, atelier-design-copy) handle specific concerns.
 
 ## Design System Protocol
 
@@ -23,7 +23,7 @@ Scan for:
 
 **Rule: propose adjustments using the existing system. Never override — suggest.** If a token exists for something, use it. If a value doesn't exist in the system, note the gap and propose adding it to the design system rather than hardcoding.
 
-This applies to all modes: atelier-layout, atelier-interaction, atelier-copy.
+This applies to all modes: atelier-design-layout, atelier-design-interaction, atelier-design-copy.
 
 ---
 
@@ -48,11 +48,11 @@ Each mode is invokable on its own. Use this table to decide which to load.
 
 | Mode | When to use | Read |
 | --- | --- | --- |
-| **atelier-layout** | Alignment, sizing, spacing, visual hierarchy, rhythm, harmony | `../atelier-layout/SKILL.md` |
-| **atelier-interaction** | Animation, hover/press states, micro-interactions, delight, feel | `../atelier-interaction/SKILL.md` |
-| **atelier-copy** | Microcopy, labels, error messages, tone, clarity | `../atelier-copy/SKILL.md` |
+| **atelier-design-layout** | Alignment, sizing, spacing, visual hierarchy, rhythm, harmony | `../atelier-design-layout/SKILL.md` |
+| **atelier-design-interaction** | Animation, hover/press states, micro-interactions, delight, feel | `../atelier-design-interaction/SKILL.md` |
+| **atelier-design-copy** | Microcopy, labels, error messages, tone, clarity | `../atelier-design-copy/SKILL.md` |
 
-When the user describes a concern that maps cleanly to one mode, invoke that mode. If it spans multiple (e.g. "polish this page"), run them in order: **atelier-layout → atelier-interaction → atelier-copy**.
+When the user describes a concern that maps cleanly to one mode, invoke that mode. If it spans multiple (e.g. "polish this page"), run them in order: **atelier-design-layout → atelier-design-interaction → atelier-design-copy**.
 
 ---
 

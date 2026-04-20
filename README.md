@@ -14,9 +14,9 @@ That's it. Four slash commands are linked into Claude Code automatically.
 
 ```
 /atelier-design        — load shared principles, route to a mode
-/atelier-layout        — alignment, sizing, spacing, visual hierarchy
-/atelier-interaction   — animation, hover/press states, micro-interactions
-/atelier-copy          — microcopy, labels, errors, tone
+/atelier-design-layout        — alignment, sizing, spacing, visual hierarchy
+/atelier-design-interaction   — animation, hover/press states, micro-interactions
+/atelier-design-copy          — microcopy, labels, errors, tone
 ```
 
 Or let the skills auto-trigger — the frontmatter descriptions are tuned to activate on related work.
@@ -43,9 +43,9 @@ skills/
 │   ├── SKILL.md
 │   ├── references/        # deep material loaded on demand
 │   └── libraries/         # easing curves, palettes, font pairings
-├── atelier-layout/
-├── atelier-interaction/
-└── atelier-copy/
+├── atelier-design-layout/
+├── atelier-design-interaction/
+└── atelier-design-copy/
 evals/                     # test corpus for iterative improvement
 CHANGELOG.md               # what was absorbed, from where, when
 NOTICE.md                  # attribution to upstream skills
