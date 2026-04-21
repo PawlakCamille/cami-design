@@ -1,6 +1,6 @@
 ---
 name: cami-design-copy
-description: Microcopy, labels, errors, tone. Use when wording is vague, passive, or does not tell the user what to do.
+description: Labels, errors, empty states, tone. Use when text reads awkwardly or leaves users guessing what to do.
 version: 0.1.0
 user-invocable: true
 argument-hint: "[target]"
@@ -79,6 +79,7 @@ These are instantly recognizable as machine-generated. Write messages specific t
 - Sentence case in UI (not Title Case) unless the brand specifies otherwise
 - Oxford comma: follow house style; be consistent
 - No trailing punctuation on buttons or labels
+- No exclamation marks in success or status messages — "Saved." not "Saved!" Reserve `!` for genuine milestones
 - Numerals for UI (use `1, 2, 3` not `one, two, three` for quantities)
 
 ## Patterns

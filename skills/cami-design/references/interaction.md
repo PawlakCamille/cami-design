@@ -14,6 +14,14 @@ Deep reference for interactive states and feedback. Loaded on demand.
 - Subtle. Hover is not a celebration — it's a confirmation that an element is interactive.
 - Common patterns: background shift (~5-10% lightness), subtle shadow lift, color deepen.
 - Avoid: scaling on hover (feels unstable), color shifts > 15% (too dramatic).
+- **Hover flicker fix:** when a hover state triggers an animation on the element itself, the cursor can leave the animated area mid-transition and re-trigger the exit — causing flicker. Apply hover on the parent, animate a child inside it:
+  ```css
+  /* ✗ — cursor leaving the scaled element re-triggers :hover off */
+  .btn:hover { transform: scale(1.02); }
+
+  /* ✓ — hover zone stays fixed, inner element animates */
+  .btn:hover .btn-inner { transform: scale(1.02); }
+  ```
 - **Gate hover animations behind a media query** — touch devices trigger hover on tap, causing false positives:
   ```css
   @media (hover: hover) and (pointer: fine) {
