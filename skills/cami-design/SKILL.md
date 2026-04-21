@@ -1,7 +1,7 @@
 ---
 name: cami-design
 description: Full design review — runs context protocol then routes to layout, interaction, and/or copy based on what is needed.
-version: 0.1.0
+version: 0.1.12
 user-invocable: true
 argument-hint: "[cami-design-layout|cami-design-interaction|cami-design-copy]"
 license: Apache 2.0. Inspired by anthropics/frontend-design, pbakaus/impeccable, emilkowalski/skill, and jakubkrehel/make-interfaces-feel-better. See NOTICE.md for attribution.
@@ -62,11 +62,12 @@ Loaded on demand — do not read proactively. Consult when a mode instructs you 
 
 | Topic | File | When to read |
 | --- | --- | --- |
-| Typography | `references/typography.md` | Font choice, hierarchy, sizing, OpenType features |
-| Color | `references/color.md` | Color systems, contrast, dark mode, accessibility |
-| Spacing & layout | `references/spacing-layout.md` | Grids, rhythm, concentric radius, optical alignment |
+| Typography | `references/typography.md` | Font choice, hierarchy, sizing, OpenType features, typographic characters |
+| Color | `references/color.md` | Color systems, contrast, dark mode, native browser UI |
+| Spacing & layout | `references/spacing-layout.md` | Grids, rhythm, concentric radius, safe areas, content resilience |
 | Motion | `references/motion.md` | Easing, duration, staggering, interruptibility |
-| Interaction | `references/interaction.md` | Hit areas, feedback, press states, hover |
+| Interaction | `references/interaction.md` | Hit areas, feedback, press states, hover, mobile/touch |
+| Forms | `references/forms.md` | Input attributes, submit behavior, error placement, placeholders — load when the review target contains form controls |
 | Accessibility | `references/accessibility.md` | Contrast, focus, keyboard, screen readers |
 | Anti-patterns | `references/anti-patterns.md` | "AI slop" tells, generic aesthetics to avoid |
 | Craft | `references/craft.md` | Taste philosophy, why details compound |

@@ -53,6 +53,45 @@ Contributions absorbed:
 Repository: https://github.com/jakubkrehel/make-interfaces-feel-better
 License: see upstream
 
+### zenobi-us/dotfiles — basic-design-principles
+Author: zenobi-us
+
+Contributions absorbed:
+- Elevation consistency rule ("pick one elevation treatment per hierarchy level — don't mix a shadow-recipe card with a flat-border card in the same list")
+
+Repository: https://github.com/zenobi-us/dotfiles
+Skill path: `ai/files/packages/creator/skills/devtools/webdesign/basic-design-principles/SKILL.md`
+License: see upstream
+
+## Web platform references
+
+Modern CSS primitives added via progressive-enhancement guidance drawn from MDN and Chrome/Safari/WebKit release notes:
+- `scrollbar-gutter: stable` — prevent content shift when scrollbars appear (`references/spacing-layout.md`)
+- `interpolate-size: allow-keywords` + `calc-size()` — animate `height`/`width` to/from `auto` (`references/motion.md`)
+- `::selection` + relative color syntax (`oklch(from …)`) — branded selection tint (`references/color.md`)
+
+Sources: developer.mozilla.org, developer.chrome.com, webkit.org.
+
+### vercel-labs/web-interface-guidelines
+Author: Vercel Labs
+
+Contributions absorbed (Apr 2026):
+- New `references/forms.md` — input attributes, labels, submit behavior, errors, placeholders, unsaved-changes warnings
+- Mobile & Touch section in `references/interaction.md` — `touch-action`, `-webkit-tap-highlight-color`, `overscroll-behavior: contain`, drag patterns, `autoFocus` rules
+- Loading minimum-duration rule in `references/interaction.md` (show-delay + min visible time)
+- Typographic characters section in `references/typography.md` — `…` vs `...`, curly quotes, `&nbsp;` for glued terms
+- `preconnect` guidance for font/asset CDNs in `references/typography.md`
+- Native Browser UI section in `references/color.md` — `color-scheme`, `<meta name="theme-color">`, Windows `<select>` bg/color fix
+- Safe Areas (mobile notch) section in `references/spacing-layout.md` — `env(safe-area-inset-*)`
+- Content Resilience section in `references/spacing-layout.md` — `truncate`, `line-clamp-*`, `break-words`, the `min-w-0` flex gotcha
+- Anchored Headings section in `references/spacing-layout.md` — `scroll-margin-top` under sticky headers
+- SVG Safari fix in `references/motion.md` — `transform-box: fill-box` on `<g>` wrapper
+
+Deliberately **not** absorbed: URL-as-state, deep-linking, hydration rules, i18n/locale formatting, image/CLS rules (engineering scope), Title Case heading rule (conflicts with cami-design-copy's sentence-case default), forms sub-skill (too heavy — chose reference-only).
+
+Repository: https://github.com/vercel-labs/web-interface-guidelines
+License: MIT
+
 ## License
 
 This skill is released under Apache 2.0. When absorbing from upstream skills with compatible licenses, attribution is maintained here and in the specific reference file where the material lives.

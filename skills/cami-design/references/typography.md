@@ -31,6 +31,21 @@ Deep reference for type decisions. Loaded on demand.
 - `text-wrap: balance` on headings (modern browsers) to avoid awkward breaks.
 - `text-wrap: pretty` on body text to reduce orphans.
 
+## Typographic Characters
+
+The small details that separate polished text from machine output.
+
+- **Ellipsis:** `…` (single character), never `...` (three periods). Applies to:
+  - Follow-up actions: `Rename…`, `Move to…`
+  - Loading states: `Loading…`, `Saving…`, `Generating…`
+  - Truncated placeholders: `placeholder="sk-012345679…"`
+- **Curly quotes:** `"example"` not `"example"`. Apostrophes too: `it's` not `it's`. Most editors smart-quote automatically — verify strings that come from code or paste.
+- **Non-breaking spaces** (`&nbsp;` / ` `) keep paired terms on the same line:
+  - Units: `10&nbsp;MB`, `5&nbsp;min`
+  - Shortcuts: `⌘&nbsp;+&nbsp;K`
+  - Brand + product: `Vercel&nbsp;SDK`, `iPhone&nbsp;15`
+- Use `&#x2060;` (word joiner) when you want to join without any visible space.
+
 ## Letter Spacing
 
 Starting points — always check the design system first. If tokens exist for letter-spacing, use them.
@@ -48,6 +63,7 @@ Starting points — always check the design system first. If tokens exist for le
 - Pair a distinctive display font with a refined body font.
 - Load via `@font-face` with `font-display: swap` unless you can guarantee preload without FOUT.
 - Subset fonts. Ship only the weights and glyphs you use.
+- **Preconnect to font CDN origins** with `<link rel="preconnect" href="..." crossorigin>` — reduces DNS/TLS latency before the first font request fires. Same trick works for any asset domain (image CDN, analytics).
 
 ## Accessibility
 
@@ -58,4 +74,4 @@ Starting points — always check the design system first. If tokens exist for le
 
 ## Attribution
 
-Based on principles synthesized from: anthropics/frontend-design, pbakaus/impeccable `typography.md`, jakubkrehel/make-interfaces-feel-better `typography.md`, emilkowalski/skill.
+Based on principles synthesized from: anthropics/frontend-design, pbakaus/impeccable `typography.md`, jakubkrehel/make-interfaces-feel-better `typography.md`, emilkowalski/skill, vercel-labs/web-interface-guidelines (typographic characters, preconnect).

@@ -47,6 +47,7 @@ Deep reference for interactive states and feedback. Loaded on demand.
 - Spinner only when the action is instant-feeling (< 1s) and you just need to reassure.
 - Optimistic UI when safe — update immediately, roll back on error with a clear message.
 - **Disable the button while loading** to prevent double-submission — re-enable on success or error.
+- **Minimum visible duration.** Add a show-delay (~150–300ms) before a skeleton or spinner renders, and a minimum visible time (~300–500ms) once it does. Prevents flicker on fast responses — a spinner that flashes for 80ms looks like a bug. React's `<Suspense>` can handle this natively.
 
 ## Disabled States
 
@@ -108,6 +109,27 @@ This makes toolbars and nav feel significantly faster without removing the prote
 - Standard shortcuts respected (Enter to submit, Esc to close, Arrow keys in lists).
 - Focus trap inside modals; restore focus to trigger on close.
 
+## Mobile & Touch
+
+- **`touch-action: manipulation`** on interactive elements — eliminates the 300ms double-tap-zoom delay that makes buttons feel sluggish on mobile Safari.
+  ```css
+  button, a { touch-action: manipulation; }
+  ```
+- **`-webkit-tap-highlight-color`** — default is translucent gray that flashes on tap. Either disable it or tint to the accent for branded feedback.
+  ```css
+  html { -webkit-tap-highlight-color: transparent; }
+  ```
+- **`overscroll-behavior: contain`** on modals, drawers, sheets, scrollable dropdowns — prevents scroll chaining where scrolling inside the component scrolls the page behind it.
+- **Drag interactions:** disable text selection during drag, apply `inert` to the dragged element so selection and hover don't fire simultaneously.
+  ```css
+  .dragging { user-select: none; }
+  ```
+- **`autoFocus` sparingly** — desktop only, on a single primary input (login email, search on a search page). Never on mobile — the keyboard opening causes layout shift and disorients the user.
+
+## Forms
+
+See `../cami-design/references/forms.md` for input attributes, submit behavior, error placement, placeholders, and unsaved-changes warnings.
+
 ## Attribution
 
-Synthesized from: pbakaus/impeccable `interaction-design.md`, jakubkrehel/make-interfaces-feel-better, emilkowalski/skill.
+Synthesized from: pbakaus/impeccable `interaction-design.md`, jakubkrehel/make-interfaces-feel-better, emilkowalski/skill, vercel-labs/web-interface-guidelines (mobile/touch, loading timing).

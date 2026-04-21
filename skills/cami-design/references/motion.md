@@ -142,10 +142,42 @@ Animate elements from `display: none` to visible in pure CSS — no JS needed.
 
 Zero complexity cost, works in all modern browsers. Worth using whenever you'd otherwise reach for a JS animation just to handle the appear transition.
 
+### `interpolate-size` & `calc-size()`
+Animate `height` / `width` to/from `auto` directly — kills the `max-height: 9999px` workaround.
+
+```css
+:root {
+  interpolate-size: allow-keywords;
+}
+
+.accordion {
+  height: 0;
+  overflow: hidden;
+  transition: height 300ms cubic-bezier(0.25, 1, 0.5, 1);
+}
+.accordion.open {
+  height: auto;
+}
+```
+
+Chrome 129+, Safari 18.2+, no Firefox as of April 2026. Falls back to a snap instead of animation — safe as progressive enhancement.
+
+### SVG Transforms (Safari fix)
+Safari miscalculates `transform-origin` on direct `<path>` / `<circle>` / `<rect>` elements. Always wrap animated SVG shapes in a `<g>` and set:
+
+```css
+g.animated {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+```
+
+Without this, scale and rotate animations on SVG shapes fly off-center in Safari while looking fine in Chrome.
+
 ## Accessibility
 
 Respecting `prefers-reduced-motion` is an accessibility requirement, not optional. Always provide a non-animated fallback. The snippet lives in `interaction/SKILL.md` — apply it globally at the root level.
 
 ## Attribution
 
-Synthesized from: emilkowalski/skill, jakubkrehel/make-interfaces-feel-better `animations.md`, pbakaus/impeccable `motion-design.md`.
+Synthesized from: emilkowalski/skill, jakubkrehel/make-interfaces-feel-better `animations.md`, pbakaus/impeccable `motion-design.md`, MDN web docs (`interpolate-size`, `calc-size()`), vercel-labs/web-interface-guidelines (SVG Safari fix).

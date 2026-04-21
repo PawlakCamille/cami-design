@@ -131,6 +131,8 @@ Findings as `Before | After | Why` tables, grouped by dimension. Cite the specif
 ## References
 
 - `../cami-design/references/craft.md` (for tone and intent)
+- `../cami-design/references/forms.md` (when copy touches form labels, placeholders, errors, unsaved-changes warnings)
+- `../cami-design/references/typography.md` (typographic characters: ellipsis, curly quotes, non-breaking spaces)
 
 ## Human-facing writing note
 

@@ -46,6 +46,8 @@ When in doubt, trust your eye over the math.
 
 For buttons, cards, and containers that use a border for depth or elevation, prefer `box-shadow`. Shadows adapt to any background; solid borders don't. **Do not apply to dividers or layout separators** — those should stay as borders.
 
+**Pick one elevation treatment per hierarchy level.** Don't mix a shadow-recipe card with a flat-border card in the same list — the difference reads as drift, not intent.
+
 ### Light mode — 3-layer shadow
 
 ```css
@@ -115,6 +117,21 @@ img {
 <img className="outline outline-1 -outline-offset-1 outline-black/10 dark:outline-white/10" />
 ```
 
+## Scrollbar Gutter
+
+Reserve space for the scrollbar on scrollable containers so content doesn't shift horizontally when the scrollbar appears.
+
+- Apply to modal bodies, side panels, dialogs with dynamic content — any scrollable container where expand/collapse could trigger overflow
+- Safe no-op on platforms with overlay scrollbars (most macOS, iOS default), so the cost is zero
+- Baseline since 2023
+
+```css
+.modal-body {
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+```
+
 ## Long-form Layouts
 
 ### Sticky Section Headers
@@ -141,6 +158,69 @@ On any page organized into titled sections where content can overflow the viewpo
 </h2>
 ```
 
+## Safe Areas (Mobile Notch)
+
+Full-bleed mobile layouts (hero sections, app shells, sticky nav, bottom tabs) must respect device notches and home indicators — otherwise content gets clipped or tucked under the system UI.
+
+```css
+.app-shell {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/* Combine with your own padding */
+.header {
+  padding-top: calc(16px + env(safe-area-inset-top));
+}
+```
+
+Requires `<meta name="viewport" content="viewport-fit=cover">` to take effect.
+
+## Content Resilience
+
+Layouts must survive text longer or shorter than expected. User names, titles, descriptions, tags — any user-generated content can be 1 character or 200.
+
+### Truncation
+
+```tsx
+/* Single line */
+<div className="truncate">{user.name}</div>
+
+/* Max 2 lines */
+<p className="line-clamp-2">{description}</p>
+
+/* Long unbroken strings (URLs, tokens) wrap instead of overflowing */
+<code className="break-words">{longToken}</code>
+```
+
+### The flex gotcha
+
+Flex children default to `min-width: auto`, so `truncate` on a flex child forces the container to grow instead of truncating. **Always pair `truncate` with `min-w-0` on flex children.**
+
+```tsx
+/* ✗ truncate appears to do nothing — container grows */
+<div className="flex">
+  <div className="truncate">{name}</div>
+</div>
+
+/* ✓ truncation actually happens */
+<div className="flex">
+  <div className="min-w-0 truncate">{name}</div>
+</div>
+```
+
+Test every layout at both extremes: a 3-character value and a 200-character value. Neither should break the layout.
+
+## Anchored Headings
+
+When linking to a section via hash (`#security`) on a page with a sticky header, the browser scrolls the heading to the top of the viewport — **under** the fixed header. Offset with `scroll-margin-top`.
+
+```css
+h2, h3 { scroll-margin-top: var(--header-height, 64px); }
+```
+
 ## Vertical Rhythm
 
 Align to a baseline grid. Body text leading defines the unit; spacing between blocks follows that unit (1x, 2x, 3x).
@@ -153,4 +233,4 @@ Align to a baseline grid. Body text leading defines the unit; spacing between bl
 
 ## Attribution
 
-Synthesized from: pbakaus/impeccable `spatial-design.md`, jakubkrehel/make-interfaces-feel-better `surfaces.md`, emilkowalski/skill.
+Synthesized from: pbakaus/impeccable `spatial-design.md`, jakubkrehel/make-interfaces-feel-better `surfaces.md`, emilkowalski/skill, zenobi-us/dotfiles `basic-design-principles` (elevation consistency rule), MDN web docs (`scrollbar-gutter`), vercel-labs/web-interface-guidelines (safe areas, content resilience, anchored headings).

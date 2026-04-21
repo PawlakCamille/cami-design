@@ -55,6 +55,19 @@ Test with actual tooling (Stark, Contrast app, browser devtools). Don't eyeball.
   - 10% — accent: CTAs, highlights, focus states
 - Common mistake: using the accent everywhere because "it's the brand color." Overuse kills its power.
 
+## Selection Color
+
+Override the default browser selection highlight with a tint of the accent. Small polish detail, reinforces brand without effort.
+
+```css
+::selection {
+  background: oklch(from var(--color-accent) l c h / 0.25);
+  color: inherit; /* let alpha handle contrast */
+}
+```
+
+Test dark mode explicitly — accent on a dark background often needs a different alpha to stay legible.
+
 ## Neutral Palette
 
 - **Pure gray is dead.** A neutral with zero chroma feels lifeless next to a brand color. Add a tiny chroma (`0.005–0.015` in OKLCH) tinted toward **this project's brand color** — not generically warm or cool. The tint is subtle enough not to read as "colored" consciously, but creates subconscious cohesion.
@@ -80,6 +93,30 @@ Heavy use of `rgba` / `hsla` / opacity is usually a sign of an incomplete palett
 - Avoid rainbow gradients in serious UI — they read as "AI slop" or marketing.
 - Text gradients: skip them in product UI. Keep for marketing moments.
 
+## Native Browser UI
+
+Several native UI elements render in system defaults unless you tell the browser otherwise. For polish — especially when shipping dark mode — set these explicitly.
+
+- **`color-scheme`** on `<html>` tells the browser the page's theme. Affects native scrollbars (Firefox/Safari), default `<input>` / `<select>` styling, autofill colors, and form validation popups. Without it, a dark page shows **bright white scrollbars** and form controls that break the theme.
+  ```css
+  :root { color-scheme: light; }
+  [data-theme="dark"] { color-scheme: dark; }
+  /* If you support both automatically: */
+  :root { color-scheme: light dark; }
+  ```
+- **`<meta name="theme-color">`** sets mobile browser chrome (iOS Safari address bar, Chrome Android nav) to match your background. **Worth setting even on light-only products** — match your page background exactly so the chrome blends in.
+  ```html
+  <meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)">
+  ```
+- **Windows native `<select>` dark mode bug** — renders with broken contrast. Always set `background-color` and `color` explicitly on native `<select>`.
+  ```css
+  select {
+    background-color: var(--surface);
+    color: var(--text);
+  }
+  ```
+
 ## Attribution
 
-Synthesized from: pbakaus/impeccable `color-and-contrast.md`, anthropics/frontend-design.
+Synthesized from: pbakaus/impeccable `color-and-contrast.md`, anthropics/frontend-design, MDN web docs (`::selection`, relative color syntax), vercel-labs/web-interface-guidelines (native browser UI rules).
