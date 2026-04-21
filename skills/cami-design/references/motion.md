@@ -49,7 +49,7 @@ Every animation must answer "why does this animate?"
 
 ## Enter Animations
 
-- **Split and stagger.** Don't animate one container. Break content into semantic chunks, stagger each with ~100ms delay.
+- **Split and stagger.** Don't animate one container. Break content into semantic chunks, stagger each with ~100ms delay. CSS-only: set `--index` on each item and use `animation-delay: calc(var(--index) * 80ms)`.
 - Nothing should appear from `scale(0)`. Start at `scale(0.95)` + `opacity: 0`. Real objects don't materialize from nothing.
 
 ## Exit Animations
@@ -79,6 +79,7 @@ Every animation must answer "why does this animate?"
 - **Never** `will-change: all`.
 - Only add `will-change` when you observe first-frame stutter. Overuse destroys performance.
 - **Jittery mid-animation?** Add `will-change: transform` to promote the element to its own compositor layer. Different from first-frame stutter — this is for animations that feel shaky *during* playback, usually caused by concurrent repaints on the same layer.
+- **`backdrop-blur` on scrolling containers** forces re-compositing on every scroll frame. Limit it to `position: fixed` or `sticky` elements only.
 - **CSS variables on parents are expensive in animations.** Changing `--swipe-amount` on a container triggers style recalculation on all children. Update `transform` directly on the element instead:
   ```js
   // Bad — recalculates all children

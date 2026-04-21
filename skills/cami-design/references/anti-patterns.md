@@ -110,6 +110,10 @@ Defaulting to dark for aesthetics and light for safety are both lazy. Choose, th
 <div className="min-h-[100dvh]">
 ```
 
+## Mixed Icon Stroke Weights
+
+Mixing icon libraries with different stroke widths (1.5px vs 2px) in the same UI. Lock the whole product to one library and one weight.
+
 ## The Test
 
 If someone said "AI made this," would you believe them immediately? If yes, change it.

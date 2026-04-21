@@ -213,6 +213,11 @@ Flex children default to `min-width: auto`, so `truncate` on a flex child forces
 
 Test every layout at both extremes: a 3-character value and a 200-character value. Neither should break the layout.
 
+## Card Layout
+
+- **CTA alignment in variable-height cards**: use `flex flex-col` + `flex-1` on the content area so the button always pins to the bottom regardless of content length.
+- **Feature comparison columns**: if rows misalign across columns due to label length, CSS subgrid fixes it — `grid-template-rows: subgrid` on each column lets them share row tracks.
+
 ## Anchored Headings
 
 When linking to a section via hash (`#security`) on a page with a sticky header, the browser scrolls the heading to the top of the viewport — **under** the fixed header. Offset with `scroll-margin-top`.
