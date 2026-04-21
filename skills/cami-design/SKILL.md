@@ -1,6 +1,6 @@
 ---
 name: cami-design
-description: Full design review — runs context protocol then routes to layout, interaction, and/or copy based on what is needed.
+description: Looks at your UI and figures out what's wrong, then brings in layout, interaction, or copy as needed.
 version: 0.1.13
 user-invocable: true
 argument-hint: "[cami-design-layout|cami-design-interaction|cami-design-copy]"

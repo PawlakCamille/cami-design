@@ -1,6 +1,6 @@
 ---
 name: cami-design-copy
-description: Microcopy, labels, errors, tone. Use when wording is vague, passive, or does not tell the user what to do.
+description: Labels, errors, empty states, tone. Use when text reads awkwardly or leaves users guessing what to do.
 version: 0.1.0
 user-invocable: true
 argument-hint: "[target]"
