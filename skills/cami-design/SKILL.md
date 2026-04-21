@@ -1,7 +1,7 @@
 ---
 name: cami-design
 description: Full design review — runs context protocol then routes to layout, interaction, and/or copy based on what is needed.
-version: 0.1.12
+version: 0.1.13
 user-invocable: true
 argument-hint: "[cami-design-layout|cami-design-interaction|cami-design-copy]"
 license: Apache 2.0. Inspired by anthropics/frontend-design, pbakaus/impeccable, emilkowalski/skill, and jakubkrehel/make-interfaces-feel-better. See NOTICE.md for attribution.
@@ -53,6 +53,58 @@ Each mode is invokable on its own. Use this table to decide which to load.
 | **cami-design-copy** | Microcopy, labels, error messages, tone, clarity | `../cami-design-copy/SKILL.md` |
 
 When the user describes a concern that maps cleanly to one mode, invoke that mode. If it spans multiple (e.g. "polish this page"), run them in order: **cami-design-layout → cami-design-interaction → cami-design-copy**.
+
+---
+
+## Full Audit Contract
+
+When the skill is invoked as `cami-design` (no sub-skill specified), the expectation is a **complete audit**, not a highlight reel. Partial coverage is the failure mode to avoid.
+
+A complete audit requires all of the following.
+
+### 1. All three sub-skills run
+
+Always run layout, interaction, and copy. Not "one if it spans multiple" — all three, every time. The only exception is when the user explicitly invokes a single sub-skill (`cami-design-layout`, etc.).
+
+### 2. Conditional reference reads
+
+Load these references when the audit target contains the matching element. Do not read proactively otherwise.
+
+| Read this reference | When the page has |
+| --- | --- |
+| `references/forms.md` | Any input, textarea, select, or form control |
+| `references/accessibility.md` | Any interactive element (always true in practice) |
+| `references/interaction.md` | Buttons, toggles, clickable rows, hover states |
+| `references/motion.md` | Transitions, animations, reveals, loading indicators |
+| `references/color.md` | Non-trivial color decisions or contrast questions |
+| `references/typography.md` | Dense text, data tables, or typographic hierarchy work |
+| `references/spacing-layout.md` | Any layout review (always true in practice) |
+| `references/anti-patterns.md` | Always. Run this sweep last. |
+
+### 3. Surface coverage
+
+Each of these surfaces must be either audited or explicitly acknowledged as skipped (with a reason).
+
+- Desktop at rest
+- Narrow viewport / mobile
+- Modals and overlays present on the page
+- Error and failure paths (what the user sees when a mutation fails)
+- Empty states (zero items, no data yet)
+- Loading and pending states
+- Keyboard-only traversal (tab order, focus rings, reachability)
+- Screen reader signals for dynamic content (live regions, aria states)
+
+### 4. Scope preamble (before findings)
+
+Start every full audit with a short paragraph stating what was audited and what was not, before any findings. No silent omissions. Format:
+
+> **Scope:** Audited [list]. Did not audit [list] because [reason per item].
+
+Example:
+
+> **Scope:** Audited desktop at rest, keyboard traversal, the two modals on the page, empty and error states, and the anti-patterns sweep. Did not audit narrow viewport (page is marketed as desktop-only per CLAUDE.md) or screen reader behavior (would need to run with VoiceOver, not inferrable from code).
+
+The preamble is a commitment device: it forces the audit to be deliberate about coverage, and gives the user a place to push back before reading the findings.
 
 ---
 
@@ -126,15 +178,21 @@ The letter is fixed (A, B, C…) for addressing. The title is generated from wha
 
 Use only sections that have findings. Omit empty sections entirely.
 
-### Closing line
+### Closing
 
-End every review with:
+End every review by proactively offering walkthrough mode with an `AskUserQuestion` call. Do not use a generic sentence — the goal is that the user always knows the option exists without having to remember a keyword.
 
-> Your call on which to take. If it's easier to go through them together, say the word.
+The question should be phrased naturally, in your own words, based on what the review found. Vary the wording across sessions so it stays human. Examples (not templates to copy verbatim):
+
+- "Want to go through these one at a time, or take the list as it is?"
+- "Happy to walk row by row if that's easier. Or leave it with you to pick?"
+- "There's a lot here. Want me to help you triage, one decision at a time?"
+
+Options should be: **Walk through** / **Take the list** (plus any contextual third option if it fits).
 
 ### Walkthrough mode
 
-If the user wants to decide interactively — going through items individually, wanting help deciding, or asking to take it one at a time — use `AskUserQuestion` per item. Detect intent, not keywords.
+When the user chooses to walk through, or when intent is clear from their wording (wanting to decide item by item, asking for help deciding, one at a time), use `AskUserQuestion` per item.
 
 Options per item: **Apply** / **Decline** / **Discuss** / **Stop**
 
