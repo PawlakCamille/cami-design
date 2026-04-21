@@ -24,6 +24,8 @@ Every animation must answer "why does this animate?"
 - State indication (morphing button shows the state change)
 - Feedback (press scale confirms the tap)
 - Preventing jarring appearance/disappearance
+- **Only one element should animate prominently at a time.** Competing simultaneous animations split attention and neither lands.
+- **Context menus get no entrance animation** — high-frequency use makes entrance animations compound into irritation. Exit only.
 
 ### 3. Easing
 
@@ -38,6 +40,8 @@ Every animation must answer "why does this animate?"
 
 **Never use bounce or elastic easing** — they feel dated and draw attention to the animation itself rather than the content.
 
+**Linear easing only for progress bars and time-based representations** — never for spatial motion. Linear has no physical equivalent and reads as robotic.
+
 **Never use ease-in for UI elements.** It starts slow — which is exactly when the user is watching most closely. A dropdown with `ease-in` at 300ms *feels* slower than `ease-out` at the same 300ms, because ease-in delays the initial movement.
 
 ### 4. Duration
@@ -49,7 +53,7 @@ Every animation must answer "why does this animate?"
 
 ## Enter Animations
 
-- **Split and stagger.** Don't animate one container. Break content into semantic chunks, stagger each with ~100ms delay. CSS-only: set `--index` on each item and use `animation-delay: calc(var(--index) * 80ms)`.
+- **Split and stagger.** Don't animate one container. Break content into semantic chunks, stagger each with ~50ms delay — beyond that it feels slow, not polished. CSS-only: set `--index` on each item and use `animation-delay: calc(var(--index) * 50ms)`.
 - Nothing should appear from `scale(0)`. Start at `scale(0.95)` + `opacity: 0`. Real objects don't materialize from nothing.
 
 ## Exit Animations
@@ -67,6 +71,7 @@ Every animation must answer "why does this animate?"
 
 - CSS transitions for interactive state changes (hover, press) — interruptible mid-animation.
 - Keyframes only for staged sequences that run once end-to-end.
+- **If the motion can be interrupted mid-flight, use a spring.** Easing curves break on interruption; springs resolve naturally from wherever they're stopped.
 
 ## Specificity
 

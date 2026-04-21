@@ -34,6 +34,7 @@ Deep reference for interactive states and feedback. Loaded on demand.
 - Visible, always. Never `outline: none` without a replacement.
 - Match the brand but stay distinct from hover.
 - Use `:focus-visible` to show rings only on keyboard nav, not mouse clicks.
+- Never animate focus ring transitions — keyboard navigation should feel instant. Animated focus rings make Tab feel broken.
 
 ## Hit Areas
 

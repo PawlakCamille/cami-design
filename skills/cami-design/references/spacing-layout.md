@@ -46,6 +46,8 @@ When in doubt, trust your eye over the math.
 
 For buttons, cards, and containers that use a border for depth or elevation, prefer `box-shadow`. Shadows adapt to any background; solid borders don't. **Do not apply to dividers or layout separators** — those should stay as borders.
 
+**All shadows share one implied light source** — consistent offset direction throughout the UI. Mixing top-left and bottom-right shadows on the same page reads as incoherence.
+
 **Pick one elevation treatment per hierarchy level.** Don't mix a shadow-recipe card with a flat-border card in the same list — the difference reads as drift, not intent.
 
 ### Light mode — 3-layer shadow
@@ -80,6 +82,8 @@ For buttons, cards, and containers that use a border for depth or elevation, pre
 }
 .card:hover { box-shadow: var(--shadow-border-hover); }
 ```
+
+**Performance note:** transitioning `box-shadow` directly triggers repaints. For hover upgrades on performance-sensitive elements, put the larger shadow on a `::after` pseudo-element at `opacity: 0` and transition `opacity` instead — GPU-composited.
 
 ### When to use shadows vs borders
 

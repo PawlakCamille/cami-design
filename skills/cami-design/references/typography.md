@@ -54,6 +54,12 @@ Starting points — always check the design system first. If tokens exist for le
 - Large display / hero text: default or tight (`-0.01` to `-0.03em`)
 - Body text: default (`0`) — optical tracking is built into well-designed body fonts
 
+## Underlines
+
+- `text-underline-offset: 3px` pushes underlines below descenders so they don't collide with letters like g, p, y.
+- `text-decoration-skip-ink: auto` (browser default since 2023) skips through descenders automatically. Verify it's not overridden.
+- `font-synthesis: none` prevents browsers from generating faux bold and faux italic for missing weights — faux variants look visibly wrong. Disable and load real weights instead.
+
 ## Font Smoothing
 
 - macOS: `-webkit-font-smoothing: antialiased` at the root makes text crisper. Test on Windows — too-thin rendering is a risk.
