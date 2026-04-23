@@ -46,6 +46,12 @@ Ask: do all these choices feel like they came from the same hand? If the animati
 
 Most users never customize. Ship beautiful out of the box. The default state — default easing, default spacing, default copy — is what 90% of people experience 100% of the time. Make the default excellent before adding configurability.
 
+## Visual Difference ≠ Inconsistency
+
+Before flagging something as inconsistent, ask: does this visual difference encode a semantic difference? Two controls that look different because they *do* different things should stay different. Forcing visual parity across semantically distinct elements erases meaningful signal.
+
+Common false positives: toggle vs. tab selector, upload button vs. outline CTA, destructive icon vs. neutral icon in the same row. Check function before flagging form.
+
 ## Review Culture
 
 Be ruthless in review, kind in delivery. A design review that doesn't find anything is a review that wasn't trying. A design review that attacks the person isn't a review, it's a vent.

@@ -65,6 +65,7 @@ Improve the words users read. Clearer labels, kinder errors, useful empty states
 - Never leave "Loading..." for long operations — give context
 - Success messages confirm what happened + what comes next ("Settings saved. Changes take effect immediately.")
 - Match emotional register: celebrate big wins, stay neutral for routine saves
+- **Strip "successfully"** — it adds nothing. "Saved." not "Saved successfully." "Voice updated." not "Voice updated successfully."
 
 ### ⚠️ AI Slop Loading Copy
 Never write generic loading messages like:
@@ -90,6 +91,10 @@ These are instantly recognizable as machine-generated. Write messages specific t
 | "Something went wrong." | "We couldn't save your changes. Try again, or refresh the page." |
 | "Invalid input." | "Email needs an `@` and a domain." |
 | "Error 500." | "Our server had a hiccup. We've been notified — try again in a moment." |
+| "Failed to save." | "Couldn't save — try again in a moment." |
+| "Failed to remove user." | "Couldn't remove this member — try again in a moment." |
+
+**Pattern:** "Failed to…" → "Couldn't…" + next step. Shorter, warmer, always followed by what to do.
 
 ### Empty states
 | Avoid | Prefer |

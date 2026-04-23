@@ -40,6 +40,8 @@ Design skills produce generic output without project context. Before doing any d
 2. Check `.cami.md` at the project root — if present and sufficient, proceed.
 3. Otherwise ask the user directly for the three items above. Do **not** infer from the codebase — code tells you what was built, not who it's for.
 
+**If context is missing, stop and ask — do not run the audit.** A review without context produces generic findings that waste the user's time and miss what actually matters for the product. One focused question upfront beats a skewed audit.
+
 ---
 
 ## Modes (Sub-Skills)

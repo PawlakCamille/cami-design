@@ -199,6 +199,15 @@ Layouts must survive text longer or shorter than expected. User names, titles, d
 <code className="break-words">{longToken}</code>
 ```
 
+### Identifying data in destructive confirmations
+
+Never embed a name, number, or email at the end of a flowing sentence with an inline separator (`•`, `-`, `|`). It wraps awkwardly and makes the user work to find what they're about to delete. Put it on its own line, bolded:
+
+```tsx
+<p>Deleting this number permanently removes all its calls and messages.</p>
+<p className="font-semibold text-primary-100">{name} · {number}</p>
+```
+
 ### The flex gotcha
 
 Flex children default to `min-width: auto`, so `truncate` on a flex child forces the container to grow instead of truncating. **Always pair `truncate` with `min-w-0` on flex children.**
