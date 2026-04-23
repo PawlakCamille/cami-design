@@ -64,6 +64,17 @@ Deep reference for interactive states and feedback. Loaded on demand.
 - Remove hover/press affordances — don't tease interactivity that isn't there.
 - If possible, explain **why** it's disabled (tooltip or inline hint). Never leave the user guessing.
 
+## Destructive Row Actions
+
+- **Reveal progressively:** hidden by default, appear neutral on row hover, escalate to danger color only on precise hover of the control itself. Keeps the UI calm and makes intent explicit.
+  ```css
+  /* Parent row */ .group/row
+  /* Button */ opacity-0 group-hover/row:opacity-100 focus-visible:opacity-100
+  /* Icon  */ text-primary-40 group-hover/btn:text-danger
+  ```
+- **Armed vs. gated state in color, not just opacity.** A destructive button that's gated behind a confirmation step should be muted (danger-40 or primary-40) until the condition is met — then switch to full danger. Opacity alone doesn't communicate state change clearly enough.
+- **Match transition durations on paired properties.** When a hover state changes multiple properties together (background + icon color, opacity + scale), all must share the same duration. One transitioning while the other snaps = desync that reads as broken.
+
 ## Blur Trick
 
 When a crossfade between two states feels off despite trying different easings and durations, add subtle `filter: blur(2px)` during the transition. Without blur, you see two distinct objects overlapping — blur bridges the visual gap by blending them into a single perceived transformation.

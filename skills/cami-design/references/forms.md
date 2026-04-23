@@ -44,6 +44,7 @@ Placeholders are not labels. They disappear the moment the user types.
   - ✗ `placeholder="Email"` (that's the label's job)
   - ✓ `placeholder="name@company.com"`
 - Placeholders indicating a pattern end with `…`: `placeholder="sk-012345679…"`
+- **Don't default to "e.g. …" prefix.** It's wordy and clinical in most product contexts. A raw example (`name@company.com`, not `e.g. name@company.com`) reads faster and matches the product's voice better. Use "e.g." only when the field genuinely needs to clarify that multiple valid formats exist.
 
 ## Unsaved Changes
 
