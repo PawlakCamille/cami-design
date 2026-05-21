@@ -38,6 +38,7 @@ The Animation Decision Framework — "should this animate? what's the purpose? w
 - Buttons use `scale(0.96)` on `:active` — never smaller than 0.95
 - Focus states visible and accessible
 - Haptic-feeling transitions (short, specific)
+- Stacked clickable rows (sidebar, dropdown, settings sub-nav) use the cursor-continuity pattern — see `../cami-design/references/interaction.md` → *Pointer Continuity in Stacked Rows*
 
 ### Enter / Exit
 - Split and stagger enter animations (~100ms delay per chunk)

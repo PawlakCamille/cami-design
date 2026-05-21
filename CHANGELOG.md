@@ -6,6 +6,20 @@ Format: newest first. Group under a version heading. Include date.
 
 ---
 
+## 0.2.4 — 2026-05-21 — pointer continuity in stacked rows
+
+Small addition surfaced from production use. Stacked clickable rows that read as separated pills (sidebar nav, dropdown options, settings sub-nav) make the OS cursor flicker `pointer → default → pointer` as it crosses the gap between rows. A 1px transparent border on each row plus `background-clip: padding-box` claims the gap as hit area and stops the flicker, without merging the pills visually.
+
+### New pattern
+
+- **Pointer Continuity in Stacked Rows** in `references/interaction.md`. Sits between Hover States and Focus States. Tailwind one-liner, why `bg-clip-padding` is mandatory, apply / don't-apply lists, and a verification step (drag at ~50px/s, watch for cursor blink). Source: production usage.
+
+### Cross-ref
+
+- One line added to `cami-design-interaction/SKILL.md` → *Review Dimensions / Press & Feedback* pointing to the new section.
+
+---
+
 ## 0.2.3 — 2026-05-20 — extract scroll-containers reference and add scroll edge mask
 
 `spacing-layout.md` had grown to 331 lines, twice the next-largest reference, and its scrollbar-related sections were starting to read as their own topic. Split them out and added a third pattern that completes the set.

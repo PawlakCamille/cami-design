@@ -29,6 +29,29 @@ Deep reference for interactive states and feedback. Loaded on demand.
   }
   ```
 
+## Pointer Continuity in Stacked Rows
+
+Lists of stacked clickable rows that read as separated pills (sidebar nav, dropdown options, settings sub-nav) make the OS cursor flicker `pointer → default → pointer` as it crosses the visual gap between rows. Small, but it reads as cheap.
+
+Fix: give each row a 1px transparent border top + bottom, paired with `background-clip: padding-box` so hover/active fill stops at the inner edge.
+
+```css
+/* On each row */
+border-top: 1px solid transparent;
+border-bottom: 1px solid transparent;
+background-clip: padding-box;
+```
+
+Tailwind: `border-y border-y-transparent bg-clip-padding`
+
+`bg-clip-padding` is mandatory — without it the hover fill bleeds into the border area (default `border-box`) and adjacent filled rows merge with no breathing room. With it, the fill stops at the inner edge and the visible gap between pills is preserved.
+
+**Apply to:** sidebar nav lists, dropdown / combobox rows, settings sub-nav, any list where rows look like separated pills but should feel like one continuous track to the cursor.
+
+**Don't apply to:** tables with real borders (edges already shared), standalone buttons (no siblings), or rows where the gap is intentional UX signal (e.g. group divider — the divider is the message).
+
+Quick check: drag the cursor top-to-bottom of the list at ~50px/s. If it blinks between pointer and arrow, apply the pattern.
+
 ## Focus States
 
 - Visible, always. Never `outline: none` without a replacement.
