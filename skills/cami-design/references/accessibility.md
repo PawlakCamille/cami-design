@@ -19,6 +19,7 @@ These thresholds are referenced from `color.md` and `typography.md` — update h
 - Never `outline: none` without a replacement.
 - Focus order follows visual order.
 - Focus trap inside modals; restore focus to the trigger on close.
+- **The ring must read at a glance.** A faint ring on a neutral hue (e.g. `ring-neutral/20`) technically passes the 3:1 contrast check but disappears in real use against busy backgrounds. Build the ring from an active brand or accent token, and tune the alpha so it stays unambiguous once you're a step back from the screen.
 
 ## Keyboard
 

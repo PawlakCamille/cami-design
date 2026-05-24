@@ -28,6 +28,7 @@ Every animation must answer "why does this animate?"
 - Preventing jarring appearance/disappearance
 - **Only one element should animate prominently at a time.** Competing simultaneous animations split attention and neither lands.
 - **Context menus get no entrance animation** — high-frequency use makes entrance animations compound into irritation. Exit only.
+- **"Remove the transition" rarely means "remove all motion."** A plain ~100ms opacity fade is the floor. Hard cuts read as broken, not restrained.
 
 ### 3. Easing
 
@@ -65,6 +66,7 @@ Every animation must answer "why does this animate?"
 - Prefer small fixed `translateY` (e.g. 4-8px) over full-height moves.
 - Faster than the enter — use ~75% of the enter duration. Exits shouldn't linger.
 - **Close on a subtler scale than the open started from** (e.g. opens from `scale(0.97)`, closes toward `scale(0.99)`). Exits shouldn't "pop" as much as the entrance did.
+- **Sibling state swaps need a transition.** When one banner, toast, or card replaces another in the same slot, hard-swap reads as a bug. Cross-fade with a brief overlap, or pair fade with a small scale shift.
 
 ## Page Load
 
@@ -82,6 +84,7 @@ Every animation must answer "why does this animate?"
 - **Never** `transition: all`. Specify exact properties: `transition-property: scale, opacity`.
 - Tailwind: `transition-transform` covers `transform, translate, scale, rotate`.
 - **Animate the inner piece, not the container.** Badge dot, not the trigger button. Page sections, not the wrapper. Animating the container makes the surrounding context move; the changing thing should be the thing that moves.
+- **`animation-fill-mode: backwards`** when the keyframes start with a `filter` or `transform` value that shouldn't linger after the sequence ends — otherwise the residual state stays painted.
 
 ## Performance
 
@@ -144,6 +147,7 @@ The animation runs on the compositor while reading as layout. View Transitions A
 - Standard values: scale `0.25 → 1`, opacity `0 → 1`, blur `4px → 0`.
 - With motion lib: spring as above.
 - Without: keep both icons in DOM (one absolute-positioned), cross-fade with `cubic-bezier(0.2, 0, 0, 1)`.
+- **Toggle icons (check ↔ copy) on hover-out**: keep both in DOM through the full crossfade. Re-mounting mid-fade flashes the wrong icon for 1-2 frames.
 
 ## Popover / Dropdown Origin
 
@@ -153,6 +157,10 @@ transform-origin: var(--radix-popover-content-transform-origin);
 ```
 
 Modals stay centered (they're not anchored).
+
+**Edge detection: flip when clipped.** A popover that opens off the bottom or right of the viewport must flip to the other side of the trigger, not get cut. Radix, Floating UI, and most modern primitives ship this — verify it's on, don't reinvent it.
+
+**Escape clipping ancestors via the viewport.** If a popover lives inside an ancestor with `overflow: hidden`, `transform`, or `filter`, that ancestor clips it. Render in a portal at `<body>` level, or position `fixed` relative to the viewport with manual placement. Don't try to fight the ancestor's clipping in-place.
 
 ## Advanced Techniques (use sparingly)
 

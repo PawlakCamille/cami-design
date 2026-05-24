@@ -8,6 +8,8 @@ Deep reference for interactive states and feedback. Loaded on demand.
 - **Never** below `0.95` — feels exaggerated, like a cartoon.
 - Pair with `transition: scale 100ms ease-out` for the release.
 - Add a `static` prop to disable when motion would distract.
+- **Reserve press scale for CTAs.** Tabs, rows, and list items shouldn't scale on press — the gesture reads as a poor decision on non-action controls. Use color shift or no feedback.
+- **Stacked affordances share one slot.** When a control morphs (chevron → confirm checkmark, play → pause), keep it in the same click target instead of swapping in a sibling — the cursor shouldn't have to chase a moving target between states.
 
 ## Hover States
 
@@ -28,6 +30,7 @@ Deep reference for interactive states and feedback. Loaded on demand.
     .element:hover { transform: scale(1.02); }
   }
   ```
+- **Sticky hover while a child is open.** When a row's context menu is open, or a card is expanded, the trigger stays in its hover/active visual state — don't let it drop to idle while its popover is still on screen.
 
 ## Pointer Continuity in Stacked Rows
 
@@ -128,6 +131,9 @@ This makes toolbars and nav feel significantly faster without removing the prote
 - **Drop zone highlight**: subtle background or border change when dragging over a valid target
 - **Snap on drop**: brief spring animation settling into final position
 - **Undo escape hatch**: toast with undo action if the user drops in the wrong place
+- **`transition: none` while dragging.** Any easing/spring on the dragged element makes the cursor and the element drift apart — scrubbing must be 1:1. Restore the transition only on programmatic, non-drag updates (drop snap, cancel return).
+- **Drag hit area = the whole section, not just the handle or hovered region.** Unless competing interactions live on the same surface, the row accepts drag from anywhere.
+- **Don't shift layout when drag becomes available.** Line height, padding, and alignment must match the non-draggable version — the affordance belongs in cursor and handle, not in the layout.
 
 ## Haptics (mobile/native)
 

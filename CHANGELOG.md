@@ -6,6 +6,30 @@ Format: newest first. Group under a version heading. Include date.
 
 ---
 
+## 0.2.5 — 2026-05-24 — popover clipping, drag scrubbing, hover continuity
+
+Small absorptions from two external rules dumps (a portfolio project and an audit of past sessions), filtered against what was already covered and what was project-specific. Net: 12 new bullets across 4 references, no new files, no new sections.
+
+### Motion
+
+- **Popover edge detection** + **escape clipping ancestors via the viewport** in `motion.md` → *Popover / Dropdown Origin*. Popovers that open off the viewport edge must flip, not clip. Popovers inside `overflow: hidden` / `transform` / `filter` ancestors need a portal or `position: fixed` — don't fight the ancestor in-place.
+- **"Remove the transition" rarely means "remove all motion"** in §2 Purpose of the Animation Decision Framework. A plain ~100ms opacity fade is the floor.
+- **Sibling state swaps need a transition** in *Exit Animations*. Banner-to-banner, toast-to-toast, card-to-card in the same slot — hard-swap reads as a bug.
+- **`animation-fill-mode: backwards`** in *Specificity*. Prevents `filter` or `transform` residue after the keyframes resolve.
+- **Toggle icons (check ↔ copy) on hover-out keep both in DOM** in *Icon Animations*. Re-mounting mid-fade flashes the wrong icon for 1-2 frames.
+
+### Interaction
+
+- **`transition: none` while dragging** + **drag hit area covers the whole section** + **don't shift layout when drag becomes available** in *Drag & Drop*.
+- **Reserve press scale for CTAs** + **stacked affordances share one slot** in *Press Feedback*. Tabs and rows shouldn't scale on press; a control that morphs (chevron → checkmark) stays in the same click target.
+- **Sticky hover while a child is open** in *Hover States*. Trigger keeps its hover/active state while its popover or expanded panel is on screen.
+
+### Accessibility
+
+- **Focus rings must read at a glance** in *Focus*. A faint neutral ring technically passes 3:1 but disappears in real use — build from a brand/accent token at an unambiguous alpha.
+
+---
+
 ## 0.2.4 — 2026-05-21 — pointer continuity in stacked rows
 
 Small addition surfaced from production use. Stacked clickable rows that read as separated pills (sidebar nav, dropdown options, settings sub-nav) make the OS cursor flicker `pointer → default → pointer` as it crosses the gap between rows. A 1px transparent border on each row plus `background-clip: padding-box` claims the gap as hit area and stops the flicker, without merging the pills visually.
