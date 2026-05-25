@@ -6,7 +6,27 @@ Format: newest first. Group under a version heading. Include date.
 
 ---
 
-## 0.2.5 — 2026-05-24 — popover clipping, drag scrubbing, hover continuity
+## 0.2.6 — 2026-05-25 — composited-property tiers, duration intent classes, granular re-renders
+
+Absorption pass on `brotzky/performance-skills` (sourced from performance.dev "How's Linear so fast? A technical breakdown"). The upstream skill is architecture-heavy and mostly out of scope for a review skill; three review-shaped findings were extracted, the rest (local-first sync, IndexedDB-as-DB, service-worker precaching, bundle splitting, app-shell inlining, font preload mechanics) was deliberately not absorbed.
+
+### Performance
+
+- **`references/perf.md` — Animation on a Non-Composited Property** replaces the narrower "Animation on Layout Properties in Framer Motion". Three-tier decision table (composited / paint-triggering / layout-triggering) with concrete substitutions covering `width`/`height`, `top`/`left`/`margin`, Framer Motion props, and `transition: all`. Gives the reviewer a checklist instead of a single Framer-shaped rule.
+
+### Motion
+
+- **`references/motion.md` — ~100ms cause-and-effect threshold** added to the Duration section. Below ~100ms motion reads as the direct consequence of the user's action; above it reads as a separate event. Anchors the existing 100-150ms "Micro" fork with a cognitive reason.
+- **`references/motion.md` — Asymmetric by intent class** added to Duration. Table separates summoned-by-user (instant→150ms fade), ambient state changes (200-250ms→~75%), and transitional surfaces (250-350ms ease-out→200-250ms ease-in).
+- **`references/motion.md` — Spatial-work test** added to §2 Purpose of the Animation Decision Framework. "Does this motion answer 'where did this come from' or 'look at me'?" — a quick filter against decorative motion that complements the existing purpose criteria.
+
+### State
+
+- **`references/state.md` — Re-renders Cascade When Only One Field Changed** new finding. Different from the memo-related items in `perf.md`: addresses state *shape* (single `useState` over a list, context with fresh object identity, state living too high) rather than rendering defense. Pairs with `perf.md` rather than overlapping.
+
+---
+
+
 
 Small absorptions from two external rules dumps (a portfolio project and an audit of past sessions), filtered against what was already covered and what was project-specific. Net: 12 new bullets across 4 references, no new files, no new sections.
 

@@ -53,6 +53,22 @@ Contributions absorbed:
 Repository: https://github.com/jakubkrehel/make-interfaces-feel-better
 License: see upstream
 
+### brotzky/performance-skills — linear-local-first-architecture
+Author: Dennis Brotzky
+
+Contributions absorbed (May 2026):
+- Three-tier composited / paint-triggering / layout-triggering animation decision table (`references/perf.md`)
+- ~100ms cause-and-effect threshold for user-caused motion (`references/motion.md`)
+- Asymmetric duration table by intent class — summoned / ambient / transitional (`references/motion.md`)
+- Spatial-work test for motion purpose ("where did this come from" vs "look at me") (`references/motion.md`)
+- One-delta-one-cell finding — re-renders cascade when state shape is too coarse (`references/state.md`)
+
+Deliberately **not** absorbed: local-first sync architecture, IndexedDB-as-database, optimistic mutation queues, render-first-authenticate-second auth pattern, service-worker route precaching, bundle splitting with per-package `manualChunks`, inlined app-shell + boot script, variable-font preload mechanics, command-palette-over-local-store. These are architecture/build-config decisions outside a review skill's scope.
+
+Repository: https://github.com/brotzky/performance-skills
+Source article: https://performance.dev/how-is-linear-so-fast-a-technical-breakdown
+License: see upstream.
+
 ### zenobi-us/dotfiles — basic-design-principles
 Author: zenobi-us
 

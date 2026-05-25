@@ -22,6 +22,9 @@ Before writing any animation, answer in order:
 ### 2. Purpose
 
 Every animation must answer "why does this animate?"
+
+**Default test**: does this motion answer "where did this come from" or "look at me"? Motion that answers the first is doing spatial work; motion that answers the second is decoration. When unsure, cut it.
+
 - Spatial consistency (enter/exit from same direction → swipe-to-dismiss feels right)
 - State indication (morphing button shows the state change)
 - Feedback (press scale confirms the tap)
@@ -53,6 +56,18 @@ Every animation must answer "why does this animate?"
 - State change (toggle, small reveal): 200-250ms
 - Modal / drawer enter: 250-350ms
 - Never > 400ms for UI unless it's a deliberate moment
+
+**The ~100ms cause-and-effect threshold.** Below ~100ms, motion reads as the direct consequence of the user's action ("I pressed → it moved"). Above, it starts feeling like a separate event — feedback rather than causation. Default below 100ms for motion the user *causes*; reserve longer durations for motion the system *narrates* (a toast appearing, a modal opening on its own).
+
+**Asymmetric by intent class.** Match the duration to *who* triggered the motion. See the *Frequency* table at the top of this file for the high-frequency floor (keyboard-initiated → no animation); the table below covers the remaining cases:
+
+| Intent class | Example | Appear | Disappear |
+| --- | --- | --- | --- |
+| Summoned by user | Command palette, tooltip on focus, dropdown on click | Instant or ≤100ms | ~150ms fade |
+| Ambient state change | Toast, banner swap, status update | 200-250ms | ~75% of appear |
+| Transitional surface | Modal, drawer, sheet | 250-350ms with ease-out | 200-250ms with ease-in |
+
+When in doubt, default toward the shorter end — long durations on repeated actions feel like latency, not polish.
 
 ## Enter Animations
 
@@ -239,4 +254,4 @@ Reduced-motion fallback: see `accessibility.md` → *Motion* for the canonical s
 
 ## Attribution
 
-Synthesized from: emilkowalski/skill, jakubkrehel/make-interfaces-feel-better `animations.md`, pbakaus/impeccable `motion-design.md`, MDN web docs (`interpolate-size`, `calc-size()`), vercel-labs/web-interface-guidelines (SVG Safari fix), fixing-motion-performance skill (FLIP, scroll timelines, blur ordering), Jakubantalik/transitions-dev (close-scale subtlety, animate-inner-piece, blur+motion pairing).
+Synthesized from: emilkowalski/skill, jakubkrehel/make-interfaces-feel-better `animations.md`, pbakaus/impeccable `motion-design.md`, MDN web docs (`interpolate-size`, `calc-size()`), vercel-labs/web-interface-guidelines (SVG Safari fix), fixing-motion-performance skill (FLIP, scroll timelines, blur ordering), Jakubantalik/transitions-dev (close-scale subtlety, animate-inner-piece, blur+motion pairing), brotzky/performance-skills (cause-and-effect threshold, summoned/ambient/transitional duration classes, spatial-work test).
