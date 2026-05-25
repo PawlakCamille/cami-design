@@ -50,6 +50,20 @@ Each component fires its own request for the same data. Use a request library th
 
 A piece of state changed hands — local → URL, local → context, child → parent. Every consumer that assumed the old owner is now reasoning about a stale contract: a `to: '.'` route that relied on a local `view` flag, an effect keyed on a prop that's now derived from search params. The move itself is usually correct; the un-updated consumers are the bug. Re-audit all of them.
 
+## Re-renders Cascade When Only One Field Changed
+
+A list item updates one field (status, title, assignee) and the entire list re-renders, or the entire row re-renders when only one cell's data changed. Symptom: typing in a row's title input feels laggy on a long list; toggling one issue's status visibly stutters siblings.
+
+Root cause is usually one of:
+
+- A single `useState` holding a list of objects; updating one item replaces the whole array reference, invalidating every consumer
+- A context provider passing a fresh object identity on every render, re-rendering every subscriber
+- A parent component reading state that belongs further down the tree, forcing children to re-render when only the parent's sibling changed
+
+The fix isn't `memo` — it's putting the state at the right granularity. Split the array into per-item observables (Zustand/Jotai/Valtio atoms, MobX observable per field, or one `useState` per row when the list is the right shape for it). A change in one field should re-render exactly the components that read that field, no more.
+
+Pairs with the memo-related findings in `perf.md` — those are about *defending* against over-rendering once the shape is set; this is about choosing the shape so the defense isn't needed.
+
 ## Attribution
 
-Synthesized from Vercel Labs `react-best-practices`, with stale-state and sort traps from Anthropic React docs.
+Synthesized from Vercel Labs `react-best-practices`, with stale-state and sort traps from Anthropic React docs, and brotzky/performance-skills (one-delta-one-cell granularity).

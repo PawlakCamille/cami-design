@@ -42,9 +42,24 @@ React renders the falsy value instead of skipping. Use a ternary: `{value ? <Com
 
 Animating the SVG itself is expensive; animate a wrapper `<div>` or use CSS `transform` on the wrapper.
 
-## Animation on Layout Properties in Framer Motion
+## Animation on a Non-Composited Property
 
-`animate={{ width, height, padding, margin }}` forces layout recalculation every frame. Use `animate={{ scaleX, scaleY }}` with `transformOrigin` instead, or restructure so only `transform` and `opacity` animate.
+CSS properties fall into three tiers. Only the first runs on the compositor; the others cost main-thread work per frame.
+
+| Tier | Properties | Cost per frame |
+| --- | --- | --- |
+| Composited | `transform`, `opacity`, `filter` | GPU, off main thread |
+| Paint-triggering | `color`, `background-color`, `border-color`, `box-shadow`, `fill` | Repaint, no layout |
+| Layout-triggering | `width`, `height`, `top`, `left`, `margin`, `padding`, `inset` | Reflow every subsequent element |
+
+Flag when an animation or transition targets a property below the top tier and a composited equivalent exists. Concrete substitutions:
+
+- `width` / `height` → `transform: scaleX/Y` with `transform-origin`, or FLIP for layout-shaped motion (see `motion.md` → *FLIP*)
+- `top` / `left` / `margin` → `transform: translate`
+- Framer Motion `animate={{ width, height, padding, margin }}` → `animate={{ scaleX, scaleY }}` or restructure
+- `transition: all` → enumerate the composited properties (`transition-property: transform, opacity`)
+
+Paint-tier animations (background-color hover) are acceptable for low-frequency interactive states; flag them only when applied to many simultaneous elements (large lists, scroll-linked).
 
 ## Nondeterministic Value in Render Body Causing Hydration Mismatch
 
@@ -80,4 +95,4 @@ A `Skeleton` or placeholder sits in the same render path as the real content, bu
 
 ## Attribution
 
-Synthesized from Vercel Labs `react-best-practices`, MDN, and Anthropic React docs.
+Synthesized from Vercel Labs `react-best-practices`, MDN, Anthropic React docs, and brotzky/performance-skills (composited-property tiers).
