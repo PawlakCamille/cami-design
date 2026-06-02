@@ -47,6 +47,8 @@ The check, on every finding:
 
 Especially relevant for: utilities and hooks (`useDebounce`, `cn`, formatters), component patterns (modals, forms, tables), state management style, and file naming conventions.
 
+When a finding offers two options, both have to be real. If option B is "…or leave it with a comment," it needs a concrete trigger — a named condition under which it's the correct answer, not a way to defer the call. If you can't name the trigger, drop B and state the recommendation.
+
 ## Review Dimensions
 
 Nine dimensions. Each has a dedicated reference file with the concrete findings to flag. Load a dimension's reference when the diff touches that area; skip dimensions with no signal.
