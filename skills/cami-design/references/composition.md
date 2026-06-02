@@ -24,6 +24,12 @@ Data-loading and presentation tangled together: hard to test, hard to reuse. Spl
 
 Extract to a shared component. Two occurrences? Leave it — premature abstraction is worse than duplication.
 
+## Conditional Lookup Duplicated Across Call Sites
+
+The same `condition ? a : b` over a helper's return value — most often `condition ? t(keyA) : t(keyB)` — repeats at 3+ call sites. The branch belongs inside the helper; call sites should be a single call returning the resolved value, not a ternary over two outcomes.
+
+Same 3-occurrence threshold as the JSX-shape rule above. The duplication is decision shape rather than markup shape.
+
 ## State Scattered Across Siblings
 
 Two sibling components both manage a piece of the same UI state via prop drilling or duplicated `useState`. Lift the state into a parent provider; children read it via context.

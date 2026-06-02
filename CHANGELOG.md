@@ -6,6 +6,24 @@ Format: newest first. Group under a version heading. Include date.
 
 ---
 
+## 0.2.7 — 2026-06-02 — locale defaults, duplicated conditional lookups, calibrated A/B options
+
+Two patterns caught by a senior FE on a recent review, plus a calibration note. Meta-lesson: when a finding offers "either A or B," option B has to be a real escape hatch with a concrete trigger, not a way to dodge the call.
+
+### i18n
+
+- **`references/i18n.md` — Display Helper Called With an Empty Locale Parameter** new finding. Locale-shaped parameters (locale, country, currency, timezone) passed as `undefined` / `null` / a hardcoded default — wire from the locale source the codebase already has. Empty is valid only on genuinely unlocalizable input, not as a default escape.
+
+### Composition
+
+- **`references/composition.md` — Conditional Lookup Duplicated Across Call Sites** new finding. `condition ? a : b` over a helper's return value, repeated at 3+ sites: the branch belongs inside the helper. Parallel to the existing JSX-shape rule — decision shape rather than markup shape, same 3-occurrence threshold.
+
+### Engineer
+
+- **`cami-design-engineer/SKILL.md` — A/B option calibration** appended to *Check Codebase Precedent First*. When a finding offers two options, option B needs a named trigger; otherwise drop it and state the recommendation.
+
+---
+
 ## 0.2.6 — 2026-05-25 — composited-property tiers, duration intent classes, granular re-renders
 
 Absorption pass on `brotzky/performance-skills` (sourced from performance.dev "How's Linear so fast? A technical breakdown"). The upstream skill is architecture-heavy and mostly out of scope for a review skill; three review-shaped findings were extracted, the rest (local-first sync, IndexedDB-as-DB, service-worker precaching, bundle splitting, app-shell inlining, font preload mechanics) was deliberately not absorbed.
