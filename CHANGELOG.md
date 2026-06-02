@@ -22,6 +22,10 @@ Two patterns caught by a senior FE on a recent review, plus a calibration note. 
 
 - **`cami-design-engineer/SKILL.md` — A/B option calibration** appended to *Check Codebase Precedent First*. When a finding offers two options, option B needs a named trigger; otherwise drop it and state the recommendation.
 
+### Typing
+
+- **`references/typing.md` — Verbose Comments** new finding (from #18). Targets comments that pass the *why* test but read as AI prose — full sentences, hedging (`likely`, `should`), filler (`basically`, `just`), restating the surrounding code. Prescribes a terse style with an escape hatch for ordering or correctness invariants that need full prose.
+
 ---
 
 ## 0.2.6 — 2026-05-25 — composited-property tiers, duration intent classes, granular re-renders
