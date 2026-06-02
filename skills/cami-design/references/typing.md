@@ -22,6 +22,13 @@ New `index.ts` re-export added where the convention is direct imports.
 
 Delete. Keep only comments that explain *why* a non-obvious choice was made (a workaround, a constraint, an invariant).
 
+## Verbose Comments
+
+A comment that survives the *why* test but reads as prose — full sentences, hedging (`likely`, `should`, `probably`), filler (`basically`, `just`, `really`), restating the surrounding code. Rewrite terse: one short line, fragments OK, drop hedging, keep code symbols and error strings exact. Escape hatch: write it out fully when ordering, a multi-step constraint, or a correctness invariant would be ambiguous without conjunctions.
+
+Before: `// We're basically just memoizing this here because otherwise the component would likely re-render on every parent update, which is something we want to avoid for performance reasons.`
+After: `// Memoize: parent re-renders cascade otherwise.`
+
 ## Comment or JSDoc Describing Old Behavior
 
 The diff changed what the code does but left the comment describing the old behavior — a JSDoc that says `className` lands on the tab list when it now lands on the outer wrapper. A wrong comment is worse than no comment: it actively misleads. When a change alters behavior, update or delete every comment in range.
