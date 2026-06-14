@@ -2,7 +2,6 @@
 const fs = require("fs");
 const path = require("path");
 const os = require("os");
-const autoUpdate = require("./auto-update");
 
 const skillsDir = path.join(__dirname, "..", "skills");
 const targetDir = path.join(os.homedir(), ".claude", "skills");
@@ -46,5 +45,4 @@ if (installed.length) {
   console.log(`\n✦ cami-design already up to date`);
 }
 
-autoUpdate.install();
 console.log("");

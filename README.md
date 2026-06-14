@@ -10,17 +10,7 @@ npm install -g cami-design
 
 That's it. Five slash commands are linked into Claude Code automatically.
 
-On macOS, a daily background check keeps the package up to date so new skills land without you thinking about it. Disable any time:
-
-```bash
-# one-shot disable
-launchctl unload ~/Library/LaunchAgents/co.themobilefirst.cami-design.update.plist
-
-# opt out at install time
-CAMI_DESIGN_NO_AUTO_UPDATE=1 npm install -g cami-design
-```
-
-The check runs `npm install -g cami-design@latest --silent` once every 24h via launchd. Logs land in `/tmp/cami-design-update.log`. Updates apply to the next Claude Code session you start.
+To update, re-run `npm install -g cami-design@latest`.
 
 ## Usage
 

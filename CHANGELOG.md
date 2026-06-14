@@ -6,6 +6,17 @@ Format: newest first. Group under a version heading. Include date.
 
 ---
 
+## 0.2.8 — 2026-06-14 — remove background auto-updater
+
+Removed the launchd auto-update mechanism. Installing the package no longer registers a daily background job that runs `npm install -g cami-design@latest`. Updating is now an explicit, user-initiated `npm install -g cami-design@latest`.
+
+### Packaging
+
+- **Deleted `scripts/auto-update.js`** and the `autoUpdate` calls in `install.js` / `uninstall.js`. Silently installing a persistent launchd agent is surprising behavior for a public package; updates should be opt-in. Existing installs that already have the launchd plist can remove it with `launchctl unload ~/Library/LaunchAgents/co.themobilefirst.cami-design.update.plist && rm ~/Library/LaunchAgents/co.themobilefirst.cami-design.update.plist`.
+- **`README.md`** — dropped the auto-update section, documented manual update instead.
+
+---
+
 ## 0.2.7 — 2026-06-02 — locale defaults, duplicated conditional lookups, calibrated A/B options
 
 Two patterns caught by a senior FE on a recent review, plus a calibration note. Meta-lesson: when a finding offers "either A or B," option B has to be a real escape hatch with a concrete trigger, not a way to dodge the call.

@@ -2,7 +2,6 @@
 const fs = require("fs");
 const path = require("path");
 const os = require("os");
-const autoUpdate = require("./auto-update");
 
 const skillsDir = path.join(__dirname, "..", "skills");
 const targetDir = path.join(os.homedir(), ".claude", "skills");
@@ -36,5 +35,4 @@ if (removed.length) {
   console.log(`  Removed: ${removed.join(", ")}`);
 }
 
-autoUpdate.uninstall();
 console.log("");
