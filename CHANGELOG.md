@@ -6,6 +6,25 @@ Format: newest first. Group under a version heading. Include date.
 
 ---
 
+## 0.2.9 — 2026-06-18 — sub-component splits, React Query defaults, localStorage discipline, private-comment channel
+
+Four findings from a real-world senior FE review: three engineer-mode nits and a comment-content guard.
+
+### Composition
+
+- **`references/composition.md` — Two Components in One File, One Past ~100 Lines** new finding. A file holding 2+ components where one exceeds ~100 lines: extract it to a sibling with its own `Props` type; shared helpers move to a `lib/` neighbor.
+
+### State
+
+- **`references/state.md` — Non-default React Query Options Without a Why** new finding. Flag `staleTime`/`gcTime`/`refetch*` overrides with no comment defending them; default-first reasoning for continuously mounted hooks.
+- **`references/state.md` — localStorage Cache Over Backend-Canonical Data** new finding. Three-question test (migration, offline-first, flicker) before caching backend-canonical data; default is to drop it.
+
+### Typing
+
+- **`references/typing.md` — Private Reasoning in a Source Comment** new finding. Source comments are public; route who-asked / internal backstory / customer names to the PR description or a personal note, not inline.
+
+---
+
 ## 0.2.8 — 2026-06-14 — remove background auto-updater
 
 Removed the launchd auto-update mechanism. Installing the package no longer registers a daily background job that runs `npm install -g cami-design@latest`. Updating is now an explicit, user-initiated `npm install -g cami-design@latest`.

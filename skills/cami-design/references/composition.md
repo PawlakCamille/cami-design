@@ -24,6 +24,10 @@ Data-loading and presentation tangled together: hard to test, hard to reuse. Spl
 
 Extract to a shared component. Two occurrences? Leave it — premature abstraction is worse than duplication.
 
+## Two Components in One File, One Past ~100 Lines
+
+A file defines two or more components and any of them is over ~100 lines. Extract the large one to a sibling file: one component per file, its `Props` type colocated, and the helpers only it uses moving with it. Shared helpers (used by the parent too) go to a `lib/` neighbor, not re-exported through the child. Prefer flat siblings over a nested directory unless the project already nests.
+
 ## Conditional Lookup Duplicated Across Call Sites
 
 The same `condition ? a : b` over a helper's return value — most often `condition ? t(keyA) : t(keyB)` — repeats at 3+ call sites. The branch belongs inside the helper; call sites should be a single call returning the resolved value, not a ternary over two outcomes.

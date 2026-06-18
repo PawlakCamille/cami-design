@@ -42,6 +42,14 @@ Two `await`s in a row that don't depend on each other run one after the other. W
 
 Each component fires its own request for the same data. Use a request library that dedupes by key (React Query, SWR), or lift the fetch into a shared parent.
 
+## Non-default React Query Options Without a Why
+
+An override of `staleTime`, `gcTime`, or `refetch*` with no comment defending it. Default-first: a continuously mounted hook rarely remounts, and `refetchOnWindowFocus` already covers the multi-device case, so `staleTime: 0` is usually correct. If the override is real, a one-line comment must name the scenario it solves; otherwise it reads as a magic number a reviewer will question.
+
+## localStorage Cache Over Backend-Canonical Data
+
+A hook persists user-facing state to localStorage while also fetching the same data from the backend. Three questions: is there a pre-server user base whose values need migrating; is offline-first a product requirement; is the cold-load flicker actually disruptive. Three "no"s and you drop localStorage entirely. The flicker is usually invisible, but the seed/mirror/migration roles and their races (seed-vs-server, mirror clobbering) are always real. If one role is genuinely justified, keep that one and document it.
+
 ## Mutating Props Inside a Component
 
 `user.lastViewed = new Date()` inside a component modifies data the parent owns — bugs propagate sideways and React doesn't see the change. Treat props as read-only. If something must change, notify the parent via a callback (`onView(user.id)`) and let it update its own state.
