@@ -42,6 +42,7 @@ Every animation must answer "why does this animate?"
 | Entering — confident, decisive | ease-out | `cubic-bezier(0.16, 1, 0.3, 1)` |
 | Exiting | ease-in | `cubic-bezier(0.4, 0, 1, 1)` |
 | On-screen movement / morph | soft ease-out | `cubic-bezier(0.2, 0, 0, 1)` |
+| Drawer / sheet (iOS-like) | ease-out | `cubic-bezier(0.32, 0.72, 0, 1)` |
 | Spring (motion lib) | spring — bounce always 0 | `{ type: "spring", duration: 0.3, bounce: 0 }` |
 
 **Never use bounce or elastic easing** — they feel dated and draw attention to the animation itself rather than the content.
@@ -69,6 +70,19 @@ Every animation must answer "why does this animate?"
 
 When in doubt, default toward the shorter end — long durations on repeated actions feel like latency, not polish.
 
+### 5. When motion is wrong, fix it in this order
+
+Prefer the earliest move that resolves the problem; deleting beats tuning, and a removed animation never drops frames.
+
+1. **Delete it.** High-frequency, keyboard-triggered, or no real purpose.
+2. **Reduce it.** Shorter duration, smaller transform, fewer animated properties.
+3. **Fix the easing.** `ease-in` → `ease-out` or a strong custom curve.
+4. **Fix the origin / physicality.** Correct `transform-origin`; `scale(0)` → `scale(0.95)` + opacity.
+5. **Make it interruptible.** Keyframes → transitions, or a spring for gesture-driven motion.
+6. **Move it to the GPU.** Layout props → `transform`/`opacity`; Framer shorthand → full transform string.
+7. **Asymmetric timing.** Slow the deliberate phase, snap the response.
+8. **Polish.** Blur to mask a crossfade, stagger a group, `@starting-style` for entry.
+
 ## Enter Animations
 
 - **Split and stagger.** Don't animate one container. Break content into semantic chunks, stagger each with ~50ms delay — beyond that it feels slow, not polished. CSS-only: set `--index` on each item and use `animation-delay: calc(var(--index) * 50ms)`.
@@ -93,6 +107,13 @@ When in doubt, default toward the shorter end — long durations on repeated act
 - CSS transitions for interactive state changes (hover, press) — interruptible mid-animation.
 - Keyframes only for staged sequences that run once end-to-end.
 - **If the motion can be interrupted mid-flight, use a spring.** Easing curves break on interruption; springs resolve naturally from wherever they're stopped.
+- **WAAPI for programmatic motion that must stay smooth.** `element.animate(keyframes, opts)` gives JS control with CSS-compositor performance: hardware-accelerated, interruptible, no library. Prefer it over a rAF loop or a library spring when the motion is predetermined but fired from JS (a clip-path reveal, a one-shot transform).
+  ```js
+  element.animate(
+    [{ clipPath: 'inset(0 0 100% 0)' }, { clipPath: 'inset(0 0 0 0)' }],
+    { duration: 1000, fill: 'forwards', easing: 'cubic-bezier(0.32, 0.72, 0, 1)' }
+  );
+  ```
 
 ## Specificity
 
@@ -163,6 +184,17 @@ The animation runs on the compositor while reading as layout. View Transitions A
 - With motion lib: spring as above.
 - Without: keep both icons in DOM (one absolute-positioned), cross-fade with `cubic-bezier(0.2, 0, 0, 1)`.
 - **Toggle icons (check ↔ copy) on hover-out**: keep both in DOM through the full crossfade. Re-mounting mid-fade flashes the wrong icon for 1-2 frames.
+
+## Clip-path Reveals
+
+`clip-path: inset(t r b l)` animates a reveal by eating in from each side. It runs on the compositor and needs no extra DOM. Reach for it for:
+
+- **Reveal-on-scroll**: `inset(0 0 100% 0)` → `inset(0 0 0 0)`.
+- **Hold-to-delete fill**: a danger overlay that wipes in while the user holds.
+- **Seamless tab color transition**: duplicate the label, clip the active-color copy, animate the clip across.
+- **Before/after comparison sliders**.
+
+Drive it with WAAPI (see *Interruptibility*) when the reveal is JS-triggered or must be interruptible. Percentages in `inset()` are relative to the element's own box, so it scales with the element.
 
 ## Popover / Dropdown Origin
 
@@ -254,4 +286,4 @@ Reduced-motion fallback: see `accessibility.md` → *Motion* for the canonical s
 
 ## Attribution
 
-Synthesized from: emilkowalski/skill, jakubkrehel/make-interfaces-feel-better `animations.md`, pbakaus/impeccable `motion-design.md`, MDN web docs (`interpolate-size`, `calc-size()`), vercel-labs/web-interface-guidelines (SVG Safari fix), fixing-motion-performance skill (FLIP, scroll timelines, blur ordering), Jakubantalik/transitions-dev (close-scale subtlety, animate-inner-piece, blur+motion pairing), brotzky/performance-skills (cause-and-effect threshold, summoned/ambient/transitional duration classes, spatial-work test).
+Synthesized from: emilkowalski/skill, jakubkrehel/make-interfaces-feel-better `animations.md`, pbakaus/impeccable `motion-design.md`, MDN web docs (`interpolate-size`, `calc-size()`), vercel-labs/web-interface-guidelines (SVG Safari fix), fixing-motion-performance skill (FLIP, scroll timelines, blur ordering), Jakubantalik/transitions-dev (close-scale subtlety, animate-inner-piece, blur+motion pairing), brotzky/performance-skills (cause-and-effect threshold, summoned/ambient/transitional duration classes, spatial-work test), emilkowalski/review-animations (clip-path reveals, WAAPI, iOS drawer curve, remedial fix order).

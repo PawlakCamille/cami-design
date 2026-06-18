@@ -134,6 +134,10 @@ This makes toolbars and nav feel significantly faster without removing the prote
 - **`transition: none` while dragging.** Any easing/spring on the dragged element makes the cursor and the element drift apart — scrubbing must be 1:1. Restore the transition only on programmatic, non-drag updates (drop snap, cancel return).
 - **Drag hit area = the whole section, not just the handle or hovered region.** Unless competing interactions live on the same surface, the row accepts drag from anywhere.
 - **Don't shift layout when drag becomes available.** Line height, padding, and alignment must match the non-draggable version — the affordance belongs in cursor and handle, not in the layout.
+- **Dismiss on velocity, not distance.** Compute flick speed (`Math.abs(distance) / elapsedMs`) and release past ~0.11 px/ms even if the drag never crossed a distance threshold. A fast flick should be enough; a fixed travel distance makes the gesture feel heavy.
+- **Damp past the boundary.** Dragging beyond a natural edge should move less the further it goes (rising resistance), not hit an invisible wall. Friction reads as physical; a hard stop reads as broken.
+- **Capture the pointer once dragging starts** (`setPointerCapture`), so the gesture keeps tracking when the pointer leaves the element's bounds. Without it a fast drag drops the moment the cursor exits.
+- **Ignore extra touch points mid-drag** (`if (isDragging) return` on new pointers). A second finger landing during a drag otherwise jumps the element.
 
 ## Haptics (mobile/native)
 
@@ -171,4 +175,4 @@ See `forms.md` for input attributes, submit behavior, error placement, placehold
 
 ## Attribution
 
-Synthesized from: pbakaus/impeccable `interaction-design.md`, jakubkrehel/make-interfaces-feel-better, emilkowalski/skill, vercel-labs/web-interface-guidelines (mobile/touch, loading timing).
+Synthesized from: pbakaus/impeccable `interaction-design.md`, jakubkrehel/make-interfaces-feel-better, emilkowalski/skill, emilkowalski/review-animations (gesture physics: velocity dismissal, boundary damping, pointer capture, multi-touch protection), vercel-labs/web-interface-guidelines (mobile/touch, loading timing).
