@@ -29,6 +29,10 @@ A comment that survives the *why* test but reads as prose — full sentences, he
 Before: `// We're basically just memoizing this here because otherwise the component would likely re-render on every parent update, which is something we want to avoid for performance reasons.`
 After: `// Memoize: parent re-renders cascade otherwise.`
 
+## Private Reasoning in a Source Comment
+
+A comment carrying content that belongs in another channel: who asked for the change, internal backstory, a customer's name, anything you would not put on a public diff. Source comments are public and factual. Cut to the public decision and route the private context to the PR description, the commit body, or a personal note. Test: if a line would be out of place on an open-source PR, it is in the wrong place here too.
+
 ## Comment or JSDoc Describing Old Behavior
 
 The diff changed what the code does but left the comment describing the old behavior — a JSDoc that says `className` lands on the tab list when it now lands on the outer wrapper. A wrong comment is worse than no comment: it actively misleads. When a change alters behavior, update or delete every comment in range.
