@@ -6,6 +6,23 @@ Format: newest first. Group under a version heading. Include date.
 
 ---
 
+## 0.2.10 — 2026-06-18 — gesture physics, clip-path reveals, WAAPI, remedial fix order
+
+Targeted absorption from `emilkowalski/review-animations` (animations.dev, repackaged as a review skill). Most of its catalog was already covered by the earlier `emilkowalski/skill` pass; only the genuinely new material was taken. Deliberately *not* absorbed: its wider bounce stance (subtle bounce for drag-to-dismiss / playful). Our crisp-by-default `bounce: 0` rule stands, with bounce reserved for explicit celebration moments.
+
+### Interaction
+
+- **`references/interaction.md` — Drag & Drop** four gesture-physics findings added: dismiss on velocity not distance (flick > ~0.11 px/ms), boundary damping over hard stops, pointer capture once dragging starts, and multi-touch protection mid-drag.
+
+### Motion
+
+- **`references/motion.md` — Clip-path Reveals** new section. `clip-path: inset()` for reveal-on-scroll, hold-to-delete fills, seamless tab color transitions, and comparison sliders; compositor-run, no extra DOM.
+- **`references/motion.md` — WAAPI** added to *Interruptibility*. JS control with CSS-compositor performance for predetermined-but-JS-fired motion; an alternative to rAF loops and library springs.
+- **`references/motion.md` — iOS drawer curve** `cubic-bezier(0.32, 0.72, 0, 1)` added to the easing table for drawers/sheets.
+- **`references/motion.md` — remedial fix order** new step in the decision framework: when motion is wrong, prefer delete > reduce > fix easing > fix origin > interruptible > GPU > asymmetric > polish.
+
+---
+
 ## 0.2.9 — 2026-06-18 — sub-component splits, React Query defaults, localStorage discipline, private-comment channel
 
 Four findings from a real-world senior FE review: three engineer-mode nits and a comment-content guard.
