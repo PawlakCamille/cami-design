@@ -67,6 +67,10 @@ Nine dimensions. Each has a dedicated reference file with the concrete findings 
 
 Each finding goes into the `Before | After | Why` table format defined in **Output**.
 
+### Always check, regardless of dimension signal
+
+- **Comment hygiene.** Scan every added or changed comment in the diff and flag any that restate the code, run verbose, or carry private/internal content (rules in `typing.md`). Run this even when the diff shows no other type or naming signal, so the check never depends on `typing.md` being loaded for another reason. It is also exempt from the re-review nit suppression below: verbose comments are most often introduced *during* fixes, exactly when a second pass would otherwise silence them.
+
 ## Output
 
 ### Severity scale
@@ -109,7 +113,15 @@ Inline code snippets go inside the After cell — never break out of the table.
 
 Always close with a **Test coverage** line, whatever the severity counts: enumerate the testable surfaces the diff introduced — hooks, utilities, pure functions with branching — by name and `file:line`, e.g. `formatPrice (3 branches), useFilteredList edge cases`. Don't write the tests; the named list is the deliverable for the tech team. "No tests written" can be acceptable for the PR — an empty enumeration is not.
 
-Then close with the walkthrough offer and (after fixes) the Verify pass — see parent skill `Review Output Format → Closing / Walkthrough mode / Verify pass`.
+### Apply mode
+
+When the user pre-authorizes applying, or asks to apply after the review, don't walk through item by item. Use judgement: apply the findings worth applying, not necessarily all of them. Leave a nit when the fix costs more than it's worth, and state which you skipped and why. Apply code-level findings directly.
+
+**Isolate any finding with user-visible impact** (layout, spacing, color, motion, copy the user reads) and get explicit sign-off before applying it. This division is the contract of a *design* engineer review: the reviewer is trusted on code quality; the designer decides anything visual. When in doubt whether a change is visible, treat it as visible and ask.
+
+### Closing
+
+Then close with the apply offer (or Apply mode if pre-authorized), the walkthrough offer, and (after fixes) the Verify pass. See parent skill `Review Output Format → Closing / Walkthrough mode / Verify pass`.
 
 ## NEVER
 
