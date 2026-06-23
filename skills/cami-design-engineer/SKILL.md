@@ -115,13 +115,13 @@ Always close with a **Test coverage** line, whatever the severity counts: enumer
 
 ### Apply mode
 
-When the user pre-authorizes applying, or asks to apply after the review, don't walk through item by item. Use judgement: apply the findings worth applying, not necessarily all of them. Leave a nit when the fix costs more than it's worth, and state which you skipped and why. Apply code-level findings directly.
+**After presenting the findings, default to applying them** unless the user asked for a report only, or chose walkthrough. Don't walk through item by item. Use judgement: apply the findings worth applying, not necessarily all of them. Leave a nit when the fix costs more than it's worth, and state which you skipped and why. Apply code-level findings directly.
 
 **Isolate any finding with user-visible impact** (layout, spacing, color, motion, copy the user reads) and get explicit sign-off before applying it. This division is the contract of a *design* engineer review: the reviewer is trusted on code quality; the designer decides anything visual. When in doubt whether a change is visible, treat it as visible and ask.
 
 ### Closing
 
-Then close with the apply offer (or Apply mode if pre-authorized), the walkthrough offer, and (after fixes) the Verify pass. See parent skill `Review Output Format → Closing / Walkthrough mode / Verify pass`.
+Apply mode is the default close: apply the non-visual findings, then list any visual ones awaiting sign-off. Offer Walkthrough instead when the user wants to decide item by item, and run the Verify pass after fixes land. See parent skill `Review Output Format → Closing / Walkthrough mode / Verify pass`.
 
 ## NEVER
 
