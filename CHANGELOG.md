@@ -6,6 +6,17 @@ Format: newest first. Group under a version heading. Include date.
 
 ---
 
+## 0.2.11 — 2026-06-23 — comment hygiene always-on, Apply mode
+
+Two engineer-mode wiring fixes. Both address findings that were defined but didn't reliably fire.
+
+### Engineer
+
+- **`cami-design-engineer/SKILL.md` — comment hygiene promoted to an always-on check.** The verbose/private/code-restating comment rules live in `typing.md`, which only loaded when the diff showed type/naming signal, so comment issues slipped through. Added an *Always check, regardless of dimension signal* item that runs comment hygiene unconditionally and exempts it from re-review nit suppression (verbose comments are usually introduced during fixes, exactly when the second pass silences new nits).
+- **`cami-design-engineer/SKILL.md` — Apply mode** new closing mode. When the user pre-authorizes applying, the reviewer applies the findings worth applying by judgement (not necessarily all), and isolates any user-visible change for explicit sign-off. Encodes the design-engineer contract: trusted on code, defers to the human on anything visual. Complements the existing Walkthrough and Verify modes.
+
+---
+
 ## 0.2.10 — 2026-06-18 — gesture physics, clip-path reveals, WAAPI, remedial fix order
 
 Targeted absorption from `emilkowalski/review-animations` (animations.dev, repackaged as a review skill). Most of its catalog was already covered by the earlier `emilkowalski/skill` pass; only the genuinely new material was taken. Deliberately *not* absorbed: its wider bounce stance (subtle bounce for drag-to-dismiss / playful). Our crisp-by-default `bounce: 0` rule stands, with bounce reserved for explicit celebration moments.
