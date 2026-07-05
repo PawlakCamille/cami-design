@@ -9,7 +9,7 @@ argument-hint: "[target]"
 
 ## Required reading
 
-Before proceeding, load `../cami-design/SKILL.md` and apply its **Context Gathering Protocol**, **Design System Protocol**, **Severity scale**, and **Review Output Format**. Then load `../cami-design/references/motion.md` — the **Animation Decision Framework** lives there and is the canonical source for the rules below.
+Before proceeding, load `../cami-design/references/review-protocol.md` for the shared **Context Gathering Protocol**, **Design System Protocol**, severity scale, and **Review Output Format**. Then load `../cami-design/references/motion.md` — the **Animation Decision Framework** lives there and is the canonical source for the rules below.
 
 ---
 
@@ -65,9 +65,9 @@ Reduced-motion fallback is mandatory — see `../cami-design/references/accessib
 
 ## Output
 
-Findings as tables with columns `# | Severity | Before | After | Why`, grouped by dimension. Severity is 🔴 (Important) or 🟡 (Nit) — see the parent skill's `Review Output Format → Severity scale` for calibration. Skip dimensions with no issues.
+Findings as tables with columns `# | Severity | Before | After | Why`, grouped by dimension. Severity is 🔴 (Important) or 🟡 (Nit); see `../cami-design/references/review-protocol.md` → Severity scale for calibration. Skip dimensions with no issues.
 
-Close with the walkthrough offer and (after fixes) the Verify pass — see parent skill `Review Output Format → Closing / Walkthrough mode / Verify pass`.
+Close with the walkthrough offer and (after fixes) the Verify pass. See `../cami-design/references/review-protocol.md` → Closing / Walkthrough mode / Verify pass.
 
 ## References
 

@@ -9,7 +9,7 @@ argument-hint: "[target]"
 
 ## Required reading
 
-Before proceeding, load `../cami-design/SKILL.md` and apply its **Context Gathering Protocol**, **Design System Protocol**, **Severity scale**, and **Review Output Format**. Loading is not a recursive `/cami-design` invocation — just read the shared rules, then continue here.
+Before proceeding, load `../cami-design/references/review-protocol.md` for the shared **Context Gathering Protocol**, **Design System Protocol**, severity scale, and **Review Output Format**, then continue here.
 
 ---
 
@@ -75,7 +75,7 @@ Each finding goes into the `Before | After | Why` table format defined in **Outp
 
 ### Severity scale
 
-See parent skill `Review Output Format → Severity scale` for the full table and calibration rules. Engineer mode uses all three symbols:
+See `../cami-design/references/review-protocol.md` → Severity scale for the full table and calibration rules. Engineer mode uses all three symbols:
 
 - 🔴 Important — bug, broken a11y, DS violation that ships inconsistent UI. Block handoff.
 - 🟡 Nit — craft and maintainability. Cap at 5 per output section; `+N similar` for the rest.
@@ -99,7 +99,7 @@ Open with a one-line tally:
 
 If nothing is Important, lead with `No blocking issues for handoff.` before the tally. When the audit is clean of Important findings, you may also add a short `## Verified` block listing 3–5 conventions or invariants that were checked and held — Conventional Commits, DS tokens, React 19 idioms, no AI attribution. For a handoff review, naming what was checked and passed reassures the receiving team. Keep it factual, not a victory lap.
 
-Then group findings using the lettered-section format from the parent skill. Title each section from what was actually found, not from the dimension name.
+Then group findings using the lettered-section format from `review-protocol.md`. Title each section from what was actually found, not from the dimension name.
 
 ```
 ## A — Boolean prop sprawl on <Tabs>
@@ -121,7 +121,7 @@ Always close with a **Test coverage** line, whatever the severity counts: enumer
 
 ### Closing
 
-Apply mode is the default close: apply the non-visual findings, then list any visual ones awaiting sign-off. Offer Walkthrough instead when the user wants to decide item by item, and run the Verify pass after fixes land. See parent skill `Review Output Format → Closing / Walkthrough mode / Verify pass`.
+Apply mode is the default close: apply the non-visual findings, then list any visual ones awaiting sign-off. Offer Walkthrough instead when the user wants to decide item by item, and run the Verify pass after fixes land. See `../cami-design/references/review-protocol.md` → Closing / Walkthrough mode / Verify pass.
 
 ## NEVER
 
