@@ -9,7 +9,7 @@ argument-hint: "[target]"
 
 ## Required reading
 
-Before proceeding, load `../cami-design/SKILL.md` and apply its **Context Gathering Protocol**, **Design System Protocol**, **Severity scale**, and **Review Output Format**. For copy work you also need:
+Before proceeding, load `../cami-design/references/review-protocol.md` for the shared **Context Gathering Protocol**, **Design System Protocol**, severity scale, and **Review Output Format**. For copy work you also need:
 
 - **Voice / tone**: how does the product speak? (formal, friendly, sharp, playful, neutral)
 - **Audience literacy**: technical users? consumers? mixed?
@@ -85,9 +85,9 @@ Concrete before/after tables (error messages, empty states, CTAs), the 6 Princip
 
 ## Output
 
-Findings as tables with columns `# | Severity | Before | After | Why`, grouped by dimension. Severity is 🔴 (Important) or 🟡 (Nit) — see the parent skill's `Review Output Format → Severity scale` for calibration. Cite the specific file and component when possible.
+Findings as tables with columns `# | Severity | Before | After | Why`, grouped by dimension. Severity is 🔴 (Important) or 🟡 (Nit); see `../cami-design/references/review-protocol.md` → Severity scale for calibration. Cite the specific file and component when possible.
 
-Close with the walkthrough offer and (after fixes) the Verify pass — see parent skill `Review Output Format → Closing / Walkthrough mode / Verify pass`.
+Close with the walkthrough offer and (after fixes) the Verify pass. See `../cami-design/references/review-protocol.md` → Closing / Walkthrough mode / Verify pass.
 
 ## References
 

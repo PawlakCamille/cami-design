@@ -142,6 +142,10 @@ Be strict on must_not. Be reasonable on must_mention and must_suggest — paraph
 async function run() {
   const corpus = JSON.parse(fs.readFileSync(EVALS_PATH, "utf8"));
   const parentSkill = loadParentSkill();
+  // Shared protocol (severity scale, output format, protocols) was extracted
+  // from the parent SKILL.md into this reference; every mode loads it, so the
+  // eval must include it or it tests a skill missing its own output rules.
+  const reviewProtocol = fs.readFileSync(path.join(REFERENCES_PATH, "review-protocol.md"), "utf8");
 
   let cases = corpus.evals;
   if (filterMode) cases = cases.filter((c) => c.mode === filterMode);
@@ -165,6 +169,7 @@ async function run() {
     const systemPrompt = [
       "You are a design expert using the following skill:\n\n",
       parentSkill,
+      `\n\n---\n\n${reviewProtocol}`,
       modeSkill ? `\n\n---\nActive mode: ${evalCase.mode}\n\n${modeSkill}` : "",
       references,
     ].join("");

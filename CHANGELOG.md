@@ -6,6 +6,16 @@ Format: newest first. Group under a version heading. Include date.
 
 ---
 
+## 0.3.1 — 2026-06-23 — extract shared review protocol (audit W6)
+
+Structural refactor, no behavior change. The **Context Gathering Protocol**, **Design System Protocol**, and **Review Output Format** (severity scale, structure, closing, walkthrough, verify) moved out of the parent `cami-design/SKILL.md` into `references/review-protocol.md`.
+
+- **Why:** every sub-skill loaded the full 284-line parent just to inherit these rules, dragging ~110 lines of run-mode-only content (Full Audit Contract, Modes table, Meta) into every invocation. Sub-skills now load the 113-line protocol reference instead. Parent SKILL.md drops 284 → 175 lines; the per-invocation read-mode surface drops by roughly 40%.
+- **Rewired:** all four sub-skills' required reading and their severity/closing cross-references now point at `references/review-protocol.md`; the parent keeps run-mode content and points to the protocol for the shared rules. The "recursive invocation" caveat is gone since sub-skills now load a plain reference, not a skill.
+- **Eval harness:** `scripts/eval.js` now injects `review-protocol.md` into every case's system prompt, since the shared rules no longer live in the parent SKILL.md it already loaded. Verified structurally: an assembled sub-skill prompt still contains the severity scale, both protocols, and the walkthrough/verify rules.
+
+---
+
 ## 0.3.0 — 2026-06-23 — audit response: drift fixes, eval harness, install robustness, hygiene
 
 Response to an independent audit of the skill. Fixes verified defects rather than adding content. (One audit item, extracting the shared review protocol out of the parent SKILL.md to cut the per-invocation read-mode cost, is deferred to its own PR since it restructures the parent.)
