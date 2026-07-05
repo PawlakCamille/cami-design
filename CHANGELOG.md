@@ -6,6 +6,38 @@ Format: newest first. Group under a version heading. Include date.
 
 ---
 
+## 0.3.0 — 2026-06-23 — audit response: drift fixes, eval harness, install robustness, hygiene
+
+Response to an independent audit of the skill. Fixes verified defects rather than adding content. (One audit item, extracting the shared review protocol out of the parent SKILL.md to cut the per-invocation read-mode cost, is deferred to its own PR since it restructures the parent.)
+
+### Content drift (contradictions between sub-skill checklists and canonical references)
+
+- **`cami-design-interaction/SKILL.md` stagger delay** was `~100ms`, contradicting `motion.md`'s canonical `~50ms`. Replaced the number with a pointer to `motion.md` → Enter Animations so the value lives in one place.
+- **`references/copy-patterns.md` Principle 4 ("Human")** used `"Oops, something went wrong"` as the good example while `anti-patterns.md` bans that exact string as a vague AI-tell. Rewrote the example to be warm *and* specific, with a note pointing at the ban.
+
+### Eval harness
+
+- **`scripts/eval.js` now loads reference files.** The system prompt was parent + mode SKILL.md only, so cases targeting a reference (nearly all content since 0.2.0) measured base-model knowledge, not the skill. Cases now declare `references: [...]` and the runner injects them.
+- Model is configurable (`--model` / `CAMI_EVAL_MODEL`, default a current model) instead of a hardcoded id that ages out; `max_tokens` raised so the mandated table format isn't truncated.
+- **`evals/evals.json`** version aligned to package; `references` added to every case; six cases added for previously-uncovered references (concentric radius, scroll edge mask, typography tabular figures, cross-file completeness, i18n, security) plus a drift-guard case for the "Oops" error string.
+
+### Install robustness
+
+- **`scripts/install.js`** now uses `lstatSync` and self-heals broken/stale symlinks instead of crashing with `EEXIST` on reinstall after an uninstall (npm 7+ does not run `preuninstall`, so dangling links were common). Real files/dirs are still backed up to `.bak`.
+
+### Public-repo hygiene
+
+- Scrubbed employer-internal identifiers from published references: `references/i18n.md` (`desktop_fr.json`, `useLocalizedDayjs`) and `references/interaction.md` (internal DS token scale in the destructive-row snippet) genericized.
+
+### Frontmatter, references, housekeeping
+
+- **`cami-design/SKILL.md`** parent: `disable-model-invocation: true` (parent had measured 0% auto-trigger recall with sub-skills installed; it is an explicit-invocation skill), and run mode now handles the `argument-hint` it advertises (`/cami-design <sub-skill>` delegates).
+- **`references/craft.md`** given an operational load trigger (Verify pass / declining findings / re-centering) instead of a non-firing one.
+- Removed the empty placeholder libraries (`palettes.json`, `font-pairings.json`) and their table rows; re-add when populated.
+- **CHANGELOG** repaired: added the missing `## 0.2.5` heading. For the record, versions 0.1.1–0.1.5, 0.1.7–0.1.9, and 0.1.14–0.1.16 predate consistent logging and have no entries.
+
+---
+
 ## 0.2.11 — 2026-06-23 — comment hygiene always-on, Apply mode
 
 Two engineer-mode wiring fixes. Both address findings that were defined but didn't reliably fire.
@@ -106,7 +138,7 @@ Absorption pass on `brotzky/performance-skills` (sourced from performance.dev "H
 
 ---
 
-
+## 0.2.5 — 2026-05-22 — small absorptions from external rules dumps
 
 Small absorptions from two external rules dumps (a portfolio project and an audit of past sessions), filtered against what was already covered and what was project-specific. Net: 12 new bullets across 4 references, no new files, no new sections.
 

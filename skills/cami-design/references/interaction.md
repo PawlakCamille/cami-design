@@ -86,9 +86,9 @@ See `accessibility.md` → *Touch* for the canonical 40×40 rule and pseudo-elem
   ```css
   /* Parent row */ .group/row
   /* Button */ opacity-0 group-hover/row:opacity-100 focus-visible:opacity-100
-  /* Icon  */ text-primary-40 group-hover/btn:text-danger
+  /* Icon  */ text-neutral-400 group-hover/btn:text-red-600
   ```
-- **Armed vs. gated state in color, not just opacity.** A destructive button that's gated behind a confirmation step should be muted (danger-40 or primary-40) until the condition is met — then switch to full danger. Opacity alone doesn't communicate state change clearly enough.
+- **Armed vs. gated state in color, not just opacity.** A destructive button that's gated behind a confirmation step should be muted (a low-emphasis neutral or muted-danger token) until the condition is met, then switch to full danger. Opacity alone doesn't communicate state change clearly enough.
 - **Match transition durations on paired properties.** When a hover state changes multiple properties together (background + icon color, opacity + scale), all must share the same duration. One transitioning while the other snaps = desync that reads as broken.
 
 ## Blur Trick

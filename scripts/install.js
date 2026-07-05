@@ -22,15 +22,35 @@ for (const skill of SKILLS) {
   const src = path.join(skillsDir, skill);
   const dest = path.join(targetDir, skill);
 
-  if (fs.existsSync(dest)) {
-    const stat = fs.lstatSync(dest);
-    if (stat.isSymbolicLink() && fs.readlinkSync(dest) === src) {
-      skipped.push(skill);
-      continue;
+  // lstatSync (not existsSync) so we detect broken symlinks too: existsSync
+  // follows the link and returns false for a dangling one, which used to fall
+  // through to symlinkSync and throw EEXIST on reinstall after an uninstall.
+  let linkStat = null;
+  try {
+    linkStat = fs.lstatSync(dest);
+  } catch {
+    linkStat = null;
+  }
+
+  if (linkStat) {
+    if (linkStat.isSymbolicLink()) {
+      let current = null;
+      try {
+        current = fs.readlinkSync(dest);
+      } catch {
+        current = null;
+      }
+      if (current === src) {
+        skipped.push(skill);
+        continue;
+      }
+      // Symlink (possibly broken, or pointing elsewhere): replace it.
+      fs.unlinkSync(dest);
+    } else {
+      // A real file/dir lives here: back it up before linking.
+      fs.renameSync(dest, `${dest}.bak`);
+      console.log(`  ↩  Backed up existing ${skill} → ${skill}.bak`);
     }
-    // Already exists but points elsewhere — back it up
-    fs.renameSync(dest, `${dest}.bak`);
-    console.log(`  ↩  Backed up existing ${skill} → ${skill}.bak`);
   }
 
   fs.symlinkSync(src, dest);

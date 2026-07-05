@@ -41,7 +41,7 @@ The Animation Decision Framework — "should this animate? what's the purpose? w
 - Stacked clickable rows (sidebar, dropdown, settings sub-nav) use the cursor-continuity pattern — see `../cami-design/references/interaction.md` → *Pointer Continuity in Stacked Rows*
 
 ### Enter / Exit
-- Split and stagger enter animations (~100ms delay per chunk)
+- Split and stagger enter animations (see `motion.md` → Enter Animations for the delay value)
 - Exits are subtler than enters (small `translateY`, not full-height)
 - Exits are faster than enters — use ~75% of the enter duration
 - `initial={false}` on `AnimatePresence` to skip page-load animations
