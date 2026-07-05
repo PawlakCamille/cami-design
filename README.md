@@ -22,7 +22,7 @@ To update, re-run `npm install -g cami-design@latest`.
 /cami-design-engineer      — code review for tech-team handoff (composition, DS fidelity, state, a11y, perf, types)
 ```
 
-Or let the skills auto-trigger — the frontmatter descriptions are tuned to activate on related work.
+The four sub-skills also auto-trigger on related work (their frontmatter descriptions are tuned for it). `/cami-design` itself is explicit-only — with the sub-skills installed, a design query routes to the matching one.
 
 The first three modes audit visual design. `cami-design-engineer` is the code-side handoff pass — run it at the end of a project before passing the codebase to a tech team. A full `/cami-design` audit will offer it at the end.
 
@@ -46,13 +46,14 @@ The skill reads it automatically on each invocation.
 skills/
 ├── cami-design/              # parent: shared rules (Roles: read vs run mode)
 │   ├── SKILL.md
-│   ├── references/           # deep material loaded on demand
+│   ├── references/           # deep material loaded on demand (partial list)
+│   │   ├── review-protocol.md   # shared: context, DS rules, severity, output format
 │   │   ├── typography.md  color.md  spacing-layout.md
 │   │   ├── motion.md  interaction.md  forms.md
 │   │   ├── accessibility.md  anti-patterns.md  craft.md
 │   │   └── composition.md  state.md  perf.md
 │   │       typing.md  a11y-implementation.md  ds-fidelity.md
-│   └── libraries/            # easing-curves.json (active); palettes/font-pairings (placeholder)
+│   └── libraries/            # easing-curves.json
 ├── cami-design-layout/       # visual: alignment, sizing, hierarchy
 ├── cami-design-interaction/  # visual: hover, press, motion
 ├── cami-design-copy/         # visual: labels, errors, tone

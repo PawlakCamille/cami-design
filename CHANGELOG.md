@@ -6,6 +6,15 @@ Format: newest first. Group under a version heading. Include date.
 
 ---
 
+## 0.3.2 — 2026-06-23 — public-face polish
+
+Cleanup for the public repo. No skill-content changes.
+
+- **CHANGELOG hygiene:** the 0.3.0 entry named the internal identifiers it announced scrubbing, and the 0.2.8 entry printed an employer reverse-DNS agent label. Both genericized; the 0.2.8 uninstall command now uses a glob that still matches the real plist without naming the domain.
+- **README accuracy:** dropped the deleted placeholder libraries from the structure tree, added `review-protocol.md`, and corrected the invocation note (the four sub-skills auto-trigger; `/cami-design` is explicit-only since it carries `disable-model-invocation`).
+
+---
+
 ## 0.3.1 — 2026-06-23 — extract shared review protocol (audit W6)
 
 Structural refactor, no behavior change. The **Context Gathering Protocol**, **Design System Protocol**, and **Review Output Format** (severity scale, structure, closing, walkthrough, verify) moved out of the parent `cami-design/SKILL.md` into `references/review-protocol.md`.
@@ -37,7 +46,7 @@ Response to an independent audit of the skill. Fixes verified defects rather tha
 
 ### Public-repo hygiene
 
-- Scrubbed employer-internal identifiers from published references: `references/i18n.md` (`desktop_fr.json`, `useLocalizedDayjs`) and `references/interaction.md` (internal DS token scale in the destructive-row snippet) genericized.
+- Scrubbed employer-internal identifiers from two published references: an internal locale filename and date hook in `references/i18n.md`, and an internal DS token scale in `references/interaction.md`'s destructive-row snippet. All genericized.
 
 ### Frontmatter, references, housekeeping
 
@@ -101,7 +110,7 @@ Removed the launchd auto-update mechanism. Installing the package no longer regi
 
 ### Packaging
 
-- **Deleted `scripts/auto-update.js`** and the `autoUpdate` calls in `install.js` / `uninstall.js`. Silently installing a persistent launchd agent is surprising behavior for a public package; updates should be opt-in. Existing installs that already have the launchd plist can remove it with `launchctl unload ~/Library/LaunchAgents/co.themobilefirst.cami-design.update.plist && rm ~/Library/LaunchAgents/co.themobilefirst.cami-design.update.plist`.
+- **Deleted `scripts/auto-update.js`** and the `autoUpdate` calls in `install.js` / `uninstall.js`. Silently installing a persistent launchd agent is surprising behavior for a public package; updates should be opt-in. Existing installs that already have the launchd plist can remove it with `launchctl unload ~/Library/LaunchAgents/*cami-design*update.plist && rm ~/Library/LaunchAgents/*cami-design*update.plist` (the agent label used a reverse-DNS prefix).
 - **`README.md`** — dropped the auto-update section, documented manual update instead.
 
 ---
