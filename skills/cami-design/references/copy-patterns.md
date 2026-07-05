@@ -35,7 +35,7 @@ Every piece of copy should pass this checklist:
 1. **Specific** — "Enter email" not "Enter value"
 2. **Concise** — cut every word that doesn't add meaning (but never sacrifice clarity for brevity)
 3. **Active** — "Save changes" not "Changes will be saved"
-4. **Human** — "Oops, something went wrong" not "System error encountered"
+4. **Human** — "We couldn't save your changes" not "System error encountered" (warm *and* specific; avoid the vague "Oops, something went wrong", which `anti-patterns.md` bans)
 5. **Helpful** — tell users what to do, not just what happened
 6. **Consistent** — pick one term per concept and never vary it (don't alternate between "workspace" and "project" for variety)
 

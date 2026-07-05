@@ -30,6 +30,8 @@ const filterMode = rawMode
   : null;
 const filterId = argValue(args, "--id");
 const verbose = args.includes("--verbose");
+// Configurable so the corpus isn't pinned to a model id that ages out.
+const MODEL = argValue(args, "--model") || process.env.CAMI_EVAL_MODEL || "claude-sonnet-5";
 
 function argValue(args, flag) {
   const idx = args.indexOf(flag);
@@ -48,12 +50,30 @@ function loadParentSkill() {
   return fs.readFileSync(p, "utf8");
 }
 
+// Most of the skill's depth lives in references, not the SKILL.md bodies.
+// A case that targets a reference must load it, or the eval measures only
+// what the base model already knew.
+const REFERENCES_PATH = path.join(SKILLS_PATH, "cami-design", "references");
+function loadReferences(list) {
+  if (!Array.isArray(list) || list.length === 0) return "";
+  return list
+    .map((name) => {
+      const p = path.join(REFERENCES_PATH, name);
+      if (!fs.existsSync(p)) {
+        console.warn(`     ⚠  reference not found: ${name}`);
+        return "";
+      }
+      return `\n\n--- reference: ${name} ---\n\n${fs.readFileSync(p, "utf8")}`;
+    })
+    .join("");
+}
+
 // --- Anthropic API call ---
-function callClaude(systemPrompt, userMessage) {
+function callClaude(systemPrompt, userMessage, maxTokens = 4096) {
   return new Promise((resolve, reject) => {
     const body = JSON.stringify({
-      model: "claude-opus-4-5",
-      max_tokens: 1024,
+      model: MODEL,
+      max_tokens: maxTokens,
       system: systemPrompt,
       messages: [{ role: "user", content: userMessage }],
     });
@@ -141,10 +161,12 @@ async function run() {
     process.stdout.write(`  [${evalCase.id}] ${evalCase.description}... `);
 
     const modeSkill = loadSkill(evalCase.mode);
+    const references = loadReferences(evalCase.references);
     const systemPrompt = [
       "You are a design expert using the following skill:\n\n",
       parentSkill,
       modeSkill ? `\n\n---\nActive mode: ${evalCase.mode}\n\n${modeSkill}` : "",
+      references,
     ].join("");
 
     try {

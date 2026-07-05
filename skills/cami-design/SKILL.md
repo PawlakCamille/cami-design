@@ -2,6 +2,7 @@
 name: cami-design
 description: UI audit before ship. Spots what's off, routes to layout, interaction, copy, or engineer. Use when reviewing a screen, a flow, or polishing a near-done project.
 user-invocable: true
+disable-model-invocation: true
 argument-hint: "[cami-design-layout|cami-design-interaction|cami-design-copy|cami-design-engineer]"
 ---
 
@@ -16,9 +17,11 @@ License: Apache 2.0 — see `LICENSE`. Attribution: see `NOTICE.md`.
 This file plays two roles. Treat them as separate so they don't recurse into each other.
 
 - **Read mode** (always). Every sub-skill loads this file to inherit the **Context Gathering Protocol**, **Design System Protocol**, **Severity scale**, **Review Output Format**, and **Walkthrough / Verify** rules. Loading does not trigger an audit — it's just shared rules.
-- **Run mode** (only when invoked bare as `/cami-design`). The skill runs a full audit per the **Full Audit Contract** below.
+- **Run mode** (only when invoked bare as `/cami-design`). The skill runs a full audit per the **Full Audit Contract** below. If invoked with a sub-skill name as its argument (e.g. `/cami-design cami-design-layout`), skip the full audit and run that sub-skill directly instead.
 
 When a sub-skill says "load `../cami-design/SKILL.md`," that's read mode — read the rules, then continue with the sub-skill. Do not start a new full audit.
+
+This skill is invoked explicitly (`/cami-design` or a sub-skill), not auto-selected by the model: with the sub-skills installed, a design query routes to the matching sibling, so autonomous invocation of the parent is disabled.
 
 ## Design System Protocol
 
@@ -154,7 +157,7 @@ Loaded on demand — do not read proactively. Consult when a mode instructs you 
 | Copy patterns | `references/copy-patterns.md` | Before/after tables (errors, empty states, CTAs), 6 Principles, NEVER list — load for any copy work |
 | Accessibility | `references/accessibility.md` | Contrast, focus, keyboard, screen readers — canonical home for hit areas, reduced-motion fallback, contrast thresholds |
 | Anti-patterns | `references/anti-patterns.md` | "AI slop" tells in visuals and copy, generic aesthetics to avoid |
-| Craft | `references/craft.md` | Taste philosophy, why details compound |
+| Craft | `references/craft.md` | During a Verify pass, when declining or deprioritizing a finding, or when a review needs to re-center on intent. The deep version of Core Principles |
 
 ### Engineer-mode references (code handoff)
 
@@ -177,8 +180,6 @@ Structured data — consult when you need concrete values. Markdown references a
 | Library | File | Status |
 | --- | --- | --- |
 | Easing curves | `libraries/easing-curves.json` | Active — canonical values for `references/motion.md` |
-| Color palettes | `libraries/palettes.json` | Placeholder — populated as palettes get validated in real work |
-| Font pairings | `libraries/font-pairings.json` | Placeholder — populated as pairings get validated in real work |
 
 ---
 

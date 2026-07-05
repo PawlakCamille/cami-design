@@ -1,13 +1,14 @@
 {
   "skill_name": "cami-design",
-  "version": "0.1.0",
-  "description": "Eval corpus for cami-design. Each case tests whether the skill catches a specific principle or anti-pattern. Run with: npm run eval",
+  "version": "0.3.0",
+  "description": "Eval corpus for cami-design. Each case tests whether the skill catches a specific principle or anti-pattern. `references` lists the reference file(s) the case targets; the runner loads them into the system prompt so the eval tests skill content, not base-model knowledge. Run with: npm run eval",
   "evals": [
     {
       "id": "anti-001",
       "mode": "cami-design-layout",
       "description": "Detects side-stripe border anti-pattern",
       "tags": ["anti-patterns", "borders"],
+      "references": ["anti-patterns.md"],
       "input": "Review this component:\n\n```css\n.alert {\n  border-left: 3px solid #f59e0b;\n  padding: 12px 16px;\n  background: #fffbeb;\n}\n```",
       "expect": {
         "must_mention": ["border-left", "side stripe"],
@@ -20,6 +21,7 @@
       "mode": "cami-design-copy",
       "description": "Flags AI slop loading copy",
       "tags": ["copy", "loading", "anti-patterns"],
+      "references": ["copy-patterns.md", "anti-patterns.md"],
       "input": "Review this loading message: \"Herding pixels and making magic happen...\"",
       "expect": {
         "must_mention": ["generic", "vague"],
@@ -32,6 +34,7 @@
       "mode": "cami-design-copy",
       "description": "Flags passive voice in error message",
       "tags": ["copy", "errors", "voice"],
+      "references": ["copy-patterns.md"],
       "input": "Review this error message: \"Your file could not be uploaded due to an error.\"",
       "expect": {
         "must_mention": ["passive", "vague", "unclear"],
@@ -40,10 +43,24 @@
       }
     },
     {
+      "id": "copy-004",
+      "mode": "cami-design-copy",
+      "description": "Does not recommend the banned vague 'Oops, something went wrong' error",
+      "tags": ["copy", "errors", "anti-patterns", "drift-guard"],
+      "references": ["copy-patterns.md", "anti-patterns.md"],
+      "input": "We need a friendly, human error message for when saving fails. Is \"Oops, something went wrong\" a good choice? Review it.",
+      "expect": {
+        "must_mention": ["vague", "what happened", "next step"],
+        "must_suggest": ["what failed", "what to do"],
+        "must_not": ["good choice", "perfect", "use it", "sounds human and clear"]
+      }
+    },
+    {
       "id": "interaction-001",
       "mode": "cami-design-interaction",
       "description": "Flags missing hover state on interactive element",
       "tags": ["interaction", "hover", "states"],
+      "references": ["interaction.md"],
       "input": "Review this button:\n\n```css\n.btn-primary {\n  background: #6366f1;\n  color: white;\n  padding: 8px 16px;\n  border-radius: 6px;\n  cursor: pointer;\n}\n```",
       "expect": {
         "must_mention": ["hover", "state"],
@@ -56,6 +73,7 @@
       "mode": "cami-design-interaction",
       "description": "Flags ease-in on enter animation",
       "tags": ["interaction", "motion", "easing"],
+      "references": ["motion.md"],
       "input": "Review this animation:\n\n```css\n.modal {\n  animation: fadeIn 200ms ease-in;\n}\n@keyframes fadeIn {\n  from { opacity: 0; transform: translateY(4px); }\n  to { opacity: 1; transform: translateY(0); }\n}\n```",
       "expect": {
         "must_mention": ["ease-in", "enter"],
@@ -68,6 +86,7 @@
       "mode": "cami-design-interaction",
       "description": "Flags missing prefers-reduced-motion",
       "tags": ["interaction", "accessibility", "motion"],
+      "references": ["accessibility.md", "motion.md"],
       "input": "Review this animated component:\n\n```css\n.card:hover {\n  transform: translateY(-2px);\n  transition: transform 200ms ease-out;\n}\n```",
       "expect": {
         "must_mention": ["prefers-reduced-motion"],
@@ -80,6 +99,7 @@
       "mode": "cami-design-layout",
       "description": "Flags inconsistent spacing in a component",
       "tags": ["layout", "spacing", "consistency"],
+      "references": ["spacing-layout.md"],
       "input": "Review this card component:\n\n```css\n.card { padding: 16px; }\n.card-header { margin-bottom: 10px; }\n.card-body { padding: 0 14px; }\n.card-footer { margin-top: 13px; padding: 8px 16px; }\n```",
       "expect": {
         "must_mention": ["inconsistent", "spacing"],
@@ -88,10 +108,37 @@
       }
     },
     {
+      "id": "layout-002",
+      "mode": "cami-design-layout",
+      "description": "Flags non-concentric nested radius",
+      "tags": ["layout", "radius", "spacing-layout"],
+      "references": ["spacing-layout.md"],
+      "input": "Review this nested card:\n\n```css\n.card { border-radius: 16px; padding: 12px; }\n.card .thumbnail { border-radius: 16px; }\n```",
+      "expect": {
+        "must_mention": ["concentric", "radius", "nested"],
+        "must_suggest": ["inner radius", "outer minus padding", "4px"],
+        "must_not": ["looks good", "fine", "no issues"]
+      }
+    },
+    {
+      "id": "scroll-001",
+      "mode": "cami-design-layout",
+      "description": "Flags inset scroll region with untamed scrollbar and no edge affordance",
+      "tags": ["layout", "scroll-containers"],
+      "references": ["scroll-containers.md"],
+      "input": "Review this scrollable dropdown list:\n\n```css\n.menu {\n  max-height: 280px;\n  overflow-y: scroll;\n  border-radius: 12px;\n  padding: 8px;\n}\n```",
+      "expect": {
+        "must_mention": ["scrollbar", "inset", "edge"],
+        "must_suggest": ["scrollbar-gutter", "scroll edge mask", "mask-image", "tamed"],
+        "must_not": ["looks good", "no issues"]
+      }
+    },
+    {
       "id": "color-001",
       "mode": "cami-design-layout",
       "description": "Flags alpha color as design smell",
       "tags": ["color", "anti-patterns"],
+      "references": ["color.md"],
       "input": "Review this design token usage:\n\n```css\n:root {\n  --surface-card: rgba(255, 255, 255, 0.6);\n  --surface-overlay: rgba(0, 0, 0, 0.4);\n  --text-secondary: rgba(0, 0, 0, 0.45);\n  --border-default: rgba(0, 0, 0, 0.12);\n}\n```",
       "expect": {
         "must_mention": ["alpha", "transparent"],
@@ -100,10 +147,24 @@
       }
     },
     {
+      "id": "typography-001",
+      "mode": "cami-design-layout",
+      "description": "Flags proportional figures in a numeric column",
+      "tags": ["layout", "typography"],
+      "references": ["typography.md"],
+      "input": "Review this pricing table. Amounts (e.g. 1,199.00 / 89.00 / 12,004.50) are right-aligned in a column using the default UI font with no numeric styling.",
+      "expect": {
+        "must_mention": ["tabular", "numbers", "align"],
+        "must_suggest": ["tabular-nums", "font-variant-numeric"],
+        "must_not": ["looks good", "fine", "no issues"]
+      }
+    },
+    {
       "id": "accessibility-001",
       "mode": "cami-design-interaction",
       "description": "Flags disabled attribute instead of aria-disabled",
       "tags": ["accessibility", "forms", "disabled"],
+      "references": ["a11y-implementation.md", "forms.md"],
       "input": "Review this submit button:\n\n```tsx\n<button\n  disabled={!isFormValid}\n  onClick={handleSubmit}\n  className=\"btn-primary\"\n>\n  Save changes\n</button>\n```",
       "expect": {
         "must_mention": ["aria-disabled", "focus", "keyboard"],
@@ -116,6 +177,7 @@
       "mode": "cami-design-copy",
       "description": "Flags confirmation dialog that says 'Are you sure?'",
       "tags": ["copy", "confirmations", "anti-patterns"],
+      "references": ["copy-patterns.md", "forms.md"],
       "input": "Review this confirmation dialog:\n\nTitle: \"Are you sure?\"\nBody: \"This action cannot be undone.\"\nButtons: \"Cancel\" / \"OK\"",
       "expect": {
         "must_mention": ["vague", "unclear", "what"],
@@ -128,6 +190,7 @@
       "mode": "cami-design-engineer",
       "description": "Flags boolean prop sprawl on a component",
       "tags": ["engineer", "composition"],
+      "references": ["composition.md"],
       "input": "Review this component usage:\n\n```tsx\n<Tabs isVertical isLazy isFitted hasDivider isSticky>\n  <Tab label=\"Overview\" />\n  <Tab label=\"Details\" />\n</Tabs>\n```",
       "expect": {
         "must_mention": ["boolean", "prop", "sprawl"],
@@ -140,6 +203,7 @@
       "mode": "cami-design-engineer",
       "description": "Flags array index used as React key",
       "tags": ["engineer", "perf", "react"],
+      "references": ["perf.md"],
       "input": "Review this list rendering:\n\n```tsx\n{items.map((item, i) => (\n  <Row key={i} data={item} onDelete={() => remove(item.id)} />\n))}\n```",
       "expect": {
         "must_mention": ["index", "key", "stable"],
@@ -152,6 +216,7 @@
       "mode": "cami-design-engineer",
       "description": "Flags div onClick instead of button",
       "tags": ["engineer", "a11y"],
+      "references": ["a11y-implementation.md"],
       "input": "Review this interactive element:\n\n```tsx\n<div onClick={handleClose} className=\"close-icon\">\n  <XIcon />\n</div>\n```",
       "expect": {
         "must_mention": ["button", "focusable", "keyboard"],
@@ -164,6 +229,7 @@
       "mode": "cami-design-engineer",
       "description": "Flags missing cleanup in useEffect fetch (state & data flow)",
       "tags": ["engineer", "state", "async"],
+      "references": ["state.md"],
       "input": "Review this effect:\n\n```tsx\nuseEffect(() => {\n  fetch(`/api/users/${userId}`)\n    .then((r) => r.json())\n    .then(setUser);\n}, [userId]);\n```",
       "expect": {
         "must_mention": ["cleanup", "unmount", "race"],
@@ -176,6 +242,7 @@
       "mode": "cami-design-engineer",
       "description": "Flags `as any` hiding a type error (typing)",
       "tags": ["engineer", "typing"],
+      "references": ["typing.md"],
       "input": "Review this code:\n\n```ts\nconst user = (await fetchUser(id)) as any;\nreturn user.profile.displayName.toUpperCase();\n```",
       "expect": {
         "must_mention": ["as any", "type"],
@@ -188,11 +255,51 @@
       "mode": "cami-design-engineer",
       "description": "Flags arbitrary Tailwind value where a DS token exists (DS fidelity)",
       "tags": ["engineer", "ds-fidelity"],
+      "references": ["ds-fidelity.md"],
       "input": "Review this component:\n\n```tsx\n<button className=\"bg-[#3b82f6] text-[14px] gap-[13px] px-[18px]\">\n  Continue\n</button>\n```\n\nThe project's tokens.css defines: `--color-primary-500: oklch(...);`, `--text-body-13`, `--space-3` (12px), `--space-4` (16px).",
       "expect": {
         "must_mention": ["arbitrary", "token", "hardcoded"],
         "must_suggest": ["bg-primary", "text-body-13", "gap-3"],
         "must_not": ["looks good", "fine", "acceptable"]
+      }
+    },
+    {
+      "id": "engineer-007",
+      "mode": "cami-design-engineer",
+      "description": "Flags an unhandled new union member (cross-file completeness)",
+      "tags": ["engineer", "cross-file-completeness"],
+      "references": ["cross-file-completeness.md"],
+      "input": "The diff adds `'archived'` to a status union:\n\n```ts\ntype Status = 'active' | 'paused' | 'archived';\n```\n\nElsewhere, unchanged by the diff:\n\n```tsx\nfunction statusColor(s: Status) {\n  switch (s) {\n    case 'active': return 'green';\n    case 'paused': return 'yellow';\n  }\n}\n```",
+      "expect": {
+        "must_mention": ["union", "archived", "exhaustive"],
+        "must_suggest": ["handle archived", "update the switch", "every consumer"],
+        "must_not": ["looks good", "complete", "fine"]
+      }
+    },
+    {
+      "id": "engineer-008",
+      "mode": "cami-design-engineer",
+      "description": "Flags a hardcoded user-facing string in a localized project (i18n)",
+      "tags": ["engineer", "i18n"],
+      "references": ["i18n.md"],
+      "input": "This project uses react-i18next; all copy routes through `t()`. Review:\n\n```tsx\n<button aria-label=\"Delete contact\">{'Delete contact'}</button>\n```",
+      "expect": {
+        "must_mention": ["hardcoded", "translation", "aria-label"],
+        "must_suggest": ["t(", "translation key", "route through"],
+        "must_not": ["looks good", "fine", "acceptable"]
+      }
+    },
+    {
+      "id": "engineer-009",
+      "mode": "cami-design-engineer",
+      "description": "Flags external link opened without rel protection (security)",
+      "tags": ["engineer", "security"],
+      "references": ["security.md"],
+      "input": "Review this link:\n\n```tsx\n<a href={userProvidedUrl} target=\"_blank\">Open link</a>\n```",
+      "expect": {
+        "must_mention": ["rel", "target", "_blank"],
+        "must_suggest": ["noopener", "noreferrer"],
+        "must_not": ["looks good", "safe", "fine"]
       }
     }
   ]
