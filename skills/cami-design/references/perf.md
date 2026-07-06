@@ -18,9 +18,15 @@ A chart library, a rich-text editor, a markdown renderer always in the bundle ev
 
 `import { Button } from '@/components/ui'` where the barrel re-exports 30 components. Import directly when bundle size matters.
 
+**React Compiler gate:** if the project runs the React Compiler (`babel-plugin-react-compiler`, or `reactCompiler` in the framework config), skip the manual-memoization findings below — `memo` on list items, `useCallback`/`useMemo` at call sites, hoisted default props. The compiler handles them; manual wrappers become noise to flag, not to add. The structural findings (keys, virtualization, state shape) still apply.
+
 ## Missing `memo` on a Component Inside a Hot List
 
 Only flag if the list is large *and* the component receives stable props. Don't memoize speculatively — premature `memo` adds noise.
+
+## Long List Rendered Without Virtualization
+
+Hundreds of rows mounted at once — each pays layout, paint, and memory even off-screen, and memoization doesn't help mount cost. Virtualize (`@tanstack/react-virtual`, `react-window`) when a list is unbounded or reaches several hundred items. Below that, plain rendering (or pagination) is simpler and fine — don't flag speculatively.
 
 ## Inline Function or Object Passed to a Memoized Component
 
@@ -34,9 +40,9 @@ Only flag if the list is large *and* the component receives stable props. Don't 
 
 `useMemo(() => items.length, [items])` — the overhead of `useMemo` itself is higher than the computation. Only memoize when the expression is measurably expensive or produces a referentially stable object that feeds another hook.
 
-## `{value && <Component />}` Where `value` Can Be `0` or `''`
+## `{value && <Component />}` Where `value` Can Be `0` or `NaN`
 
-React renders the falsy value instead of skipping. Use a ternary: `{value ? <Component /> : null}`.
+React renders the falsy `0` or `NaN` instead of skipping (and React Native crashes on bare text outside `<Text>`). Empty strings render as nothing, so they're not the bug — but the ternary is clearer either way: `{value ? <Component /> : null}`.
 
 ## Animation Applied to the `<svg>` Element
 
@@ -79,7 +85,7 @@ Filtering a 10k-row list on every keystroke freezes the field. Wrap the heavy up
 
 ## Same Global Listener Attached in Many Components
 
-Multiple components each call `window.addEventListener('scroll' / 'resize' / 'keydown')`. Memory leak risk and duplicated work. Centralize in one custom hook with subscriber callbacks, or attach once at the app root.
+Multiple components each call `window.addEventListener('scroll' / 'resize' / 'keydown')`. Duplicated work on every event tick — and a leak only if any of them misses cleanup. Centralize in one custom hook with subscriber callbacks, or attach once at the app root.
 
 ## `.includes()` or `.find()` on a Large Array in a Hot Loop
 

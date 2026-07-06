@@ -11,6 +11,7 @@ When you spot a new union member in the diff:
 1. **Grep for the sibling values.** The diff adds `"danger"` to `ButtonVariant` → search the repo for `"primary"`, `"secondary"`, `"ghost"`. Every match is a potential consumer.
 2. **Read each match — don't just scan filenames.** A `switch (variant)` in a far file, an allowlist `["primary", "secondary"]`, an `if (status === "active" || status === "past_due")`, a config map keyed by the old siblings — each is a place the new value silently falls through.
 3. **Flag the gaps with `file:line`.** The fix is "handle the new value here," not "refactor the consumer."
+4. **Offer the durable fix once.** Where a consumer can be made exhaustive — `satisfies Record<Union, T>` on config maps, a `never` check in the `switch` default — suggest it, so the next added member fails at compile time instead of needing this grep (rules in `typing.md`).
 
 ## Common Shapes
 
