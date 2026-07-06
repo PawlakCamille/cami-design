@@ -12,7 +12,11 @@ Search inputs, filters, anything user-typed that triggers a request. Add a debou
 
 ## State Only Read Inside Callbacks But Subscribed at Render
 
-Causes re-renders the component doesn't need. Read the value via a ref or move the read inside the callback.
+Causes re-renders the component doesn't need. Move the read inside the callback (read the store or query cache imperatively at call time), or keep a ref in sync (`useEffect(() => { ref.current = value })`) and read `ref.current` — a ref that's never updated just trades re-renders for stale reads.
+
+## Async With No Error State
+
+The fetch has loading and success paths but nothing renders when it rejects — the user gets a skeleton forever or a silently empty section. Every async boundary needs a rejection path: an error state with a retry, or an error boundary above it. Flag the missing branch; its styling is the designer's call.
 
 ## Object or Array Dependencies in Effects
 

@@ -6,6 +6,40 @@ Format: newest first. Group under a version heading. Include date.
 
 ---
 
+## 0.3.3 — 2026-07-06 — engineer-mode audit response
+
+Response to a three-lens audit (skill architecture, content integrity, runtime behavior) of `cami-design-engineer`. Fixes contradictions with the shared protocol, a broken git recipe, and the highest-value content gaps.
+
+**`cami-design-engineer/SKILL.md`:**
+
+- **Protocol precedence declared:** two explicit engineer-mode overrides at Required reading — Context Gathering never gates a code review, and Closing follows Apply mode rather than the protocol's ask-every-time walkthrough offer. Previously the skill and its mandatory shared protocol ordered incompatible closes with no tiebreaker.
+- **Stale-base git recipe fixed:** `git rev-parse <base> origin/<base>` compared two SHAs, which shows divergence, not "behind" — and only works after a fetch it sequenced too late. Now: fetch first, diff `origin/<base>...HEAD`, detect "behind" with `git rev-list --count`. `<base>` is defined (PR base, else default branch) and the no-branch-diff path (working tree vs `HEAD`) is spelled out for the prototype use case.
+- **`$ARGUMENTS` wired up:** the frontmatter promised a `[target]` the body never consumed. A Target paragraph in Preparation now maps PR/branch/path targets to the diff scope.
+- **Description rewritten for triggering:** action-first ("Senior design-engineer code review of front-end code…"), natural trigger words (review, front-end, React, UI code), no more verbless keyword-list opening.
+- **Table robustness:** escape `\|` in cells (union types sheared the columns on the skill's own cross-file dimension), `<br>` for line breaks, fenced-block fallback for fixes that can't read at two lines.
+- **Anti-fabrication escape hatches:** the Test-coverage line may state "no testable surfaces" for pure markup/styling diffs instead of being forbidden to be empty; the Verified block may only name checks actually run (dropped the Conventional Commits / AI-attribution examples nothing defines).
+- **CI assumption fixed:** "skip anything CI already enforces" now requires confirming a workflow actually runs the tool; with no CI, type errors are in scope (the NEVER item previously suppressed them on exactly the no-CI prototypes the skill advertises).
+- **Smaller:** re-review defined (same conversation or user-declared, comment-hygiene carve-out now present in both statements of the rule); headless fallback for the 400-line scoping gate; i18n load trigger got a detection procedure; visible-vs-code-level definition for Apply mode; severity bullets deduplicated into a pointer at the protocol's table; portability fallback note for `../cami-design/` resolution; marketing sentence trimmed.
+
+**`references/review-protocol.md`:** Context Gathering hard-stop scoped to the design-judgement modes; DS Protocol mode list now includes `cami-design-engineer` (it was omitted); Closing defers to a mode's own closing when one is defined.
+
+**Reference content (engineer dimensions):**
+
+- `security.md`: four checks → six — user-controlled URL in `href`/`src` (`javascript:` XSS) and secrets behind client env prefixes (`VITE_*`, `NEXT_PUBLIC_*`); `rel="noopener"` advice updated for implied-noopener browsers.
+- `i18n.md`: added concatenation/interpolation-outside-`t()` with plural forms, and locale-blind sorting.
+- `perf.md`: React Compiler gate before the manual-memoization findings; list-virtualization check added; fixed the wrong claim that React renders `''` (it's `0`/`NaN`); "memory leak" claim on duplicated listeners corrected to duplicated work.
+- `typing.md`: `@ts-ignore`/`@ts-expect-error` and non-null `!` join `as any`; new loose-config-map finding (`satisfies Record<Union, T>`, `never` checks).
+- `state.md`: new async-with-no-error-state finding; the ref-read advice got mechanics (sync the ref or read imperatively — a bare ref trades re-renders for stale reads).
+- `composition.md`: the keep-children-mounted rule now names when unmounting is correct (effect/focus reset, heavy subtree) and adds `inert` for hidden subtrees.
+- `cross-file-completeness.md`: step 4 offers the durable exhaustiveness fix so the grep is one-time.
+- `ds-fidelity.md`: stale "parent SKILL.md" pointer → `review-protocol.md`; hardcoded canonical import path made an example.
+
+**Evals:** four new engineer cases covering the added content — `engineer-010` (javascript: href XSS), `engineer-011` (service key behind `VITE_*`), `engineer-012` (concatenated count string / plurals), `engineer-013` (fetch with no error state). Corpus version → 0.3.3.
+
+Known gaps deliberately deferred: repo-shaped eval fixtures that exercise the diff-based workflow end-to-end (`evals/fixtures/` exists but is empty), and trigger/no-trigger description evals.
+
+---
+
 ## 0.3.2 — 2026-06-23 — public-face polish
 
 Cleanup for the public repo. No skill-content changes.

@@ -17,6 +17,8 @@ Design skills produce generic output without project context. Before doing any d
 
 **If context is missing, stop and ask — do not run the audit.** A review without context produces generic findings that waste the user's time and miss what actually matters for the product. One focused question upfront beats a skewed audit.
 
+Scope: this gate applies to the design-judgement modes (`cami-design-layout`, `cami-design-interaction`, `cami-design-copy`) and the full audit. `cami-design-engineer` reviews code, not design intent — it gathers its own context (framework, design system, type strictness) in its Preparation steps and is never blocked on audience or tone questions.
+
 ## Design System Protocol
 
 **Before suggesting any value — spacing, color, type size, radius, shadow — check for existing tokens, CSS variables, or component conventions in the codebase.**
@@ -29,7 +31,7 @@ Scan for:
 
 **Rule: propose adjustments using the existing system. Never override — suggest.** If a token exists for something, use it. If a value doesn't exist in the system, note the gap and propose adding it to the design system rather than hardcoding.
 
-This applies to all modes: cami-design-layout, cami-design-interaction, cami-design-copy.
+This applies to all modes: cami-design-layout, cami-design-interaction, cami-design-copy, and cami-design-engineer (where it grounds the DS-fidelity dimension).
 
 ## Review Output Format
 
@@ -77,7 +79,7 @@ Use only sections that have findings. Omit empty sections entirely.
 
 ### Closing
 
-End every review by proactively offering walkthrough mode with an `AskUserQuestion` call. Do not use a generic sentence — the goal is that the user always knows the option exists without having to remember a keyword.
+Unless the invoking mode defines its own closing (`cami-design-engineer` does: apply-by-default — its SKILL.md governs), end every review by proactively offering walkthrough mode with an `AskUserQuestion` call. Do not use a generic sentence — the goal is that the user always knows the option exists without having to remember a keyword.
 
 The question should be phrased naturally, in your own words, based on what the review found. Vary the wording across sessions so it stays human. Examples (not templates to copy verbatim):
 

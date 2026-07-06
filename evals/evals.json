@@ -1,6 +1,6 @@
 {
   "skill_name": "cami-design",
-  "version": "0.3.0",
+  "version": "0.3.3",
   "description": "Eval corpus for cami-design. Each case tests whether the skill catches a specific principle or anti-pattern. `references` lists the reference file(s) the case targets; the runner loads them into the system prompt so the eval tests skill content, not base-model knowledge. Run with: npm run eval",
   "evals": [
     {
@@ -300,6 +300,58 @@
         "must_mention": ["rel", "target", "_blank"],
         "must_suggest": ["noopener", "noreferrer"],
         "must_not": ["looks good", "safe", "fine"]
+      }
+    },
+    {
+      "id": "engineer-010",
+      "mode": "cami-design-engineer",
+      "description": "Flags user-controlled URL enabling javascript: XSS (security)",
+      "tags": ["engineer", "security"],
+      "references": ["security.md"],
+      "input": "Review this component:\n\n```tsx\nfunction ProfileLink({ profile }: { profile: ApiProfile }) {\n  return <a href={profile.websiteUrl}>Visit website</a>;\n}\n```\n\n`profile.websiteUrl` comes straight from a user-editable field in the API.",
+      "expect": {
+        "must_mention": ["javascript:", "user", "href"],
+        "must_suggest": ["allowlist", "protocol", "sanitize"],
+        "must_not": ["looks good", "safe as is", "no issues"]
+      }
+    },
+    {
+      "id": "engineer-011",
+      "mode": "cami-design-engineer",
+      "description": "Flags server secret exposed via client env prefix (security)",
+      "tags": ["engineer", "security"],
+      "references": ["security.md"],
+      "input": "Review this diff:\n\n```ts\n// lib/admin.ts\nconst client = createClient(\n  import.meta.env.VITE_SUPABASE_URL,\n  import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY\n);\n```",
+      "expect": {
+        "must_mention": ["service", "client", "bundle"],
+        "must_suggest": ["server", "move", "anon"],
+        "must_not": ["looks good", "fine", "acceptable"]
+      }
+    },
+    {
+      "id": "engineer-012",
+      "mode": "cami-design-engineer",
+      "description": "Flags concatenated string with count bypassing plural forms (i18n)",
+      "tags": ["engineer", "i18n"],
+      "references": ["i18n.md"],
+      "input": "This project uses react-i18next. Review:\n\n```tsx\nfunction InboxBadge({ count }: { count: number }) {\n  return <span>{'You have ' + count + ' unread messages'}</span>;\n}\n```",
+      "expect": {
+        "must_mention": ["concatenat", "plural", "translation"],
+        "must_suggest": ["interpolation", "t(", "count"],
+        "must_not": ["looks good", "fine", "no issues"]
+      }
+    },
+    {
+      "id": "engineer-013",
+      "mode": "cami-design-engineer",
+      "description": "Flags async fetch with loading and success but no error state (state)",
+      "tags": ["engineer", "state"],
+      "references": ["state.md"],
+      "input": "Review this hook usage:\n\n```tsx\nfunction Orders() {\n  const [orders, setOrders] = useState<Order[] | null>(null);\n  useEffect(() => {\n    let ignore = false;\n    fetchOrders().then((data) => { if (!ignore) setOrders(data); });\n    return () => { ignore = true; };\n  }, []);\n  if (!orders) return <Skeleton />;\n  return <OrderList orders={orders} />;\n}\n```",
+      "expect": {
+        "must_mention": ["error", "reject", "skeleton"],
+        "must_suggest": ["error state", "catch", "retry"],
+        "must_not": ["looks good", "complete", "no issues"]
       }
     }
   ]

@@ -4,7 +4,11 @@ Deep reference for TypeScript discipline and codebase consistency. Loaded by `ca
 
 ## `as any`
 
-Hides a type error rather than fixing it. Narrow with `unknown` + a type guard, or fix the source type.
+Hides a type error rather than fixing it. Narrow with `unknown` + a type guard, or fix the source type. Same family, same treatment: `@ts-ignore` (if a suppression is truly needed, `@ts-expect-error` with a reason comment — it self-cleans when the error goes away) and the non-null assertion `!` where a runtime guard or optional chaining is the honest fix.
+
+## Config Map Typed Too Loosely to Catch Missing Keys
+
+An object keyed by a union but typed `Record<string, T>` (or not at all) — new union members fall through silently. Type it `satisfies Record<UnionType, T>` so adding a member is a compile error at every map, and end exhaustive `switch`es with a `never` check. This turns the cross-file grep (`cross-file-completeness.md`) into a one-time fix.
 
 ## `interface` Where the Project Uses `type Props`
 

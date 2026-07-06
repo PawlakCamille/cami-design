@@ -2,7 +2,7 @@
 
 Deep reference for code-level design-system adherence. Loaded by `cami-design-engineer` when the diff introduces or modifies styled components.
 
-Pairs with the **Design System Protocol** in the parent SKILL.md (the principle "check for tokens before suggesting any value") — this file lists the concrete code-level violations to flag.
+Pairs with the **Design System Protocol** in `review-protocol.md` (the principle "check for tokens before suggesting any value") — this file lists the concrete code-level violations to flag.
 
 ## Hardcoded Values Where a Token Exists
 
@@ -14,7 +14,7 @@ A DS `Button` and a raw `<button>` in the same view. Pick the DS one.
 
 ## DS Primitives Imported From the Wrong Path
 
-Import from the canonical entry (`@/components/ui/design-system`), not the legacy folder.
+Import from the project's canonical entry (e.g. `@/components/ui`), not a legacy folder or a component's internal file. The canonical path is whatever the project's own convention says — found in Preparation, not assumed.
 
 ## New Token Introduced Inline
 

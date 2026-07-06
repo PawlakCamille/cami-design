@@ -56,7 +56,7 @@ A low-level or presentational component reaching into `localStorage`, analytics,
 
 ## Conditional Render That Unmounts Children
 
-`{open && <Panel>{children}</Panel>}` fully unmounts the subtree when `open` is false — any child with internal state (an input, a controlled field, scroll position, a running animation) loses it on every toggle. For a reusable component, keep children mounted and hide with `hidden` / `display: none`, so consumers can place stateful content inside without surprise.
+`{open && <Panel>{children}</Panel>}` fully unmounts the subtree when `open` is false — any child with internal state (an input, a controlled field, scroll position, a running animation) loses it on every toggle. For a reusable component whose consumers place stateful content inside, keep children mounted and hide with `hidden` / `display: none`, plus `inert` so the hidden subtree leaves the tab order and a11y tree. Unmounting is the right call when there's a named trigger: effects or autofocus must re-run on open, the subtree is heavy (see `perf.md`), or state should deliberately reset each time. Flag whichever direction lacks its trigger — not mounting-vs-unmounting in the abstract.
 
 ## Attribution
 
