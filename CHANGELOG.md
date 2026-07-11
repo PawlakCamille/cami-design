@@ -6,7 +6,7 @@ Format: newest first. Group under a version heading. Include date.
 
 ---
 
-## 0.3.4 — 2026-07-06 — Emil round 2: missed opportunities, motion tokens, timer pause, translate%
+## 0.3.4 — 2026-07-06 — missed opportunities, motion tokens, timer pause, translate%
 
 Second absorption pass over `emilkowalski/skills` (now five skills). `review-animations` was mined in 0.2.10; `emil-design-eng` is the repack of the original `emilkowalski/skill` and its catalog was ~95% already covered. Four surgical additions survive the duplication filter.
 
