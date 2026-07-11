@@ -38,6 +38,19 @@ Contributions absorbed:
 Repository: https://github.com/emilkowalski/skill
 License: see upstream
 
+### emilkowalski/skills (review-animations, improve-animations, emil-design-eng)
+Author: Emil Kowalski — distilled from his animations.dev course and emilkowal.ski writing.
+
+Contributions absorbed (June–July 2026):
+- **review-animations** (v0.2.10): gesture physics (velocity-based dismissal, boundary damping, pointer capture, multi-touch protection), clip-path reveal patterns, WAAPI for programmatic motion, iOS drawer curve `cubic-bezier(0.32, 0.72, 0, 1)`, remedial fix order (delete > reduce > fix easing > …)
+- **improve-animations** (v0.3.4): Missed Opportunities as an additive audit dimension, motion-token consolidation finding
+- **emil-design-eng** (v0.3.4): auto-dismiss timers pause when tab hidden, translate-percentage pattern for off-screen surfaces
+
+Deliberately not absorbed: subtle-bounce stance (this skill keeps `bounce: 0` by default), the advisor→plans workflow, the animation-vocabulary glossary, apple-design. See CHANGELOG entries 0.2.10 and 0.3.4.
+
+Repository: https://github.com/emilkowalski/skills
+License: MIT
+
 ### jakubkrehel/make-interfaces-feel-better
 Author: Jakub Krehel
 
