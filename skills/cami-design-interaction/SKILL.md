@@ -59,6 +59,14 @@ The Animation Decision Framework — "should this animate? what's the purpose? w
 - Use CSS transitions for interactive state changes (interruptible mid-animation)
 - Reserve keyframes for staged sequences that run once
 
+### Missed Opportunities (additive)
+The dimensions above are corrective. Also flag places that *don't* animate but should:
+- A state change that teleports (content swap, layout jump) where a brief transition would prevent the jar
+- Spatially-connected UI (a panel opening from a trigger) with no motion explaining where it came from
+- Rare, high-emotion moments (first-run, success) using none of the delight budget they're allowed
+
+Report these in their own output section, a handful at most, grounded in seams you actually observed. Not a wishlist.
+
 ## Accessibility
 
 Reduced-motion fallback is mandatory — see `../cami-design/references/accessibility.md` → *Motion* for the canonical snippet, the rationale (vestibular disorders, what to keep vs. remove), and the application rule.

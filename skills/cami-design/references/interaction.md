@@ -74,6 +74,10 @@ See `accessibility.md` → *Touch* for the canonical 40×40 rule and pseudo-elem
 - **Disable the button while loading** to prevent double-submission — re-enable on success or error.
 - **Minimum visible duration.** Add a show-delay (~150–300ms) before a skeleton or spinner renders, and a minimum visible time (~300–500ms) once it does. Prevents flicker on fast responses — a spinner that flashes for 80ms looks like a bug. React's `<Suspense>` can handle this natively.
 
+## Auto-dismiss Timers
+
+Timed UI (toasts, auto-dismissing banners, undo windows) must pause its countdown while the tab is hidden (`visibilitychange` / `document.hidden`), and while hovered. A toast that expires in a background tab was never seen; an undo window that ran out while the user was elsewhere silently ate their recourse. Resume on return.
+
 ## Disabled States
 
 - Reduce opacity to ~50%.
@@ -175,4 +179,4 @@ See `forms.md` for input attributes, submit behavior, error placement, placehold
 
 ## Attribution
 
-Synthesized from: pbakaus/impeccable `interaction-design.md`, jakubkrehel/make-interfaces-feel-better, emilkowalski/skill, emilkowalski/review-animations (gesture physics: velocity dismissal, boundary damping, pointer capture, multi-touch protection), vercel-labs/web-interface-guidelines (mobile/touch, loading timing).
+Synthesized from: pbakaus/impeccable `interaction-design.md`, jakubkrehel/make-interfaces-feel-better, emilkowalski/skill, emilkowalski/review-animations (gesture physics: velocity dismissal, boundary damping, pointer capture, multi-touch protection), emilkowalski/emil-design-eng (tab-hidden timer pause), vercel-labs/web-interface-guidelines (mobile/touch, loading timing).
