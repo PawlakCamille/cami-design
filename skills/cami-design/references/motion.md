@@ -51,6 +51,8 @@ Every animation must answer "why does this animate?"
 
 **Never use ease-in for UI elements.** It starts slow — which is exactly when the user is watching most closely. A dropdown with `ease-in` at 300ms *feels* slower than `ease-out` at the same 300ms, because ease-in delays the initial movement.
 
+**Near-duplicate curves and durations are a consolidation finding.** Five hand-typed cubic-beziers that almost match, or durations scattered as raw `180ms`/`200ms`/`210ms` across files, belong in shared tokens (`--ease-*`, `--duration-*`). Same design-system-first rule as color and spacing: reuse the token, or note the gap and propose adding one.
+
 ### 4. Duration
 
 - Micro (press, hover): 100-150ms
@@ -87,6 +89,7 @@ Prefer the earliest move that resolves the problem; deleting beats tuning, and a
 
 - **Split and stagger.** Don't animate one container. Break content into semantic chunks, stagger each with ~50ms delay — beyond that it feels slow, not polished. CSS-only: set `--index` on each item and use `animation-delay: calc(var(--index) * 50ms)`.
 - Nothing should appear from `scale(0)`. Start at `scale(0.95)` + `opacity: 0`. Real objects don't materialize from nothing.
+- **Off-screen surfaces travel by their own size.** `translate` percentages are relative to the element itself, so `translateY(100%)` hides a drawer or toast regardless of its height (the Sonner/Vaul pattern). Prefer them over hardcoded pixel offsets, which break when content changes.
 - **Pair small movement with small blur.** A 2-3px blur companion to a short translate or scale makes brief motion read clearly. Without it, 8px distances look like "nothing happened."
 
 ## Exit Animations
@@ -286,4 +289,4 @@ Reduced-motion fallback: see `accessibility.md` → *Motion* for the canonical s
 
 ## Attribution
 
-Synthesized from: emilkowalski/skill, jakubkrehel/make-interfaces-feel-better `animations.md`, pbakaus/impeccable `motion-design.md`, MDN web docs (`interpolate-size`, `calc-size()`), vercel-labs/web-interface-guidelines (SVG Safari fix), fixing-motion-performance skill (FLIP, scroll timelines, blur ordering), Jakubantalik/transitions-dev (close-scale subtlety, animate-inner-piece, blur+motion pairing), brotzky/performance-skills (cause-and-effect threshold, summoned/ambient/transitional duration classes, spatial-work test), emilkowalski/review-animations (clip-path reveals, WAAPI, iOS drawer curve, remedial fix order).
+Synthesized from: emilkowalski/skill, jakubkrehel/make-interfaces-feel-better `animations.md`, pbakaus/impeccable `motion-design.md`, MDN web docs (`interpolate-size`, `calc-size()`), vercel-labs/web-interface-guidelines (SVG Safari fix), fixing-motion-performance skill (FLIP, scroll timelines, blur ordering), Jakubantalik/transitions-dev (close-scale subtlety, animate-inner-piece, blur+motion pairing), brotzky/performance-skills (cause-and-effect threshold, summoned/ambient/transitional duration classes, spatial-work test), emilkowalski/review-animations (clip-path reveals, WAAPI, iOS drawer curve, remedial fix order), emilkowalski/improve-animations (motion-token consolidation), emilkowalski/emil-design-eng (translate-percentage pattern).

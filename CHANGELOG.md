@@ -6,6 +6,30 @@ Format: newest first. Group under a version heading. Include date.
 
 ---
 
+## 0.3.4 — 2026-07-06 — Emil round 2: missed opportunities, motion tokens, timer pause, translate%
+
+Second absorption pass over `emilkowalski/skills` (now five skills). `review-animations` was mined in 0.2.10; `emil-design-eng` is the repack of the original `emilkowalski/skill` and its catalog was ~95% already covered. Four surgical additions survive the duplication filter.
+
+### Interaction
+
+- **`cami-design-interaction/SKILL.md` — Missed Opportunities** new additive dimension (from `improve-animations`). The existing dimensions are corrective; this one flags places that *don't* animate but should: teleporting state changes, spatially-connected UI with no origin motion, rare high-emotion moments with unused delight budget. Own output section, a handful at most, grounded in observed seams.
+- **`references/interaction.md` — Auto-dismiss Timers** new finding (from `emil-design-eng` / Sonner). Timed UI pauses its countdown while the tab is hidden and while hovered; a toast that expires in a background tab was never seen.
+
+### Motion
+
+- **`references/motion.md` — near-duplicate curves/durations are a consolidation finding** (from `improve-animations`). Hand-typed cubic-beziers that almost match belong in `--ease-*`/`--duration-*` tokens; the design-system-first rule applied to motion.
+- **`references/motion.md` — off-screen surfaces travel by their own size** (from `emil-design-eng`). `translateY(100%)` percentages over hardcoded pixel offsets for drawers/toasts.
+
+### Deliberately not absorbed
+
+- **`improve-animations`' advisor workflow** (audit → self-contained plans in `plans/` for cheap executors): orthogonal to this skill's Apply-mode modality, where the reviewer applies its own findings.
+- **Subtle bounce (0.1–0.3)**: third consecutive rejection; crisp-by-default `bounce: 0` stands.
+- **`animation-vocabulary`**: a naming glossary, a different job than reviewing; no review content to mine. Install Emil's skill directly for that use case.
+- **`apple-design`**: opinionated HIG styling, not this skill's bar.
+- Marginal deltas rejected as not-our-practice or near-duplicates: decorative mouse-tracking springs, direction-aware transitions, settled-decisions rule (covered by Check Codebase Precedent First), prompt-injection guard (platform-level concern).
+
+---
+
 ## 0.3.3 — 2026-07-06 — engineer-mode audit response
 
 Response to a three-lens audit (skill architecture, content integrity, runtime behavior) of `cami-design-engineer`. Fixes contradictions with the shared protocol, a broken git recipe, and the highest-value content gaps.
