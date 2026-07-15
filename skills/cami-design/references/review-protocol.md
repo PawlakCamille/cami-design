@@ -89,6 +89,8 @@ The question should be phrased naturally, in your own words, based on what the r
 
 Options should be: **Walk through** / **Take the list** (plus any contextual third option if it fits).
 
+**Visual modes only** (`cami-design-layout`, `-interaction`, `-copy`, or a full `/cami-design` audit) offer a fourth option: **Build an HTML review**. It renders the findings as an interactive artifact with live before/after previews and per-item approve / discuss / deny, ending in a paste-back block that drives Apply mode. Most worth it on a full audit with many visual findings; skip the offer for a handful of findings or when there's no display surface. When chosen, follow `review-artifact.md`. `cami-design-engineer` does not offer it; code diffs gain little from a rendered artifact.
+
 ### Walkthrough mode
 
 When the user chooses to walk through, or when intent is clear from their wording (wanting to decide item by item, asking for help deciding, one at a time), use `AskUserQuestion` per item.

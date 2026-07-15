@@ -6,7 +6,14 @@ Format: newest first. Group under a version heading. Include date.
 
 ---
 
-## 0.3.4 — 2026-07-06 — missed opportunities, motion tokens, timer pause, translate%
+## 0.4.0 — 2026-07-06 — HTML review artifact mode (opt-in)
+
+A new, opt-in way to *deliver* a visual review: an interactive approval artifact, like a design-flavoured PR review. Additive only — the default closing (Walk through / Take the list, and Apply mode in engineer) is unchanged.
+
+- **`references/review-protocol.md`** — the closing now offers a fourth option, **Build an HTML review**, for the visual modes and full audits only (`cami-design-engineer` keeps apply-by-default; code diffs gain little from a rendered artifact). Scoped to reviews with many auto-renderable findings.
+- **`references/review-artifact.md`** — new reference, loaded only when the option is chosen. Specifies the artifact: one card per finding with a live before/after preview, per-item approve / discuss / deny, and a copy-decisions block that pastes back to drive Apply mode. Its load-bearing rule: **never fabricate the current state** — render a faithful live preview only when the change is reproducible from the reviewed code in isolation (easing/duration played side by side, press-scale, radius, spacing, color, copy), otherwise show the code diff. Honesty over spectacle.
+
+Pattern credit: adapted from a public approve/deny/discuss review-artifact flow shared by @kylezantos. The review content and the no-fabricated-previews constraint are this skill's own.
 
 Second absorption pass over `emilkowalski/skills` (now five skills). `review-animations` was mined in 0.2.10; `emil-design-eng` is the repack of the original `emilkowalski/skill` and its catalog was ~95% already covered. Four surgical additions survive the duplication filter.
 

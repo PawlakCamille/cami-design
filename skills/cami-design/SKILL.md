@@ -125,6 +125,7 @@ The one exception is `references/review-protocol.md` (context gathering, design 
 | Accessibility | `references/accessibility.md` | Contrast, focus, keyboard, screen readers — canonical home for hit areas, reduced-motion fallback, contrast thresholds |
 | Anti-patterns | `references/anti-patterns.md` | "AI slop" tells in visuals and copy, generic aesthetics to avoid |
 | Craft | `references/craft.md` | During a Verify pass, when declining or deprioritizing a finding, or when a review needs to re-center on intent. The deep version of Core Principles |
+| Review artifact | `references/review-artifact.md` | The user picked **Build an HTML review** at the closing (visual modes / full audit only) |
 
 ### Engineer-mode references (code handoff)
 
