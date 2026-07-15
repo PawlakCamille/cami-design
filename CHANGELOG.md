@@ -6,6 +6,14 @@ Format: newest first. Group under a version heading. Include date.
 
 ---
 
+## 0.4.1 — 2026-07-06 — review artifact: preview on production's real surface
+
+First real-use fix for the review artifact. A contrast finding rendered its before/after text on the artifact's decorative grey stage while the copy ships on white, so the stated ratio (computed against the real background) disagreed with what the eye saw on the panel, and the change couldn't be judged.
+
+- **`references/review-artifact.md`** — new rule: the surface is part of the preview. For any finding whose verdict depends on the surround (contrast, color, opacity, elevation, borders), render the fragment on production's exact background, never a decorative tint or grid. Demo stages are allowed only when the surround is irrelevant (easing, spacing, radius).
+
+---
+
 ## 0.4.0 — 2026-07-06 — HTML review artifact mode (opt-in)
 
 A new, opt-in way to *deliver* a visual review: an interactive approval artifact, like a design-flavoured PR review. Additive only — the default closing (Walk through / Take the list, and Apply mode in engineer) is unchanged.
