@@ -17,6 +17,14 @@ For each finding, pick the honest preview:
 
 When unsure which case you're in, use the code diff. Honesty over spectacle.
 
+### The surface is part of the preview
+
+A preview is only faithful if the element sits on the **exact surface it ships on**. This is not optional for findings whose verdict depends on the surround: contrast, color, opacity, elevation, borders. Render the fragment on production's real background (the page's actual white / `--surface` / whatever it is), never on a decorative tinted stage or dot-grid.
+
+The failure to avoid: showing muted grey text on a grey preview panel while it ships on white. The stated ratio is computed against the real background, but the eye reads it against the panel, so the number and the preview disagree and the reviewer can't judge. A contrast preview on the wrong ground is worse than a code diff.
+
+Decorative demo stages (a tint, a grid, a checkerboard for transparency) are fine only when the surround is irrelevant to the verdict: easing, spacing, radius. The moment the finding is about how a color reads, the background is production's, exactly.
+
 ## Structure
 
 Render a self-contained HTML artifact using whatever artifact/canvas capability the environment provides; if there is none, write a `.html` file to the project and tell the user to open it. Inline all CSS/JS; no external assets.
@@ -54,6 +62,14 @@ Left undecided: C1
 ```
 
 One line per decided finding (`id [VERB] title`, plus `(note: …)` for Discuss/Deny), then any undecided ids. When it returns, honor it as Apply-mode input: apply the APPROVEs (visual gate still holds, confirm anything user-visible), skip the DENYs, and open the DISCUSSes for conversation.
+
+## Lifecycle
+
+The artifact is a throwaway review surface, not a project deliverable. It must not linger in the codebase.
+
+- **Prefer the hosted artifact capability** when the environment has one; it lives outside the project and pollutes nothing.
+- **Only fall back to a file** when there's no such capability, and then write it to a disposable location (system temp, or a gitignored `.cami-review/`), never into tracked source, and never commit it.
+- **Clean up when done.** Once the user has pasted their decisions back and Apply mode has run, delete the file and say you did. Keep it only if the user asks.
 
 ## Attribution
 
