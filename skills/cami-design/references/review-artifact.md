@@ -63,6 +63,14 @@ Left undecided: C1
 
 One line per decided finding (`id [VERB] title`, plus `(note: …)` for Discuss/Deny), then any undecided ids. When it returns, honor it as Apply-mode input: apply the APPROVEs (visual gate still holds, confirm anything user-visible), skip the DENYs, and open the DISCUSSes for conversation.
 
+## Lifecycle
+
+The artifact is a throwaway review surface, not a project deliverable. It must not linger in the codebase.
+
+- **Prefer the hosted artifact capability** when the environment has one; it lives outside the project and pollutes nothing.
+- **Only fall back to a file** when there's no such capability, and then write it to a disposable location (system temp, or a gitignored `.cami-review/`), never into tracked source, and never commit it.
+- **Clean up when done.** Once the user has pasted their decisions back and Apply mode has run, delete the file and say you did. Keep it only if the user asks.
+
 ## Attribution
 
 Interactive approval-artifact flow adapted from a public pattern by @kylezantos (skill-chaining plus an approve/deny/discuss review artifact). The review content and the honesty constraint on previews are this skill's own.

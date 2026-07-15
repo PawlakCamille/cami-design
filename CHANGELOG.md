@@ -6,11 +6,12 @@ Format: newest first. Group under a version heading. Include date.
 
 ---
 
-## 0.4.1 — 2026-07-06 — review artifact: preview on production's real surface
+## 0.4.1 — 2026-07-06 — review artifact: real-surface previews + cleanup
 
-First real-use fix for the review artifact. A contrast finding rendered its before/after text on the artifact's decorative grey stage while the copy ships on white, so the stated ratio (computed against the real background) disagreed with what the eye saw on the panel, and the change couldn't be judged.
+First-real-use hardening of the review artifact, both fixes in `references/review-artifact.md`.
 
-- **`references/review-artifact.md`** — new rule: the surface is part of the preview. For any finding whose verdict depends on the surround (contrast, color, opacity, elevation, borders), render the fragment on production's exact background, never a decorative tint or grid. Demo stages are allowed only when the surround is irrelevant (easing, spacing, radius).
+- **The surface is part of the preview.** A contrast finding rendered its before/after text on the artifact's decorative grey stage while the copy ships on white, so the stated ratio (computed against the real background) disagreed with what the eye saw on the panel, and the change couldn't be judged. New rule: for any finding whose verdict depends on the surround (contrast, color, opacity, elevation, borders), render the fragment on production's exact background, never a decorative tint or grid. Demo stages stay allowed only when the surround is irrelevant (easing, spacing, radius).
+- **Lifecycle.** The artifact is a throwaway review surface, not a deliverable. Prefer the hosted artifact capability (lives outside the project); the file fallback goes to a disposable, gitignored location, is never committed, and is deleted once decisions are pasted back and Apply mode has run.
 
 ---
 
