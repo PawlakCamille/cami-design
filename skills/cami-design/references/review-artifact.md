@@ -26,7 +26,17 @@ Render a self-contained HTML artifact using whatever artifact/canvas capability 
 - **Decision bar**: an **Approve / Discuss / Deny** segmented control; selecting Discuss or Deny reveals an optional note field. Reflect state on the card (a severity stripe, dimmed when denied) so the page is scannable.
 - **Footer**: progress (`N of M decided`) and a **Copy decisions** button, disabled until at least one decision is made.
 
-Follow the theming, responsiveness, and accessibility conventions of the artifact environment (design both light and dark, respect `prefers-reduced-motion`: do not autoplay motion, gate it behind a replay control the user triggers).
+Design both light and dark, keep it responsive, and respect `prefers-reduced-motion` (do not autoplay motion; gate it behind a replay control the user triggers).
+
+## Styling: wear the reviewed project's clothes
+
+The artifact chrome adopts the **audited project's** design language, so a review of a given product feels native to it rather than generic. Pull from the tokens the Design System Protocol already surfaced: accent, neutrals, type family, radius, shadow, and its light/dark treatment. Match, don't invent.
+
+Two deliberate exceptions:
+- **No extractable token set** (or you can't reproduce it cleanly): fall back to a neutral, quiet chrome rather than a broken half-match. A clean neutral beats a wrong brand.
+- **Review-decision signals stay fixed**: the approve / discuss / deny colors and the 🔴/🟡 severity chips are review meaning, not project branding. Keep them consistent and legible on both grounds regardless of the project. Borrowing the brand accent for "approve" would make the state ambiguous.
+
+So: the artifact dresses like the project, except the decision affordances, which read the same everywhere.
 
 ## Copy-decisions block
 
