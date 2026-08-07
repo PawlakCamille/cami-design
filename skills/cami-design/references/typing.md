@@ -41,6 +41,10 @@ A comment carrying content that belongs in another channel: who asked for the ch
 
 The diff changed what the code does but left the comment describing the old behavior — a JSDoc that says `className` lands on the tab list when it now lands on the outer wrapper. A wrong comment is worse than no comment: it actively misleads. When a change alters behavior, update or delete every comment in range.
 
+## Same Comment Rationale in More Than One Place
+
+The identical reason stated on two declarations, or the same rationale repeated across two files (a "why" comment living in both a hook and the component that consumes it). State it once, at the canonical spot; let the other site stay uncommented or point to it. Duplicated rationale drifts: one copy gets updated on a refactor, the other quietly lies.
+
 ## Magic Numbers
 
 A `7` or `0.85` in the middle of code with no name. Extract to a named constant.

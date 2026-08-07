@@ -54,6 +54,10 @@ An override of `staleTime`, `gcTime`, or `refetch*` with no comment defending it
 
 A hook persists user-facing state to localStorage while also fetching the same data from the backend. Three questions: is there a pre-server user base whose values need migrating; is offline-first a product requirement; is the cold-load flicker actually disruptive. Three "no"s and you drop localStorage entirely. The flicker is usually invisible, but the seed/mirror/migration roles and their races (seed-vs-server, mirror clobbering) are always real. If one role is genuinely justified, keep that one and document it.
 
+## Merge That Can Outgrow Its Input, Feeding a Count or Primary
+
+A util or hook that unions two sources (`[...ranked, ...missing]`, `[...fromA, ...fromB]`) where one source isn't guaranteed to be a subset of the intended payload. It hides on a list surface (just an extra row) but is wrong anywhere a **count, a primary, or a single value** is derived from it: the number drifts, or a stale/duplicate entry becomes "the" value. When reviewing a merge, ask whether the output can be a superset of, or contain duplicates of, the intended set, then trace every consumer that reads a count or primary off it, not just those that render the whole list. Fix by intersecting with the canonical set so the result stays a permutation of it.
+
 ## Mutating Props Inside a Component
 
 `user.lastViewed = new Date()` inside a component modifies data the parent owns — bugs propagate sideways and React doesn't see the change. Treat props as read-only. If something must change, notify the parent via a callback (`onView(user.id)`) and let it update its own state.

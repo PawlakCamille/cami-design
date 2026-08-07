@@ -2,7 +2,7 @@
 name: cami-design-engineer
 description: Senior design-engineer code review of front-end code — component composition, design-system fidelity, state and data flow, cross-file completeness, accessibility, i18n, performance, security, TypeScript. Use when asked to review front-end, React, or UI code, before handing a project to a tech team, or to make a prototype ship-ready.
 user-invocable: true
-argument-hint: "[target]"
+argument-hint: "[target] [all]"
 ---
 
 # Cami — Engineer
@@ -32,6 +32,8 @@ This skill reviews **code**. For visual judgement (spacing, motion, copy), use `
 ## Preparation
 
 **Target:** `$ARGUMENTS` may name a PR (number or URL), a branch, or a file/directory path. A PR or branch sets the diff base for step 5; a path restricts the review to that path's slice of the diff. No target → review the current branch's diff against the default branch.
+
+**Gather the minimum load-bearing context, then deliver.** On a small PR, don't spend many tool rounds spelunking submodules, history, or call sites before producing a single finding. Read what the diff actually needs to be judged, and review. Deep context-gathering is for when a finding genuinely hinges on it, not a default warm-up.
 
 1. Read `package.json` to identify the framework and version. React 18 vs 19 changes some rules (`forwardRef`, `use()`), and the React Compiler changes what's worth flagging (`perf.md`).
 2. Read the linter/formatter config (biome, eslint, prettier) and confirm CI actually runs it (a workflow in `.github/workflows` or equivalent). **Skip anything CI enforces.** If there is no CI, type errors and lint-level bugs are in scope — nothing else will catch them.
@@ -76,13 +78,21 @@ Each finding goes into the `Before | After | Why` table format defined in **Outp
 
 ### Always check, regardless of dimension signal
 
-- **Comment hygiene.** Scan every added or changed comment in the diff and flag any that restate the code, run verbose, or carry private/internal content (rules in `typing.md`). Run this even when the diff shows no other type or naming signal, so the check never depends on `typing.md` being loaded for another reason. It is also exempt from the re-review nit suppression below: verbose comments are most often introduced *during* fixes, exactly when a second pass would otherwise silence them.
+- **Comment hygiene.** Scan every added or changed comment in the diff and flag any that restate the code, run verbose, or carry private/internal content (rules in `typing.md`). Run this even when the diff shows no other type or naming signal, so the check never depends on `typing.md` being loaded for another reason. It is also exempt from the re-review nit suppression below: verbose comments are most often introduced *during* fixes, exactly when a second pass would otherwise silence them. Treat it as a genuine second read, not a rubber-stamp: an automatic "looks fine" still ships 3-line comments and rationale duplicated across files. Cut to 1-2 lines, dedupe any reason stated in more than one place, and re-check each comment against what the code does now (refactors leave comments lying).
 
 ## Output
 
 ### Severity scale
 
 Definitions and calibration live in `../cami-design/references/review-protocol.md` → Severity scale — that table is the single source; don't re-derive it. Engineer-mode notes: all three symbols are in use; 🔴 blocks handoff; 🟡 caps at 5 per output section (`+N similar` for the rest); 🟣 marks issues that pre-date the diff — surface, don't block.
+
+### Nit cap and exhaustive mode
+
+🔴 Important and 🟣 Pre-existing are never capped; every one is always listed. Only 🟡 nits cap, at 5 per output section, to keep the review scannable.
+
+When the cap fires, say so in words, not just the `+N similar` tag: name the real count so the hidden nits are visible as a number, e.g. `Showing 5 of 12 nits in this section; run with \`all\` to see the rest.` Never let the cap silently swallow findings.
+
+**Exhaustive mode.** When invoked with `all` (`/cami-design-engineer all`), or when the user asks to see everything, lift the nit cap: list every finding in full, grouped as usual, with no `+N similar` collapse. The `all` flag lifts only the nit cap; it does not override the >400-line diff scoping (that's a separate signal concern; a review that reads half the code isn't more useful for being longer).
 
 ### Verification bar
 
@@ -135,7 +145,7 @@ Apply mode is the default close: apply the non-visual findings, then list any vi
 - Suggest abstractions for code that appears fewer than 3 times.
 - Refactor for hypothetical future requirements.
 - Add comments explaining what well-named code already shows.
-- Post more than 5 nits per output section — summarize the rest as `+N similar`. (Output sections are the lettered groups A, B, C…, not review dimensions.)
+- Post more than 5 nits per output section without collapsing the rest into `+N similar` and announcing the real count (see *Nit cap and exhaustive mode*). Exception: `all` mode lifts the cap and lists every nit. Output sections are the lettered groups A, B, C…, not review dimensions.
 - Surface new nits on a re-review pass; only Important findings the second time around (comment hygiene is the one exception — see *Always check*).
 - Re-do design judgement (spacing, motion, copy) — that belongs in the other three sub-skills.
 

@@ -6,6 +6,24 @@ Format: newest first. Group under a version heading. Include date.
 
 ---
 
+## 0.4.2 — 2026-07-06 — engineer: exhaustive mode + visible nit cap
+
+The nit cap was silently swallowing minor findings, which read as the review arbitrarily limiting itself.
+
+- **`cami-design-engineer/SKILL.md` — exhaustive mode.** Invoke with `all` (`/cami-design-engineer all`), or ask to see everything, to lift the 5-nit-per-section cap and list every finding. Default stays capped for scannability. `all` lifts only the nit cap, not the >400-line diff scoping.
+- **Cap is now announced.** When it fires, the review names the real count (`Showing 5 of 12 nits in this section; run with \`all\` for the rest`) instead of a bare `+N similar`, so hidden findings are visible as a number. 🔴 Important and 🟣 Pre-existing were never capped and still aren't.
+
+### Review heuristics from real use
+
+Four findings the skill (or its author) missed on real reviews this month, now encoded. Rules with provenance.
+
+- **`references/composition.md` — presentational component that self-suppresses on an optional prop.** An optional input plus an internal `if (!x) return null` is a smell; make the input required and lift the condition to the caller. From a real component-API review.
+- **`references/state.md` — a merge that can outgrow its input, feeding a count or primary.** `[...a, ...b]` where one source isn't a subset of the payload is invisible on a list but drifts any derived count or primary; intersect with the canonical set. Caught downstream by a bot reviewer after this skill missed it.
+- **`references/typing.md` — same comment rationale in more than one place.** State a reason once at its canonical spot; duplicated rationale across files drifts on refactor.
+- **`cami-design-engineer/SKILL.md`** — comment-hygiene check now says to treat itself as a genuine second read, not a rubber-stamp (dedupe cross-file rationale, re-check after refactors); and Preparation says to gather the minimum load-bearing context and deliver, not spelunk a small PR for many rounds first.
+
+---
+
 ## 0.4.1 — 2026-07-06 — review artifact: real-surface previews + cleanup
 
 First-real-use hardening of the review artifact, both fixes in `references/review-artifact.md`.
