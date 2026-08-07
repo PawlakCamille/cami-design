@@ -2,7 +2,7 @@
 name: cami-design-engineer
 description: Senior design-engineer code review of front-end code — component composition, design-system fidelity, state and data flow, cross-file completeness, accessibility, i18n, performance, security, TypeScript. Use when asked to review front-end, React, or UI code, before handing a project to a tech team, or to make a prototype ship-ready.
 user-invocable: true
-argument-hint: "[target]"
+argument-hint: "[target] [all]"
 ---
 
 # Cami — Engineer
@@ -84,6 +84,14 @@ Each finding goes into the `Before | After | Why` table format defined in **Outp
 
 Definitions and calibration live in `../cami-design/references/review-protocol.md` → Severity scale — that table is the single source; don't re-derive it. Engineer-mode notes: all three symbols are in use; 🔴 blocks handoff; 🟡 caps at 5 per output section (`+N similar` for the rest); 🟣 marks issues that pre-date the diff — surface, don't block.
 
+### Nit cap and exhaustive mode
+
+🔴 Important and 🟣 Pre-existing are never capped; every one is always listed. Only 🟡 nits cap, at 5 per output section, to keep the review scannable.
+
+When the cap fires, say so in words, not just the `+N similar` tag: name the real count so the hidden nits are visible as a number, e.g. `Showing 5 of 12 nits in this section; run with \`all\` to see the rest.` Never let the cap silently swallow findings.
+
+**Exhaustive mode.** When invoked with `all` (`/cami-design-engineer all`), or when the user asks to see everything, lift the nit cap: list every finding in full, grouped as usual, with no `+N similar` collapse. The `all` flag lifts only the nit cap; it does not override the >400-line diff scoping (that's a separate signal concern; a review that reads half the code isn't more useful for being longer).
+
 ### Verification bar
 
 Every finding cites `file:line` from the actual code. No flagging based on naming or inference. If you can't point to the line, drop the finding.
@@ -135,7 +143,7 @@ Apply mode is the default close: apply the non-visual findings, then list any vi
 - Suggest abstractions for code that appears fewer than 3 times.
 - Refactor for hypothetical future requirements.
 - Add comments explaining what well-named code already shows.
-- Post more than 5 nits per output section — summarize the rest as `+N similar`. (Output sections are the lettered groups A, B, C…, not review dimensions.)
+- Post more than 5 nits per output section without collapsing the rest into `+N similar` and announcing the real count (see *Nit cap and exhaustive mode*). Exception: `all` mode lifts the cap and lists every nit. Output sections are the lettered groups A, B, C…, not review dimensions.
 - Surface new nits on a re-review pass; only Important findings the second time around (comment hygiene is the one exception — see *Always check*).
 - Re-do design judgement (spacing, motion, copy) — that belongs in the other three sub-skills.
 

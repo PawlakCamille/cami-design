@@ -6,6 +6,15 @@ Format: newest first. Group under a version heading. Include date.
 
 ---
 
+## 0.4.2 — 2026-07-06 — engineer: exhaustive mode + visible nit cap
+
+The nit cap was silently swallowing minor findings, which read as the review arbitrarily limiting itself.
+
+- **`cami-design-engineer/SKILL.md` — exhaustive mode.** Invoke with `all` (`/cami-design-engineer all`), or ask to see everything, to lift the 5-nit-per-section cap and list every finding. Default stays capped for scannability. `all` lifts only the nit cap, not the >400-line diff scoping.
+- **Cap is now announced.** When it fires, the review names the real count (`Showing 5 of 12 nits in this section; run with \`all\` for the rest`) instead of a bare `+N similar`, so hidden findings are visible as a number. 🔴 Important and 🟣 Pre-existing were never capped and still aren't.
+
+---
+
 ## 0.4.1 — 2026-07-06 — review artifact: real-surface previews + cleanup
 
 First-real-use hardening of the review artifact, both fixes in `references/review-artifact.md`.
