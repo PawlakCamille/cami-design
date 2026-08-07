@@ -33,6 +33,8 @@ This skill reviews **code**. For visual judgement (spacing, motion, copy), use `
 
 **Target:** `$ARGUMENTS` may name a PR (number or URL), a branch, or a file/directory path. A PR or branch sets the diff base for step 5; a path restricts the review to that path's slice of the diff. No target → review the current branch's diff against the default branch.
 
+**Gather the minimum load-bearing context, then deliver.** On a small PR, don't spend many tool rounds spelunking submodules, history, or call sites before producing a single finding. Read what the diff actually needs to be judged, and review. Deep context-gathering is for when a finding genuinely hinges on it, not a default warm-up.
+
 1. Read `package.json` to identify the framework and version. React 18 vs 19 changes some rules (`forwardRef`, `use()`), and the React Compiler changes what's worth flagging (`perf.md`).
 2. Read the linter/formatter config (biome, eslint, prettier) and confirm CI actually runs it (a workflow in `.github/workflows` or equivalent). **Skip anything CI enforces.** If there is no CI, type errors and lint-level bugs are in scope — nothing else will catch them.
 3. Locate the design system: tokens file, Tailwind config, DS components directory, any `DESIGN.md`.
@@ -76,7 +78,7 @@ Each finding goes into the `Before | After | Why` table format defined in **Outp
 
 ### Always check, regardless of dimension signal
 
-- **Comment hygiene.** Scan every added or changed comment in the diff and flag any that restate the code, run verbose, or carry private/internal content (rules in `typing.md`). Run this even when the diff shows no other type or naming signal, so the check never depends on `typing.md` being loaded for another reason. It is also exempt from the re-review nit suppression below: verbose comments are most often introduced *during* fixes, exactly when a second pass would otherwise silence them.
+- **Comment hygiene.** Scan every added or changed comment in the diff and flag any that restate the code, run verbose, or carry private/internal content (rules in `typing.md`). Run this even when the diff shows no other type or naming signal, so the check never depends on `typing.md` being loaded for another reason. It is also exempt from the re-review nit suppression below: verbose comments are most often introduced *during* fixes, exactly when a second pass would otherwise silence them. Treat it as a genuine second read, not a rubber-stamp: an automatic "looks fine" still ships 3-line comments and rationale duplicated across files. Cut to 1-2 lines, dedupe any reason stated in more than one place, and re-check each comment against what the code does now (refactors leave comments lying).
 
 ## Output
 

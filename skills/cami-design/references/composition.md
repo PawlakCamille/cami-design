@@ -54,6 +54,10 @@ Context value with `setActiveTab`, `setOpen`, `setValue` instead of `select`, `t
 
 A low-level or presentational component reaching into `localStorage`, analytics, routing, or another side-effecting concern the consumer should own — a collapsible-panel primitive that persists its own open/closed state. The primitive should take state and callbacks as props and stay pure; persistence and side effects belong to the feature that mounts it. Otherwise every consumer inherits a behavior it didn't ask for and can't opt out of.
 
+## Presentational Component That Self-Suppresses on an Optional Prop
+
+A leaf or presentational component with an optional input and an internal `if (!x) return null`. Make the driving input **required** and lift the render condition to the caller: the component always renders, callers do `{x && <Badge x={x} />}`. Two wins: the render tree is honest (no mounting and reconciling a no-op node), and a required prop lets the type system enforce the guard, which is stronger than a runtime null-return. Exception: genuinely self-orchestrating components that own their own visibility (data-fetching wrappers, portals).
+
 ## Conditional Render That Unmounts Children
 
 `{open && <Panel>{children}</Panel>}` fully unmounts the subtree when `open` is false — any child with internal state (an input, a controlled field, scroll position, a running animation) loses it on every toggle. For a reusable component whose consumers place stateful content inside, keep children mounted and hide with `hidden` / `display: none`, plus `inert` so the hidden subtree leaves the tab order and a11y tree. Unmounting is the right call when there's a named trigger: effects or autofocus must re-run on open, the subtree is heavy (see `perf.md`), or state should deliberately reset each time. Flag whichever direction lacks its trigger — not mounting-vs-unmounting in the abstract.
