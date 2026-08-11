@@ -31,20 +31,30 @@ This is the one place where the stated intent raises the bar instead of lowering
 
 When the diff modifies something shared — an exported function, hook, component, type, translation key, or CSS utility — the bug is rarely in the file that changed. **A change that is correct for the feature in this PR and wrong for an untouched caller is the classic regression.**
 
-1. **Grep every call site**, against the reviewed revision rather than the working tree, or on a PR you search a different revision and miss importers the change itself added:
+1. **Grep every call site.** Search whatever the review's scope actually is — which for this skill's default (a branch, checked out, possibly with uncommitted and untracked work) is the working tree. `--untracked` is not optional: without it a brand-new file calling the changed symbol is invisible, the same scope leak Preparation step 5 closes.
 
    ```bash
-   REV=HEAD    # or refs/remotes/pr/<n> on a fetched PR ref
-   git grep -ln "<SymbolName>" "$REV" -- '*.ts' '*.tsx' '*.jsx' '*.vue' '*.svelte'
+   git grep -n --untracked "<SymbolName>" -- '*.ts' '*.tsx' '*.js' '*.mjs' '*.cjs' '*.jsx' '*.vue' '*.svelte'
    ```
 
-   Results come back as `<rev>:path`; read them with `git show "$REV":path`, never the working-tree copy. For a token or CSS utility, grep the *name* — consumers reference it and never import it — and pass it after `-e`, or git parses a leading dash as an option and dies with `unknown option`:
+   Use `-n`, not `-l`: `-l` overrides it and returns bare paths, which then need a second `git show` and still leave you without the line number the verification bar requires. `-n` gives `path:line: content` in one command.
+
+   Only when reviewing a fetched ref you have **not** checked out does the revision belong in the command — and that ref has to be created first, since git does not maintain it:
 
    ```bash
-   git grep -ln -e '--color-accent' "$REV" -- '*.css' '*.tsx' 'tailwind.config.*'
+   git fetch origin "pull/<n>/head:refs/remotes/pr/<n>" --no-tags
+   git grep -n "<SymbolName>" refs/remotes/pr/<n> -- '*.ts' '*.tsx'
    ```
 
-2. **Read each one against the new behavior.** Not the filename, the call. Does it pass the argument that just became required? Does it read the field that just got renamed? Does it rely on the default that just changed?
+   Results then come back as `<rev>:path:line:` and are read with `git show "<rev>:path"` — never the working-tree copy, which on a fork PR is a different file.
+
+   For a token or CSS utility, grep the *name* — consumers reference it and never import it — and pass it after `-e`, or git parses a leading dash as an option and dies with `unknown option`:
+
+   ```bash
+   git grep -n --untracked -e '--color-accent' -- '*.css' '*.tsx' 'tailwind.config.*'
+   ```
+
+2. **Read each one against the new behavior** — the call, not the filename. Does it pass the argument that just became required? Read the field that just got renamed? Rely on the default that just changed? The mechanics of reading matches rather than scanning them, and of making the next such change fail loudly, are the same as in `cross-file-completeness.md` → The Check, steps 2 and 4. Don't run both sweeps twice over the same symbol.
 
 3. **Order and cap.** Route and layout entry points first, then by how many files reference the symbol, ties broken by proximity. Review the first five and **state how many you did not expand.** An unstated cutoff produces a review that looks complete and is not — the same honesty rule as the nit cap.
 

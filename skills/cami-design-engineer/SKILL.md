@@ -1,6 +1,6 @@
 ---
 name: cami-design-engineer
-description: Senior design-engineer code review of front-end code — component composition, design-system fidelity, state and data flow, cross-file completeness, accessibility, i18n, performance, security, TypeScript. Use when asked to review front-end, React, or UI code, before handing a project to a tech team, or to make a prototype ship-ready.
+description: Senior design-engineer code review of front-end code — component composition, design-system fidelity, state and data flow, behavior changes and regressions, cross-file completeness, accessibility, i18n, performance, security, TypeScript. Use when asked to review front-end, React, or UI code, to check a branch or PR for regressions, before handing a project to a tech team, or to make a prototype ship-ready.
 user-invocable: true
 argument-hint: "[target] [all]"
 ---
@@ -25,7 +25,7 @@ A code review for design engineers, not for engineers. The goal is a clean hando
 - End of a project, before the tech team takes it over
 - A polish pass on a vibe-coded prototype that "works but isn't ready to ship"
 - The same JSX shape shows up in 3+ files and needs consolidating
-- You want one pass that covers composition, design system, state, cross-file completeness, a11y, i18n, perf, security, and types
+- You want one pass that covers composition, design system, state, behavior changes, cross-file completeness, a11y, i18n, perf, security, and types
 
 This skill reviews **code**. For visual judgement (spacing, motion, copy), use `cami-design-layout`, `cami-design-interaction`, or `cami-design-copy`.
 
@@ -47,9 +47,9 @@ This skill reviews **code**. For visual judgement (spacing, motion, copy), use `
    - **A branch that also has uncommitted work.** Committed and uncommitted are not either/or. When `HEAD` is ahead of the base *and* the tree is dirty, review both and state the two counts separately (`7 commits, 2 files uncommitted`). Reviewing only the branch diff drops the dirty files silently.
 6. If the diff exceeds ~400 changed lines (excluding generated and lockfiles), ask the user to scope the review by feature or file before continuing. Wide reviews lose signal. If you can't ask (headless or CI run), scope to the most-affected source files yourself and open the review by stating that scoping. Exception: when the PR's stated scope is "migrate N call sites to a new pattern," search *every* site even past the cap — the output still caps at 5 nits per section, but a `+N similar` count must be real, not sampled.
 7. If the project has an E2E test suite (`e2e/`, `playwright/`, `cypress/`…), grep it for `data-testid` selectors before flagging refactors. Removing or renaming a referenced testid breaks the test silently. Note any testid changes in the review.
-8. If the review target is a PR, read its body (`gh pr view`) and compare the scope it claims against the actual diff. A description that says something is deferred when it's bundled — or vice-versa — sets the reviewer up on a wrong premise. Flag the mismatch as a pre-merge action item.
+8. Read the change's stated intent. On a PR that is its body (`gh pr view`); on a branch with no PR it is the commit subjects (`git log --format='%s%n%b' origin/<base>..HEAD`), which is the skill's default target — this step is never skipped for want of a PR. Compare the scope it claims against the actual diff. A description that says something is deferred when it's bundled — or vice-versa — sets the reviewer up on a wrong premise. Flag the mismatch as a pre-merge action item.
 
-   **Stated intent also calibrates the findings, not just the scope check.** Carry it through the whole review. A removal the description announces is the change working as intended, and reporting it back is noise. A change that calls itself a refactor, rename, migration, or port has promised no observable behavior change, so any it makes is a red flag *by definition* — that promise raises the bar rather than lowering it. Rules in `../cami-design/references/removed-signals.md` → Read the stated intent first, and `../cami-design/references/behavior-diff.md`.
+   **Stated intent also calibrates the findings, not just the scope check.** Carry it through the whole review. A removal the description announces is the change working as intended — clear it, but *count what you cleared* and say so in one line, the same rule as the nit cap. Intent is the author's account of their own change, so it is weighed after the evidence is gathered, never before. And a change calling itself a refactor, rename, migration, or port has promised no observable behavior change, so any it makes is a red flag *by definition* — that promise raises the bar rather than lowering it. Rules in `../cami-design/references/removed-signals.md` → Weigh the stated intent, and `../cami-design/references/behavior-diff.md`.
 
 ## Check Codebase Precedent First
 
