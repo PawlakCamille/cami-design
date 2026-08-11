@@ -40,6 +40,11 @@ This skill reviews **code**. For visual judgement (spacing, motion, copy), use `
 3. Locate the design system: tokens file, Tailwind config, DS components directory, any `DESIGN.md`.
 4. Check type strictness: `tsconfig.json`, project convention on `type` vs `interface`, presence of `as any`.
 5. Establish the diff base, then scope. `<base>` is the PR's base branch when reviewing a PR, otherwise the repo's default branch. Run `git fetch origin <base>` first, then diff against the remote ref: `git diff origin/<base>...HEAD` — a stale local base inflates the apparent diff and hides commits the branch is missing (if `git rev-list --count <base>..origin/<base>` is nonzero, note that the branch needs a rebase). No branch diff at all — uncommitted work, or a prototype living on the default branch — review the working tree against `HEAD` (`git diff HEAD`), or the files the user points at. Exclude generated files, lockfiles, vendored dependencies, and test fixtures. Full-file review only if the user asks.
+
+   Two scope leaks to close, both of which produce a review that claims coverage it didn't deliver:
+
+   - **Untracked files.** `git diff HEAD` reports tracked changes only, so a new component or stylesheet that was never `git add`ed is invisible. Any scope that includes uncommitted work must pair it with `git ls-files --others --exclude-standard`.
+   - **A branch that also has uncommitted work.** Committed and uncommitted are not either/or. When `HEAD` is ahead of the base *and* the tree is dirty, review both and state the two counts separately (`7 commits, 2 files uncommitted`). Reviewing only the branch diff drops the dirty files silently.
 6. If the diff exceeds ~400 changed lines (excluding generated and lockfiles), ask the user to scope the review by feature or file before continuing. Wide reviews lose signal. If you can't ask (headless or CI run), scope to the most-affected source files yourself and open the review by stating that scoping. Exception: when the PR's stated scope is "migrate N call sites to a new pattern," search *every* site even past the cap — the output still caps at 5 nits per section, but a `+N similar` count must be real, not sampled.
 7. If the project has an E2E test suite (`e2e/`, `playwright/`, `cypress/`…), grep it for `data-testid` selectors before flagging refactors. Removing or renaming a referenced testid breaks the test silently. Note any testid changes in the review.
 8. If the review target is a PR, read its body (`gh pr view`) and compare the scope it claims against the actual diff. A description that says something is deferred when it's bundled — or vice-versa — sets the reviewer up on a wrong premise. Flag the mismatch as a pre-merge action item.
@@ -78,6 +83,7 @@ Each finding goes into the `Before | After | Why` table format defined in **Outp
 
 ### Always check, regardless of dimension signal
 
+- **The removed side of the diff.** When the diff deletes lines in source, style, or template files, sweep the `-` side against `../cami-design/references/removed-signals.md` before reviewing the `+` side. A dropped `aria-label`, a deleted `transition`, a lost `prefers-reduced-motion` block — none are visible in the post-change state, which is the only state the rest of this review reads. Route each signal to its dimension, clear it against the equivalent-replacements list, and status what survives as `Regression`. Skip entirely on an additions-only diff.
 - **Comment hygiene.** Scan every added or changed comment in the diff and flag any that restate the code, run verbose, or carry private/internal content (rules in `typing.md`). Run this even when the diff shows no other type or naming signal, so the check never depends on `typing.md` being loaded for another reason. It is also exempt from the re-review nit suppression below: verbose comments are most often introduced *during* fixes, exactly when a second pass would otherwise silence them. Treat it as a genuine second read, not a rubber-stamp: an automatic "looks fine" still ships 3-line comments and rationale duplicated across files. Cut to 1-2 lines, dedupe any reason stated in more than one place, and re-check each comment against what the code does now (refactors leave comments lying).
 
 ## Output
@@ -85,6 +91,8 @@ Each finding goes into the `Before | After | Why` table format defined in **Outp
 ### Severity scale
 
 Definitions and calibration live in `../cami-design/references/review-protocol.md` → Severity scale — that table is the single source; don't re-derive it. Engineer-mode notes: all three symbols are in use; 🔴 blocks handoff; 🟡 caps at 5 per output section (`+N similar` for the rest); 🟣 marks issues that pre-date the diff — surface, don't block.
+
+This mode is diff-scoped, so it also carries **status** (`Introduced` / `Regression` / `Pre-existing`) alongside severity — see the same file → Status. Mark `Regression` explicitly; `Introduced` is the unmarked default.
 
 ### Nit cap and exhaustive mode
 
@@ -151,8 +159,9 @@ Apply mode is the default close: apply the non-visual findings, then list any vi
 
 ## References
 
-The nine dimension references are listed in the *Review Dimensions* table above — load each when the diff touches its area. Two shared references also apply:
+The nine dimension references are listed in the *Review Dimensions* table above — load each when the diff touches its area. Three further references also apply:
 
+- `../cami-design/references/removed-signals.md` — the `-` side of the diff; load whenever the diff deletes lines (see *Always check*)
 - `../cami-design/references/accessibility.md` — load together with `a11y-implementation.md`; a11y principles (contrast, focus, screen readers)
 - `../cami-design/references/anti-patterns.md` — load when the diff adds new styled UI; generic / "AI slop" tells, some apply at code level (`h-screen` → `100dvh`, mixed icon stroke weights, etc.)
 

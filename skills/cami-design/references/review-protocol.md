@@ -51,16 +51,41 @@ Every finding carries a severity emoji so the user can scan the list at a glance
 
 How to calibrate: weigh **Frequency** (how often is this surface or path hit?), **Impact** (how hard to recover when it bites?), and **Persistence** (one-off vs. recurring). High on all three → 🔴. Low on all three → 🟡. Mixed → judgement, lean 🟡 unless it blocks intent.
 
+### Status (diff-scoped reviews)
+
+Severity says how bad a finding is. Status says who caused it — a separate axis, and the one that decides how the author should hear it. Diff-scoped reviews (currently `cami-design-engineer`) carry both: the severity emoji, and a status in its own column.
+
+| Status | Meaning |
+| --- | --- |
+| `Introduced` | The change created it. The default — leave the cell empty. |
+| `Regression` | The change weakened something that was previously correct. Always marked. |
+| `Pre-existing` | Present in the touched code, not caused by this change. Never blocking. |
+
+`Regression` is the one worth the extra word. "You removed the accessible name from this button" is a different conversation from "you wrote this button wrong" — the first says it used to work, which points the author at their own refactor rather than at their judgement. Findings sourced from `removed-signals.md` are usually `Regression`, with one large exception noted in that file: a wholesale deletion removes everything and regresses nothing.
+
+**One overlap, carried over on purpose.** `Pre-existing` also has a severity symbol (🟣), from before status was its own axis, and it stays — changing it would rewrite existing behavior for no gain. The cost is that a *severe* pre-existing issue has nowhere to put its severity, so write it into the cell: `🟣 Pre-existing (important)`.
+
+**Status by what the diff touched, not by which file it sits in.** A line the change never touched is `Pre-existing` even three lines from a hunk. When it's load-bearing, resolve it against the branch range rather than assuming. Blame `HEAD`, never the base ref — everything reachable at the base predates the change by definition, so blaming there answers a different question and its line numbers are shifted by every insertion above:
+
+```bash
+SHA=$(git blame -L <line>,<line> --porcelain HEAD -- path/to/file | head -1 | cut -d' ' -f1)
+git rev-list origin/<base>..HEAD | grep -q "$SHA" && echo touched || echo pre-existing
+```
+
+Visual-design modes have no diff scope and use severity only.
+
 ### Structure
 
-```
-## A — [title describing what was found]
-| #  | Severity | Before | After | Why |
-|----|----------|--------|-------|-----|
-| A1 | 🔴 | ... | ... | ... |
-| A2 | 🟡 | ... | ... | ... |
+Diff-scoped reviews carry a `Status` column after `Severity`. Visual modes omit it.
 
-## B — [title describing what was found]
+```
+## A — [title describing what was found]      (diff-scoped)
+| #  | Severity | Status | Before | After | Why |
+|----|----------|--------|--------|-------|-----|
+| A1 | 🔴 | Regression | ... | ... | ... |
+| A2 | 🟡 |  | ... | ... | ... |
+
+## B — [title describing what was found]      (visual modes)
 | #  | Severity | Before | After | Why |
 |----|----------|--------|-------|-----|
 | B1 | 🔴 | ... | ... | ... |
