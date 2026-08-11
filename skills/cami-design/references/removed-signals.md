@@ -6,6 +6,18 @@ A regression is invisible in the post-change state. The code reads fine, because
 
 **A row below is a lead, never a finding.** Route the removal to the dimension that owns it, check the *Equivalent replacements* list, and report only what survives both. A removal is a regression only when nothing in the change replaces what it did.
 
+## What "route to" means here
+
+It names the dimension that owns the judgement. It is **not** an instruction to load that reference.
+
+Half the rows below point at visual references — `motion.md`, `spacing-layout.md`, `typography.md`, `color.md`, `copy-patterns.md` — and `cami-design-engineer` is forbidden from re-doing design judgement (its NEVER list). That is not a contradiction to resolve by loading them. Reporting *that a signal was removed* is a code-review fact, verifiable from the diff. Deciding whether the replacement feels right is design judgement, and it belongs to the visual modes.
+
+So for a signal outside engineer scope: state what was removed with its `file:line`, name the owning mode, and stop. Don't argue the aesthetics.
+
+> `A2 | 🔴 | Regression | The row's `transition` was deleted (globals.css:253) | Restore it, or confirm the teleport is intended | Hover used to ease; it now snaps. Motion judgement belongs to `cami-design-interaction` — flagging the removal, not the curve. |
+
+These are user-visible by definition, so they fall under Apply mode's existing rule: isolate anything with rendered impact and get sign-off before applying. Never auto-apply a restored transition or a reverted color.
+
 ## Signals
 
 | Removed from the `-` side | Route to | What to check |
@@ -38,22 +50,36 @@ These clear the signal. Check them before routing anything, or the review fills 
 - A physical property replaced by its logical counterpart — that is the fix, not the regression.
 - A string moved into the translation catalogue rather than deleted.
 - A CSS transition replaced by a motion-library variant covering the same state change, or the reverse.
+- **The element no longer exists.** A deleted file or removed component takes every attribute in it down at once. Nothing regressed; the surface is gone. `--diff-filter=d` in the command below drops deleted files, but a component removed from inside a surviving file still needs this check by eye — it is the single largest source of false regressions.
 
 ## Searching the removed side
 
-Restrict the search to deleted lines, so additions elsewhere in the hunk don't mask a removal:
+Every finding needs `file:line` — the verification bar applies here like anywhere else. A grep over raw diff text can't give you that: it strips the `+++` and `@@` headers along with everything else, leaving strings you cannot cite or navigate back to. Track the file and the hunk counter instead:
 
 ```bash
-git diff -U0 origin/<base>...HEAD -- '*.tsx' '*.jsx' '*.vue' '*.css' \
-  | grep -E '^-[^-]' \
-  | grep -E 'aria-|role=|alt=|focus|tabindex|prefers-|transition|exit|lang=|dir='
+git diff -U0 --diff-filter=d origin/<base>...HEAD \
+  -- '*.ts' '*.tsx' '*.jsx' '*.css' '*.scss' '*.html' '*.svelte' '*.astro' \
+| awk '/^\+\+\+ b\//{f=substr($0,7);next} /^--- /{next} \
+       /^@@/{split($2,h,",");l=-h[1];next} \
+       /^-/{print f":"l": "substr($0,2);l++}' \
+| grep -E 'aria-|role=|alt=|<label|for=|scope=|focus|outline|tabindex|prefers-|transition|will-change|exit|Presence|lang=|dir=|text-wrap|line-clamp|overflow-wrap|tabular-nums|font-feature|margin-(left|right)|padding-(left|right)|var\(--'
 ```
+
+Output is `path:line: content`, with the line number resolving against the **base** revision — read it with `git show "${BASE}:path/to/file"`, not the working tree, where the line has moved or no longer exists.
+
+Three details that matter, each of which silently drops findings if you simplify them away:
+
+- `--diff-filter=d` excludes deleted files. Without it, deleting one component floods the sweep with every attribute it contained.
+- The `/^--- /{next}` rule must come before the `/^-/` rule, or the `--- a/path` header is reported as a removed line.
+- Filtering with `^-[^-]` instead of `^-` looks equivalent and isn't: it drops any removed line whose content starts with a dash, which is exactly `--custom-property` definitions and `-webkit-` properties. A deleted token definition is a signal in the table above.
 
 Then read the surrounding hunk before deciding. `-U0` deliberately hides context, and a single removed attribute means nothing without the element it came from.
 
 ## Status
 
-Every confirmed removal is reported as `Regression`, not as a new mistake — see `review-protocol.md` → Severity scale. The distinction is the point of the check: it tells the author they broke something that worked, which is a different conversation from "you wrote this wrong."
+A confirmed removal is reported as `Regression`, not as a new mistake — see `review-protocol.md` → Status. The distinction is the point of the check: it tells the author they broke something that worked, which is a different conversation from "you wrote this wrong."
+
+The exception is the one above: when the element itself is gone, nothing regressed and there is no finding at all.
 
 ## Attribution
 

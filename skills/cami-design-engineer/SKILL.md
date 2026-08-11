@@ -159,7 +159,7 @@ Apply mode is the default close: apply the non-visual findings, then list any vi
 
 ## References
 
-The nine dimension references are listed in the *Review Dimensions* table above — load each when the diff touches its area. Two shared references also apply:
+The nine dimension references are listed in the *Review Dimensions* table above — load each when the diff touches its area. Three further references also apply:
 
 - `../cami-design/references/removed-signals.md` — the `-` side of the diff; load whenever the diff deletes lines (see *Always check*)
 - `../cami-design/references/accessibility.md` — load together with `a11y-implementation.md`; a11y principles (contrast, focus, screen readers)

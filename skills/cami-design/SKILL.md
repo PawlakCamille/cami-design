@@ -135,7 +135,7 @@ The one exception is `references/review-protocol.md` (context gathering, design 
 | Design System Fidelity (code) | `references/ds-fidelity.md` | Code-level DS violations — pairs with the Design System Protocol in `review-protocol.md` |
 | State & Data Flow | `references/state.md` | Effects, async cleanup, race conditions, fetching, prop mutation |
 | Cross-file Completeness | `references/cross-file-completeness.md` | A new union member, or a moved/renamed module — and the unchanged code that referenced it |
-| Removed Signals | `references/removed-signals.md` | The diff deletes lines — the `-` side, where regressions hide |
+| Removed Signals | `references/removed-signals.md` | The diff deletes lines. A cross-cutting sweep, not a tenth dimension — it routes to the dimensions above |
 | A11y Implementation | `references/a11y-implementation.md` | Code-level a11y findings — pairs with `accessibility.md` principles |
 | Internationalization | `references/i18n.md` | Hardcoded user-facing strings, non-locale-aware dates/numbers, English in the a11y tree |
 | Performance & Rendering | `references/perf.md` | Keys, memoization, animation cost, hot handlers, list lookups, skeleton parity |
