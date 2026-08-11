@@ -6,6 +6,25 @@ A regression is invisible in the post-change state. The code reads fine, because
 
 **A row below is a lead, never a finding.** Route the removal to the dimension that owns it, check the *Equivalent replacements* list, and report only what survives both. A removal is a regression only when nothing in the change replaces what it did.
 
+## Read the stated intent first
+
+Before the sweep, not after. A change that announces a removal is not regressing — the removal is the point, and reporting it back is the fastest way to make this check look broken.
+
+Read the PR title and body (`gh pr view`), the linked issue, and the commit subjects. Then calibrate:
+
+| The change says | Then a matching removal is |
+| --- | --- |
+| It removes, retires, or simplifies the thing | **Not a finding.** Say nothing. |
+| It removes X, and Y also disappeared | A finding on Y only. Name why it falls outside the stated scope. |
+| Nothing about removals | Normal sweep. |
+| It is a pure refactor, a rename, a migration, a port | **Raise the bar, don't lower it.** Any removal here is by definition an unstated behavior change. |
+
+That last row is the useful inversion. Intent doesn't only excuse removals, it convicts them: a `refactor:` commit that quietly drops an `aria-label` is worse than a feature commit that does the same, because the label said nothing would change.
+
+Match on the substance, not the wording. "Drop the legacy tooltip" covers that tooltip's `aria-describedby`; it does not cover a focus ring deleted three files away. When in doubt about whether a removal falls inside the stated scope, report it and say which part of the intent you weighed it against — an author correcting your reading costs a sentence, a silent omission costs the check its credibility.
+
+Nothing here overrides the verification bar. An intentional removal is still stated with `file:line` if it needs discussing at all; it just isn't a `Regression`.
+
 ## What "route to" means here
 
 It names the dimension that owns the judgement. It is **not** an instruction to load that reference.

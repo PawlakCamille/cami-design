@@ -49,6 +49,8 @@ This skill reviews **code**. For visual judgement (spacing, motion, copy), use `
 7. If the project has an E2E test suite (`e2e/`, `playwright/`, `cypress/`…), grep it for `data-testid` selectors before flagging refactors. Removing or renaming a referenced testid breaks the test silently. Note any testid changes in the review.
 8. If the review target is a PR, read its body (`gh pr view`) and compare the scope it claims against the actual diff. A description that says something is deferred when it's bundled — or vice-versa — sets the reviewer up on a wrong premise. Flag the mismatch as a pre-merge action item.
 
+   **Stated intent also calibrates the findings, not just the scope check.** Carry it through the whole review. A removal the description announces is the change working as intended, and reporting it back is noise. A change that calls itself a refactor, rename, migration, or port has promised no observable behavior change, so any it makes is a red flag *by definition* — that promise raises the bar rather than lowering it. Rules in `../cami-design/references/removed-signals.md` → Read the stated intent first, and `../cami-design/references/behavior-diff.md`.
+
 ## Check Codebase Precedent First
 
 Before flagging anything as "should be X", search the repo for existing implementations of the same need. The most common review failure is proposing a "better" version of something the project already has in a different style — that introduces parallel approaches and breaks consistency.
@@ -65,13 +67,14 @@ When a finding offers two options, both have to be real. If option B is "…or l
 
 ## Review Dimensions
 
-Nine dimensions. Each has a dedicated reference file with the concrete findings to flag. Load a dimension's reference when the diff touches that area; skip dimensions with no signal.
+Ten dimensions. Each has a dedicated reference file with the concrete findings to flag. Load a dimension's reference when the diff touches that area; skip dimensions with no signal.
 
 | Dimension | Reference | Load when |
 | --- | --- | --- |
 | Component Composition | `../cami-design/references/composition.md` | Component shape, prop surface, state location, compound patterns |
 | Design System Fidelity | `../cami-design/references/ds-fidelity.md` | New or modified styled components, raw color/spacing values, DS imports, public API changes |
 | State & Data Flow | `../cami-design/references/state.md` | `useState`, `useEffect`, async work, shared data fetching, state changing owner |
+| Behavior Diff | `../cami-design/references/behavior-diff.md` | The diff modifies an existing conditional, early return, default value, dependency array, or the signature or return shape of a shared symbol |
 | Cross-file Completeness | `../cami-design/references/cross-file-completeness.md` | The diff adds a union member — variant, status, tab, plan tier, role, feature flag — or moves/renames a module |
 | A11y Implementation | `../cami-design/references/a11y-implementation.md` | Any interactive element, form, modal, image, custom widget |
 | Internationalization | `../cami-design/references/i18n.md` | User-facing strings, dates, numbers, `aria-label`/`alt` text — when `package.json` has an i18n dependency (`i18next`, `next-intl`, `react-intl`…) or the repo has locale files |
@@ -159,7 +162,7 @@ Apply mode is the default close: apply the non-visual findings, then list any vi
 
 ## References
 
-The nine dimension references are listed in the *Review Dimensions* table above — load each when the diff touches its area. Three further references also apply:
+The ten dimension references are listed in the *Review Dimensions* table above — load each when the diff touches its area. Three further references also apply:
 
 - `../cami-design/references/removed-signals.md` — the `-` side of the diff; load whenever the diff deletes lines (see *Always check*)
 - `../cami-design/references/accessibility.md` — load together with `a11y-implementation.md`; a11y principles (contrast, focus, screen readers)
