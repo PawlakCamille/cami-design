@@ -31,6 +31,14 @@ This is the one place where the stated intent raises the bar instead of lowering
 
 When the diff modifies something shared — an exported function, hook, component, type, translation key, or CSS utility — the bug is rarely in the file that changed. **A change that is correct for the feature in this PR and wrong for an untouched caller is the classic regression.**
 
+**Gate it first.** Preparation says to gather the minimum load-bearing context and deliver, not to spelunk call sites as a warm-up, and that still governs. One grep decides whether this section applies at all:
+
+```bash
+git grep -l --untracked "<SymbolName>" -- '<source globs>'
+```
+
+Every hit already inside the diff means the change carries its own callers and the sweep is finished — say so in one line and move on. Hits outside the diff are the reason to continue, and how many there are sets how deep to go. Skip the sweep entirely for a symbol that is local to its file, and for a diff that only adds a symbol rather than changing one: nothing was depending on it yesterday.
+
 1. **Grep every call site.** Search whatever the review's scope actually is — which for this skill's default (a branch, checked out, possibly with uncommitted and untracked work) is the working tree. `--untracked` is not optional: without it a brand-new file calling the changed symbol is invisible, the same scope leak Preparation step 5 closes.
 
    ```bash
@@ -58,7 +66,7 @@ When the diff modifies something shared — an exported function, hook, componen
 
 3. **Order and cap.** Route and layout entry points first, then by how many files reference the symbol, ties broken by proximity. Review the first five and **state how many you did not expand.** An unstated cutoff produces a review that looks complete and is not — the same honesty rule as the nit cap.
 
-4. **Offer the durable fix once** where the consumer can be made to fail loudly next time: a required prop instead of an optional one with a default, an exhaustive `satisfies Record<Union, T>`, a `never` check in a `switch` default.
+4. **Offer the durable fix once**, per `cross-file-completeness.md` → The Check, step 4. The shape specific to this dimension is making the *signature* refuse the old call: a required parameter instead of an optional one with a default, so the next caller that forgets it fails at compile time rather than at runtime.
 
 Pairs with `cross-file-completeness.md`, which covers the neighbouring case: not a changed symbol, but a *new member* added to a union whose consumers were never told.
 
