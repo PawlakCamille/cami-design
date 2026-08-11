@@ -6,6 +6,25 @@ Format: newest first. Group under a version heading. Include date.
 
 ---
 
+## 0.4.3 — 2026-08-11 — engineer: read the removed side of the diff
+
+The review read only the post-change state, so anything a refactor dropped shipped clean. An `aria-label` removed while restyling a control, a `transition` deleted in a rewrite, a `prefers-reduced-motion` block lost in a merge — all invisible to a reviewer looking only at the `+` side, because what's wrong about the code is what's no longer in it.
+
+- **`references/removed-signals.md`** (new). Sweeps the `-` side when the diff deletes lines, routing each signal to the dimension that owns it: a11y attributes and semantics, focus and reduced-motion, deleted transitions and exits, logical properties, `lang`/`dir` and text-rendering, token-to-literal swaps, dropped strings and translation keys. Skipped entirely on an additions-only diff.
+- **Equivalent replacements guard.** A signal is a lead, not a finding. `aria-label` → `aria-labelledby` on visible text, `outline` → a compliant `box-shadow` ring, a literal → a token measuring the same pair, a physical property → its logical counterpart: all clear the signal. Without this list the check reports refactors as regressions and stops being trustworthy.
+- **`references/review-protocol.md` — status as its own axis.** Severity says how bad; status says who caused it. `Introduced` (unmarked default) / `Regression` (marked) / `Pre-existing` (🟣). Status is decided by what the diff *touched* — a line the change never touched is pre-existing even three lines from a hunk — confirmed with `git blame` against the base ref when load-bearing. Visual modes have no diff scope and are unaffected.
+
+### Two scope leaks in engineer Preparation
+
+Both produced a review that claimed coverage it hadn't delivered.
+
+- **Untracked files were invisible.** `git diff HEAD` reports tracked changes only, so a new component or stylesheet never `git add`ed was silently outside a review scoped to the working tree. Now paired with `git ls-files --others --exclude-standard`.
+- **Branch and uncommitted were either/or.** On a branch with commits *and* a dirty tree, only the branch diff was reviewed and the dirty files were dropped without a word. Now both, with the two counts stated separately.
+
+Source: jakubkrehel/skills `interface-review`. The motion rows (deleted transitions, easing-token swaps, removed exits, `will-change`) and the DS-fidelity routing for token swaps are additions, not upstream. What was deliberately left behind is recorded in `NOTICE.md`.
+
+---
+
 ## 0.4.2 — 2026-07-06 — engineer: exhaustive mode + visible nit cap
 
 The nit cap was silently swallowing minor findings, which read as the review arbitrarily limiting itself.

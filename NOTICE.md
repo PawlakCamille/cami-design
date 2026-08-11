@@ -66,6 +66,20 @@ Contributions absorbed:
 Repository: https://github.com/jakubkrehel/make-interfaces-feel-better
 License: see upstream
 
+### jakubkrehel/skills — interface-review
+Author: Jakub Krehel
+
+Contributions absorbed (August 2026):
+- **Removed-signals table** — reading the `-` side of a hunk, with each signal routed to the dimension that owns the judgement (`references/removed-signals.md`)
+- **Equivalent-replacements guard** — the list that stops refactors being reported as regressions
+- **Three-way finding status** — `Introduced` / `Regression` / `Pre-existing`, as an axis separate from severity, statused by what the diff touched rather than which file it sits in (`references/review-protocol.md`)
+- **Two diff-scope leaks** — untracked files absent from `git diff HEAD`, and branch-vs-uncommitted treated as either/or (`cami-design-engineer/SKILL.md`)
+
+Deliberately not absorbed: the standalone scope-resolution skill and its orchestrator hand-off (this skill keeps diff scope inside `cami-design-engineer`), shallow-clone and CI-oriented repository handling, and the ban on reporting scope creep — a handoff review is exactly where a claimed-vs-actual scope mismatch matters, so Preparation step 8 stands. See CHANGELOG 0.4.3.
+
+Repository: https://github.com/jakubkrehel/skills
+License: see upstream
+
 ### brotzky/performance-skills — linear-local-first-architecture
 Author: Dennis Brotzky
 
