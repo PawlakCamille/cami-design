@@ -83,6 +83,7 @@ Each finding goes into the `Before | After | Why` table format defined in **Outp
 
 ### Always check, regardless of dimension signal
 
+- **The removed side of the diff.** When the diff deletes lines in source, style, or template files, sweep the `-` side against `../cami-design/references/removed-signals.md` before reviewing the `+` side. A dropped `aria-label`, a deleted `transition`, a lost `prefers-reduced-motion` block — none are visible in the post-change state, which is the only state the rest of this review reads. Route each signal to its dimension, clear it against the equivalent-replacements list, and status what survives as `Regression`. Skip entirely on an additions-only diff.
 - **Comment hygiene.** Scan every added or changed comment in the diff and flag any that restate the code, run verbose, or carry private/internal content (rules in `typing.md`). Run this even when the diff shows no other type or naming signal, so the check never depends on `typing.md` being loaded for another reason. It is also exempt from the re-review nit suppression below: verbose comments are most often introduced *during* fixes, exactly when a second pass would otherwise silence them. Treat it as a genuine second read, not a rubber-stamp: an automatic "looks fine" still ships 3-line comments and rationale duplicated across files. Cut to 1-2 lines, dedupe any reason stated in more than one place, and re-check each comment against what the code does now (refactors leave comments lying).
 
 ## Output
@@ -90,6 +91,8 @@ Each finding goes into the `Before | After | Why` table format defined in **Outp
 ### Severity scale
 
 Definitions and calibration live in `../cami-design/references/review-protocol.md` → Severity scale — that table is the single source; don't re-derive it. Engineer-mode notes: all three symbols are in use; 🔴 blocks handoff; 🟡 caps at 5 per output section (`+N similar` for the rest); 🟣 marks issues that pre-date the diff — surface, don't block.
+
+This mode is diff-scoped, so it also carries **status** (`Introduced` / `Regression` / `Pre-existing`) alongside severity — see the same file → Status. Mark `Regression` explicitly; `Introduced` is the unmarked default.
 
 ### Nit cap and exhaustive mode
 
@@ -158,6 +161,7 @@ Apply mode is the default close: apply the non-visual findings, then list any vi
 
 The nine dimension references are listed in the *Review Dimensions* table above — load each when the diff touches its area. Two shared references also apply:
 
+- `../cami-design/references/removed-signals.md` — the `-` side of the diff; load whenever the diff deletes lines (see *Always check*)
 - `../cami-design/references/accessibility.md` — load together with `a11y-implementation.md`; a11y principles (contrast, focus, screen readers)
 - `../cami-design/references/anti-patterns.md` — load when the diff adds new styled UI; generic / "AI slop" tells, some apply at code level (`h-screen` → `100dvh`, mixed icon stroke weights, etc.)
 

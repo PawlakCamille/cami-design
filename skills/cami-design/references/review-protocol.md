@@ -49,6 +49,26 @@ Every finding carries a severity emoji so the user can scan the list at a glance
 
 **Cap unit is "section."** A section is one of the lettered output groups (A, B, C…) in the review. It is *not* the same as a review *dimension* (Composition, State, Perf…). Cap at 5 nits per output section regardless of how many dimensions feed into it.
 
+### Status (diff-scoped reviews)
+
+Severity says how bad a finding is. Status says who caused it — a separate axis, and the one that decides how the author should hear it. Diff-scoped reviews (currently `cami-design-engineer`) carry both: the severity emoji, plus a status word in the finding.
+
+| Status | Meaning |
+| --- | --- |
+| `Introduced` | The change created it. The default — leave it unmarked. |
+| `Regression` | The change weakened something that was previously correct. Mark it explicitly. |
+| `Pre-existing` | Present in the touched code, not caused by this change. Carries 🟣 and is never blocking. |
+
+`Regression` is the one worth the extra word. "You removed the accessible name from this button" is a different conversation from "you wrote this button wrong" — the first says it used to work, which points the author at their own refactor rather than at their judgement. Findings sourced from `removed-signals.md` are almost always `Regression`.
+
+**Status by what the diff touched, not by which file it sits in.** A line the change never touched is `Pre-existing` even three lines from a hunk. When it's load-bearing, confirm against the base ref rather than assuming:
+
+```bash
+git blame -L <line>,<line> origin/<base> -- path/to/file
+```
+
+Visual-design modes have no diff scope and use severity only.
+
 How to calibrate: weigh **Frequency** (how often is this surface or path hit?), **Impact** (how hard to recover when it bites?), and **Persistence** (one-off vs. recurring). High on all three → 🔴. Low on all three → 🟡. Mixed → judgement, lean 🟡 unless it blocks intent.
 
 ### Structure
