@@ -6,6 +6,37 @@ A regression is invisible in the post-change state. The code reads fine, because
 
 **A row below is a lead, never a finding.** Route the removal to the dimension that owns it, check the *Equivalent replacements* list, and report only what survives both. A removal is a regression only when nothing in the change replaces what it did.
 
+## Weigh the stated intent — after the sweep, never before
+
+A change that announces a removal is not regressing: the removal is the point, and reporting it back makes the whole check look broken. But intent is the **author's account of their own change**, and on a diff written in one pass by the same agent that wrote the description, the account and the code share an author. Read it as testimony, not as evidence.
+
+Two rules keep that from turning into a silent filter.
+
+**Sweep first, filter second.** Run the pipeline below, get the raw lead list, *then* weigh it against intent. Reading the description first anchors you on the author's framing before you have seen anything, and leaves no list to audit. Filtering afterwards costs nothing — it is the same single pipeline either way — and it produces a number.
+
+**Say what you cleared.** This skill never lets a suppression go unannounced: the nit cap names the count it hid, the consumer sweep states how many it skipped. This one is no different.
+
+> `Removed-side sweep: 14 leads. 11 cleared (9 equivalent replacements, 2 within the stated scope of "retire the legacy tooltip"), 3 reported below.`
+
+One line. It costs nothing and it is the difference between a filter the author can check and one they have to trust.
+
+Read the PR title and body (`gh pr view`), the linked issue, and the commit subjects — on a branch with no PR, the commit subjects alone are the stated intent. Then calibrate:
+
+| The change says | Then a matching removal is |
+| --- | --- |
+| It removes, retires, or simplifies the thing | **Cleared** — not a `Regression`. Counted, not reported. |
+| It removes X, and Y also disappeared | A finding on Y only. Name why it falls outside the stated scope. |
+| Nothing about removals | Normal sweep. |
+| It is a pure refactor, a rename, a migration, a port | **Raise the bar, don't lower it.** Any removal here is by definition an unstated behavior change. |
+
+That last row is the useful inversion. Intent doesn't only excuse removals, it convicts them: a `refactor:` commit that quietly drops an `aria-label` is worse than a feature commit that does the same, because the label promised nothing would change.
+
+**Match on what the removed signal was serving, not on what it was attached to.** "Drop the legacy tooltip" clears that tooltip's own markup and its `role="tooltip"`. It does not clear an `aria-describedby` on a *trigger that survives* — the attribute sat on the tooltip's neighbour, but what it served was the trigger's description, and the trigger still needs one. Ask what stops working, not what the line was next to.
+
+When in doubt, report it and name the part of the intent you weighed it against. An author correcting your reading costs a sentence; a silent omission costs the check its credibility.
+
+Nothing here overrides the verification bar. A cleared removal that still deserves discussion is stated with `file:line` like anything else — it just isn't a `Regression`.
+
 ## What "route to" means here
 
 It names the dimension that owns the judgement. It is **not** an instruction to load that reference.

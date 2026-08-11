@@ -6,6 +6,32 @@ Format: newest first. Group under a version heading. Include date.
 
 ---
 
+## 0.4.4 — 2026-08-11 — engineer: stated intent, and the code that changed rather than moved
+
+0.4.3 taught the review to read deleted lines. It had no idea *why* they were deleted, so a PR titled "retire the legacy tooltip" would report its own purpose back as a wall of regressions. And it still only looked at lines added or removed — never at the line that survived the diff and quietly stopped meaning the same thing.
+
+- **`references/removed-signals.md` — weigh the stated intent, after the sweep.** An announced removal is the change working, not a finding. But intent is the author's account of their own change — and when one agent writes both the diff and the description, account and code share an author — so it is weighed as testimony, after the evidence is gathered. Reading it first anchors the reviewer and leaves no list to audit.
+- **Cleared is counted, never silent.** This skill announces every suppression: the nit cap names what it hid, the consumer sweep states what it skipped. The intent filter now does the same — one line, `14 leads, 11 cleared (9 equivalent replacements, 2 within stated scope), 3 reported`. A filter the author can check rather than one they have to trust.
+- **Match on what the removed signal was serving, not what it was attached to.** "Drop the legacy tooltip" clears that tooltip's own markup and its `role="tooltip"`. It does not clear an `aria-describedby` whose trigger survives — the attribute sat on the tooltip's neighbour, but what it served was the trigger's description. Ask what stops working, not what the line was next to.
+- **Intent convicts as well as excuses.** A change calling itself a refactor, rename, migration, or port has promised no observable behavior change, so any removal in it is an unstated behavior change *by definition* — the bar goes up, not down. Reviewers and QA both read the label and skip the check, which is exactly why it's worth more scrutiny, not less.
+- **Preparation step 8 promoted.** Reading the PR body was a one-shot scope check; it now calibrates findings through the whole review.
+
+### `references/behavior-diff.md` (new dimension, the tenth)
+
+The complement to removed signals: not what was deleted, but what was **rewritten** — the line that still exists, still reads fine, and no longer does the same thing.
+
+- **Diff the behavior, not the code.** For every changed conditional, early return, default value, dependency array, or returned shape: state what the old path did, then find what relied on it. The flows that break are the ones nobody opens while building the feature — empty states, error paths, permission-gated variants, the feature-flag OFF branch, first render before data. Name the flow in the finding.
+- **Sweep the consumers of shared code.** A change correct for the feature in this PR and wrong for an untouched caller is the classic regression. Grep every call site against the reviewed revision rather than the working tree, read each call rather than the filename, order route entry points first then by reference count, review five and **state how many you skipped**.
+- **Data that outlives the deploy.** Migrations, stored JSON, API fields: can the new code read rows the old one wrote? Flag anything assuming every client updates at once.
+
+### `references/cross-file-completeness.md` — renames that don't fail the build
+
+A renamed module breaks loudly. A renamed translation key, analytics event, query param, API field, or `data-testid` does not: the old name survives in a string, nothing type-checks it, and the feature stops working where nobody looked. Grep the old name as a *string* including locale files, specs and config — and when it crosses a network or storage boundary, say so, because the fix isn't only in this repo.
+
+Distilled from the author's own internal red-flag review skill, generalised out of its project specifics. Consumer ordering and the state-what-you-skipped rule from jakubkrehel/skills `interface-review` principle 2, absorbed here after being deliberately skipped in 0.4.3.
+
+---
+
 ## 0.4.3 — 2026-08-11 — engineer: read the removed side of the diff
 
 The review read only the post-change state, so anything a refactor dropped shipped clean. An `aria-label` removed while restyling a control, a `transition` deleted in a rewrite, a `prefers-reduced-motion` block lost in a merge — all invisible to a reviewer looking only at the `+` side, because what's wrong about the code is what's no longer in it.

@@ -25,6 +25,23 @@ When you spot a new union member in the diff:
 
 When the diff moves or renames a module, references to the old path can survive elsewhere — most silently in test files: a `vi.mock('../old/path/to/module')` still pointing at the pre-move location is a dead mock, so the real module runs untested while the suite still passes. Grep the old path and the old name across the repo — test files included — after any move or rename.
 
+### Renames that don't fail the build
+
+A renamed module usually breaks loudly. These don't: the old name lives on in a string, so nothing type-checks it and nothing errors — the feature just stops working somewhere nobody looked.
+
+| Renamed or removed | Where the old name survives |
+| --- | --- |
+| A translation key | Locale catalogues for every *other* language, and any key built by concatenation |
+| An analytics or telemetry event | Dashboards and funnels outside the repo — flag it, you can't grep it |
+| A URL query param or route segment | Saved links, redirects, deep links from email, e2e specs |
+| An API request or response field | Sibling repos and clients built against the old shape |
+| A `data-testid` | The e2e suite, which keeps passing while asserting nothing |
+| A prop or exported symbol | Barrel files and re-exports, which forward a name that no longer exists |
+
+Grep the old name as a **string**, not as an identifier, and include locale files, test specs, and config. When the value crosses a network or a storage boundary, say so plainly in the finding: the fix isn't only in this repo.
+
+Behavior that changed rather than moved — a conditional, a default, a returned shape — belongs to `behavior-diff.md`.
+
 ## Attribution
 
 Absorbed from garrytan/gstack `review` — Enum & Value Completeness. Module-move check added from production PR review feedback.
